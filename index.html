@@ -6759,8 +6759,9 @@ function moveItem(fromCatId, fromIndex, toCatId, toIndex) {
 //   [COMUM] Contra tanque
 //   - Armadura de Espinhos
 //
-// Regras: "[TIPO] Nome | largura" abre uma categoria; "#" é a descrição
-// dela; "-" é um item, com observação opcional após " * ".
+// Regras: "[TIPO] Nome | colunas×linhas" abre uma categoria (sem grade, 6
+// colunas; a largura antiga "| ½" ainda é lida); "#" é a descrição dela; "-"
+// (ou "*", "•") é um item, com observação opcional após " * ".
 
 // F11-T9: a página de runas em três linhas legíveis. Só sai o que existe —
 // página vazia não gera linha nenhuma.
@@ -6855,6 +6856,11 @@ function buildToText() { return textoDaBuild(buildResumo(build)); }
 // da última).
 function dividirBuilds(text) {
   const BUILD = /^\s*BUILD\s*:/i;
+  // F13-T36b: um tópico de IA ("* Dica: ...") também conta como item. Se
+  // ele vier entre dois BUILD:, a build se divide e a parte sem caixa fica de
+  // fora — avisada pelo nome e pelo tópico. Contar só os nomes do catálogo
+  // fundia calado uma build de nomes errados ("* **Gume**", erro de digitação)
+  // com a seguinte, misturando modo, campeão e marcadores: é pior.
   const CORPO = /^\s*(\[[^\]]+\]|[-•*]\s*\S)/;   // caixa ou item
   const DA_CAIXA = /^\s*[#=]/;                    // descrição e marco de caixa
   const blocos = [[]];
@@ -7420,6 +7426,8 @@ function textToBuild(text) {
         else if (TEXT_SPAN[key]) span = TEXT_SPAN[key];
         rest = rest.slice(0, mSpan.index).trim();
       }
+      // Sem grade, 6 colunas: a largura ½ de sempre. O formato passou a dizer isso
+      // (Leo, 17/10/2026, escolha B entre 3 e 6 colunas).
       current = { id: "cat-" + Date.now() + "-" + result.cats.length, name: rest || "Sem nome", desc: "", kind, span, cols: cols || SPAN_COLS[span] || 3, rows, items: [] };
       result.cats.push(current);
       return;
@@ -7436,11 +7444,6 @@ function textToBuild(text) {
 
     const mItem = line.match(/^[-•*]\s*(.+)$/);
     if (mItem) {
-      // Sem categoria antes, cria uma para não perder o item.
-      if (!current) {
-        current = { id: "cat-" + Date.now() + "-0", name: "Importados", desc: "", kind: "comum", span: 2, items: [] };
-        result.cats.push(current);
-      }
       let body = mItem[1].trim();
       let note = "";
       const mNote = body.split(/\s\*\s/);
@@ -7451,6 +7454,14 @@ function textToBuild(text) {
       if (mFrag) { body = mFrag[1].trim(); frag = mFrag[2].trim(); }
       const id = index.get(norm(body));
       if (!id) { result.unknown.push(body); return; }
+      // Sem categoria antes, cria uma para não perder o item. Só depois de achar
+      // o nome: um tópico de texto de IA ("* dica", "• dica") antes da primeira
+      // caixa deixava uma caixa "Importados" vazia — e um texto só de tópicos
+      // importava uma build vazia em vez de dizer que não achou nada.
+      if (!current) {
+        current = { id: "cat-" + Date.now() + "-0", name: "Importados", desc: "", kind: "comum", span: 2, cols: SPAN_COLS[2], rows: 0, items: [] };
+        result.cats.push(current);
+      }
       if (frag && !(temFragmentos(byId[id]) && byId[id].fragments.some(f => fragKey(f) === frag))) {
         result.unknown.push(`${frag} (fragmento de ${byId[id].namePt})`);
         frag = "";
@@ -10391,8 +10402,17 @@ function initLibrary() {
     // F13-T37: o texto do lote traz várias builds; cada uma vira uma build nova
     const blocos = dividirBuilds(text).map(textToBuild);
     const rs = blocos.filter(r => r.cats.length);
-    const fora = blocos.filter(r => !r.cats.length).map(r => r.name || "sem nome");   // avisadas pelo nome, sempre
-    if (!rs.length) { showIoMsg("Não encontrei nenhuma categoria ou item válido nesse texto.", true); return; }
+    // avisadas pelo nome, sempre. F13-T36b: com os nomes que não existem no
+    // catálogo — uma build só de nomes errados fica sem caixa, e o aviso punha a
+    // culpa na caixa e calava o nome
+    const amostra = (u) => { const v = [...new Set(u)].map(x => x.length > 40 ? x.slice(0, 39) + "…" : x); return `${v.slice(0, 3).join(", ")}${v.length > 3 ? "…" : ""}`; };
+    const semCaixa = blocos.filter(r => !r.cats.length);
+    const fora = semCaixa.map(r => `${r.name || "sem nome"}${r.unknown.length ? ` (não encontrei no catálogo: ${amostra(r.unknown)})` : ""}`);
+    if (!rs.length) {
+      const nomes = semCaixa.flatMap(r => r.unknown);
+      showIoMsg(`Não encontrei nenhuma categoria ou item válido nesse texto.${nomes.length ? ` Não estão no catálogo: ${amostra(nomes)}` : ""}`, true);
+      return;
+    }
     confirmarSaida(() => rs.length === 1 ? importarTexto(rs[0], false, fora) : importarVarias(rs, fora));
   });
   // A outra metade do Importar, depois da pergunta pelo rascunho (F13-T25).

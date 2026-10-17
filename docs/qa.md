@@ -85,6 +85,16 @@ de fora não desmontam a linha; texto antigo com uma quebra invisível no meio
 da linha fica inteiro; um campo de uma linha com uma quebra dentro não abre
 linha nova.
 
+**Texto, o que o formato promete** (F13-T36b, achados da revisão da T36) —
+pelo botão Importar: tópico de IA (`* dica`, `• dica`) antes da primeira caixa
+vai para o "não encontrei" sem deixar uma caixa "Importados" vazia; texto só de
+tópicos não importa build vazia, avisa que não achou nada; caixa sem grade
+nasce com 6 colunas, como `docs/formato_de_importacao.md` diz, e a
+"Importados" também, inclusive depois do F5 — o caminho antigo continua (`| ½`
+dá 6, `| 2×1` dá 2); o nome errado numa build que fica sem caixa aparece no
+aviso (no lote e sozinha); um tópico de IA entre dois `BUILD:` não funde as
+builds (a parte sem caixa fica de fora, avisada).
+
 **Rascunho** (F13-T24, bug nº 37) — com o Editar ligado e um item não salvo,
 reabrir a build que já está na forja (duplo clique na linha, o Editar do
 detalhe) mantém o rascunho; o coração da lista grava na hora sem gravar o

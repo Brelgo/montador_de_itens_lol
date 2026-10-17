@@ -1043,6 +1043,83 @@ def checar_texto(s, p):
             r["nova"] and not r["sujo"] and r["mfSalvo"] and r["campeaoSalvo"] == "Jinx",
             "rascunho sujo=%s, MF gravado=%s, campeão gravado=%s" % (r["sujo"], r["mfSalvo"], r["campeaoSalvo"]))
 
+    # Achado da revisão da F13-T36: "*" e "•" também abrem linha de item (tópico
+    # comum em texto de IA), e a caixa "Importados" — a do item que vem antes da
+    # primeira caixa — nascia ANTES de conferir o nome. Um tópico solto no topo
+    # deixava uma caixa vazia na build; um texto só de tópicos importava uma
+    # build vazia em vez de dizer que não achou nada. Pelo botão, como o Leo faz.
+    def importar(texto):
+        s.js("document.getElementById('import-text').value = %s" % json.dumps(texto))
+        s.js("document.getElementById('import-btn').click()")
+        time.sleep(1.2)
+        return s.js("""({ id: build.id, caixas: build.cats.map(c => c.name + ':' + c.items.length),
+          msg: document.getElementById('io-msg').textContent })""")
+    s.js("switchTab('build'); showBuildScreen('lista'); document.getElementById('toggle-io').classList.add('active')")
+    time.sleep(0.4)
+    id_antes = s.js("build.id")
+    misto = importar(chr(10).join(["BUILD: tópicos no topo", "* Dica: fechar o núcleo antes dos 20 min",
+                                   "• Contra cura, antecipar o corte", "[COMUM] Núcleo | 3x1", "- Gume do Infinito"]))
+    p.conta("texto", "tópico antes da primeira caixa não vira caixa vazia",
+            misto["id"] != id_antes and misto["caixas"] == ["Núcleo:1"],
+            "caixas %s · aviso: %s" % (misto["caixas"], misto["msg"][:80]))
+    id_antes = misto["id"]
+    so = importar(chr(10).join(["BUILD: só tópicos", "* Dica: fechar o núcleo antes dos 20 min", "• Contra cura, antecipar o corte"]))
+    p.conta("texto", "texto só de tópicos não importa build vazia",
+            so["id"] == id_antes and "Não encontrei" in so["msg"],
+            "build nova %s · caixas %s · aviso: %s" % (so["id"] != id_antes, so["caixas"], so["msg"][:80]))
+
+    # Caixa sem grade: 6 colunas, a largura ½ de sempre, também na "Importados"
+    # (Leo, 17/10/2026, escolha B — o documento dizia 3 e o importador dava 6;
+    # o documento passou a dizer 6). O caminho antigo continua: "| ½" dá 6, "| 2×1" dá 2.
+    grade = importar(chr(10).join(["BUILD: grades", "- Sedenta por Sangue",
+                                   "[COMUM] Sem grade", "- A Coletora",
+                                   "[COMUM] Largura antiga | ½", "- Gume do Infinito",
+                                   "[COMUM] Com grade | 2×1", "- Dança da Morte"]))
+    cols = s.js("build.cats.map(c => c.name + ':' + catCols(c))")
+    # e depois do F5: a "Importados" sem colunas gravadas virava 1 coluna na
+    # carga (o normalizeCats dá min(itens, 6)) — na sessão ela parecia certa
+    s.js("location.reload()")
+    time.sleep(2.5)
+    s.entrar()
+    s.js("switchTab('build')")
+    time.sleep(0.6)
+    # a carga normaliza as caixas de toda a biblioteca; a build aberta depois do
+    # F5 pode ser outra, então a importada é procurada pelo id
+    depois = s.js("(() => { const b = library.builds.find(x => x.id === %s); return b ? b.cats.map(c => c.name + ':' + catCols(c)) : ['sumiu']; })()" % json.dumps(grade["id"]))
+    esperado = ["Importados:6", "Sem grade:6", "Largura antiga:6", "Com grade:2"]
+    p.conta("texto", "caixa sem grade nasce com 6 colunas (e a Importados)",
+            grade["id"] != id_antes and cols == esperado and depois == esperado,
+            "na sessão %s · depois do F5 %s" % (cols, depois))
+
+    # Revisão da F13-T36b: (1) o nome que não existe numa build que fica sem caixa
+    # sumia do aviso — a culpa ia para a caixa; (2) um tópico de IA entre dois
+    # BUILD: dividia a build, e o modo e o campeão ficavam na parte descartada.
+    s.js("switchTab('build'); showBuildScreen('lista'); document.getElementById('toggle-io').classList.add('active')")
+    time.sleep(0.4)
+    lote = importar(chr(10).join(["BUILD: A", "[COMUM] X", "- Gume do Infinito", "",
+                                  "BUILD: B", "MODO: ARAM", "- Gume do Infinto", "- Sedenta por Sangu"]))
+    s.js("showBuildScreen('lista')"); time.sleep(0.3)
+    so_erro = importar(chr(10).join(["BUILD: Rascunho", "- Gume do Infinto", "- A Coletra", "- Gume do Infinto"]))
+    p.conta("texto", "nome errado em build sem caixa aparece no aviso",
+            "Gume do Infinto" in lote["msg"] and "Sedenta por Sangu" in lote["msg"]
+            and so_erro["msg"].count("Gume do Infinto") == 1 and "A Coletra" in so_erro["msg"],
+            "lote: %s · só nomes errados: %s" % (lote["msg"][:110], so_erro["msg"][:110]))
+    # (3) a segunda volta tentou não contar o tópico como corpo e fundiu calado uma
+    # build de nomes errados com a seguinte (a reconferência pegou): o tópico entre
+    # dois BUILD: separa, e a parte sem caixa é avisada com o tópico.
+    div = s.js("""(() => { const N = String.fromCharCode(10);
+      const r = rs => rs.map(x => [x.name, x.mode, x.championName || '', x.cats.length, x.unknown.length]);
+      const topico = dividirBuilds(['BUILD: Jinx', 'MODO: ARAM', 'CAMPEÃO: Jinx', '* Dica: fechar o núcleo antes dos 20 min',
+        'BUILD: Jinx crítico', '[PRIORIDADE] Núcleo | 3x1', '- Gume do Infinito'].join(N)).map(textToBuild);
+      const negrito = dividirBuilds(['BUILD: Jinx ARAM', 'MODO: ARAM', 'CAMPEÃO: Jinx', 'MARCADORES: AD | Dano',
+        '* **Gume do Infinito** — o núcleo', '* **Dançarina Fantasma** — velocidade', '',
+        'BUILD: Caitlyn SR', 'MARCADORES: Utilidade', '[PRIORIDADE] Núcleo', '- Gume do Infinito', '- Cutelo Negro'].join(N)).map(textToBuild);
+      return { topico: r(topico), negrito: r(negrito), mkCait: (negrito[1] || {}).markers || null }; })()""")
+    p.conta("texto", "tópico de IA entre dois BUILD: não funde as builds",
+            div["topico"] == [["Jinx", "ARAM", "Jinx", 0, 1], ["Jinx crítico", "", "", 1, 0]]
+            and len(div["negrito"]) == 2 and div["negrito"][0][:4] == ["Jinx ARAM", "ARAM", "Jinx", 0]
+            and div["negrito"][1][:4] == ["Caitlyn SR", "", "", 1] and len(div["mkCait"] or []) == 1, "%s" % div)
+
 
 def checar_salvar(s, p):
     """F13-T31 (bug nº 14): com o navegador recusando a gravação (espaço cheio,

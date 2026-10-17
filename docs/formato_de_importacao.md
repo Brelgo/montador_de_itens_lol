@@ -59,7 +59,7 @@ A página de runas e a ordem de habilidades ficam na build e saem no `Copiar est
 
 ## Caixas
 
-Uma caixa começa com `[TIPO] Nome | colunas×linhas`. A grade é opcional; sem ela a caixa nasce com 3 colunas.
+Uma caixa começa com `[TIPO] Nome | colunas×linhas`. A grade é opcional; sem ela a caixa nasce com 6 colunas e as linhas que os itens pedirem. Item escrito antes da primeira caixa entra numa caixa `[COMUM] Importados`, também com 6 colunas.
 
 | Tipo | Efeito |
 |---|---|
@@ -80,12 +80,12 @@ Dentro da caixa:
 ## Regras
 
 - Acentos e maiúsculas não importam nos nomes de item, marcador, modo e layout.
-- Item desconhecido é listado no aviso de importação e não entra; a build importa mesmo assim.
-- Linha que não é nenhuma das acima é ignorada silenciosamente, então comentários soltos não quebram nada.
+- Item desconhecido é listado no aviso de importação e não entra; a build importa mesmo assim, se tiver alguma caixa ou algum item que exista. Build que fica sem nenhuma caixa é avisada pelo nome, com os nomes que não estão no catálogo.
+- Linha que começa com `-`, `*` ou `•` é linha de item — inclusive o tópico que texto de IA costuma ter (`* Dica: ...`). Nome que não existe vai para o aviso de "não encontrei", como qualquer item desconhecido, e não cria caixa. Texto sem nenhuma caixa e sem nenhum item que exista não importa nada: o Montador avisa que não encontrou.
+- Qualquer outra linha que não seja nenhuma das acima é ignorada silenciosamente, então comentários soltos, sem esses três sinais no começo, não quebram nada.
 - **Os separadores de linha:** na `DESCRIÇÃO:` da build, ` / ` (barra com espaço dos dois lados) separa os parágrafos; na observação do item (`- Item * ...`), ` ¶ `. Colados, são texto (`AD/AP`, `3/0`, `poke/sustain`, links). Para o separador solto de verdade no meio da linha, escreva-o dobrado (` // ` na descrição, ` ¶¶ ` na observação) — é assim que o Montador exporta, e volta igual. Linha em branco e recuo não vão para o texto. As linhas `# ` (descrição da caixa) e `= ` (marco) são de uma linha só: nelas a barra é sempre texto.
 - A ordem dos itens dentro da caixa é a ordem de compra que aparece na forja e no arsenal do cliente.
-- A build importada entra como rascunho: precisa de **Salvar** para ficar na biblioteca.
-- **Runas ficam de fora**: o formato só trata itens do catálogo do Capítulo 1.
+- A build importada nasce gravada: entra na biblioteca como build nova e vira a build ativa, sem precisar de **Salvar**. A que estava aberta fica como estava; se ela tinha alteração não salva, o Montador pergunta antes (Salvar e sair, Descartar ou Continuar editando).
 
 ## Várias builds num texto só
 

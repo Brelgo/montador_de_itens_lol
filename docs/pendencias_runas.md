@@ -143,7 +143,7 @@ O app **não aplica nenhuma** das 24 trocas: todas são só um aviso na ficha ("
 
 ### A6. Documentos desatualizados
 - **`docs/servidor/supabase.sql` e o README do servidor** não conhecem runas e habilidades. O README manda "colar o supabase.sql inteiro de novo" quando o SQL muda. Seguindo isso hoje, a view pública perde as colunas `runas` e `habilidades`, e as Públicas deixam de mostrar runas, caladas. Ainda ficariam duas versões de `publicar_build`. O `runas_e_habilidades.sql` precisa entrar no `supabase.sql`, ou o README precisa mandar rodá-lo depois. **É o único destes com risco real.**
-- **`docs/formato_de_importacao.md`**: a linha 86 diz "Runas ficam de fora", e as linhas 49–54 documentam `RUNAS:`, `RUNAS 2:` e `FRAGMENTOS:`. O prompt pronto para IA não pede runas, e os nomes válidos de runas não estão em nenhuma lista como a de `marcadores.md`.
+- **`docs/formato_de_importacao.md`**: ~~a linha 86 diz "Runas ficam de fora", e as linhas 49–54 documentam `RUNAS:`, `RUNAS 2:` e `FRAGMENTOS:`~~ — a frase saiu em 30/09/2026 (F13-T36b). Continua aberto: o prompt pronto para IA não pede runas, e os nomes válidos de runas não estão em nenhuma lista como a de `marcadores.md`.
 - **`docs/qa.md`**: não lista as checagens de runa que o roteiro ganhou nas F13-T8, T12, T13 e T17 (controle de grupo na ficha; resoluções medindo as runas no Completo, nas cinco trilhas, com a Leitura calma). O roteiro está em dia, o documento não.
 - **`docs/direcao_de_arte.md`**: não tem a tela de Runas (cores das trilhas lidas do ícone, a lombada da ficha, a faixa na forja).
 - **`index.html`**, comentário do `vagaHtml`: ainda fala de "Absorvição Vital" e de fragmento sem arte. O código está certo, só o comentário é velho.

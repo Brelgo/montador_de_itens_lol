@@ -460,3 +460,21 @@ O mouseup compara a grade vista com o `cols`/`rows` guardados, e não com a grad
 `index.html` (`donoDoPopup`, `gravarNaBuild` → `gravarMetadados(…, true)`) · **baixa** · achado na revisão da F13-T33 · passou pela revisão, não reproduzido à parte
 
 A janela grava com "conteúdo mudou" a cada escolha (e a cada tecla no nome e na descrição) sem comparar — a forja, depois da F13-T33, só carimba quando a build muda de fato.
+
+### 54. Linha que começa com colchete vira caixa: link de markdown e "[Dica]" de texto de IA
+
+`index.html` (`textToBuild`, o ramo da caixa) · **baixa** · achado na F13-T36b · reproduzido no Chrome do roteiro
+
+O leitor abre caixa em toda linha `[qualquer coisa] texto`, e o tipo que não é um dos quatro vira COMUM calado. Um link de markdown numa linha (`[Guia completo](https://exemplo.com/guia)`, comum em resposta de IA) vira uma caixa vazia chamada "(https://exemplo.com/guia)"; `[Dica] comprar o Gume cedo` vira uma caixa "comprar o Gume cedo" que leva os itens de baixo para ela. O documento lista os quatro tipos e não diz o que acontece com os outros. Mesma família dos tópicos `*`/`•` da F13-T36b; o conserto natural é só abrir caixa com tipo conhecido (os quatro e o `OBRIGATÓRIA` antigo) e mandar o resto para o aviso.
+
+### 55. As caixas do Arsenal.json importado mudam de grade depois do F5
+
+`index.html` (`itemSetToBuild`, `catCols`, `normalizeCats`) · **baixa** · achado na revisão da F13-T36b (17/10/2026) · reproduzido em node, não consertado
+
+O `itemSetToBuild` cria cada caixa sem `cols` e sem `rows`. Na sessão, o `catCols` cai na largura ½ e mostra 6 colunas; depois do F5, o `normalizeCats` grava `min(itens, 6)`. Um bloco de 2 itens aparece 6×1 logo depois de importar e 2×1 depois de recarregar, e o "Copiar esta build" escreve `| 6×1` antes e `| 2×1` depois. É o mesmo defeito que a F13-T36b consertou na caixa "Importados" do texto; o caminho do JSON do cliente ficou como estava.
+
+### 56. Régua logo abaixo do `BUILD:` seguida de um `BUILD:` repetido cria uma build fantasma
+
+`index.html` (`dividirBuilds`) · **baixa** · achado na reconferência da F13-T36b (17/10/2026) · reproduzido em node, igual no código de antes · não consertado
+
+`BUILD: Jinx` / `=====` / `MODO: ARAM` / `BUILD: Jinx (ARAM)` / `[COMUM] Core` / `- Gume do Infinito` vira duas partes, e "Jinx" fica de fora como build sem caixa. O documento diz que a régua abaixo do título é só enfeite e que um `BUILD:` repetido antes de qualquer caixa só renomeia. É ambíguo com o lote que o próprio Montador exporta quando uma build não tem caixa (ela também termina numa régua seguida de `BUILD:`), então o conserto precisa decidir qual dos dois casos vence.
