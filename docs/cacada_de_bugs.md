@@ -493,6 +493,6 @@ O `setForged` deixa forjar qualquer posição, inclusive a 2ª de uma Escolha 1 
 
 ### 59. Marcador repetido conta como um dos três e libera a publicação
 
-`index.html` (`setMarker`, `normMarkers`, `faltaParaPublicar`) · **baixa** · achado na revisão da F13-T45 (17/10/2026) · reproduzido em node · **já era assim antes** (na forja e na janela), não consertado
+`index.html` (`setMarker`, `normMarkers`, `faltaParaPublicar`) · **baixa** · achado na revisão da F13-T45 (17/10/2026) · reproduzido em node · **CONSERTADO na F13-T47 (17/10/2026)** — o Leo decidiu que o mesmo marcador não pode repetir: o diálogo apaga o que já está noutro espaço, e o repetido de antes sai na leitura
 
 Com os marcadores [AD, Vitalidade], escolher Vitalidade no primeiro espaço grava [Vitalidade, Vitalidade]; escolher Dano no terceiro deixa [Vitalidade, Vitalidade, Dano]. O `faltaParaPublicar` conta 3 e a build fica pronta para publicar com dois marcadores diferentes. Nada tira repetido. Pode ser de propósito — não achei decisão sobre isso.

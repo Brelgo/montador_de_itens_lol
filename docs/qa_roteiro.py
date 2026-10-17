@@ -814,6 +814,26 @@ def checar_marcadores(s, p):
     s.clicar("#build-marks .mark-slot[data-i='1'] .mark-x")
     p.conta("marcadores", "o × tira", s.js("build.markers.length") == 1)
 
+    # F13-T47 (nº 59; Leo, 17/10/2026): o mesmo marcador não repete. O que já
+    # está noutro espaço fica apagado no diálogo, não entra por setMarker, e uma
+    # lista com repetido (de antes) conta sem ele — não libera publicar.
+    rep = s.js("""(() => { const A = { t: 'tag', id: MARCADORES[0].id }, B = { t: 'tag', id: MARCADORES[1].id }, C = { t: 'tag', id: MARCADORES[2].id };
+      const norm = normMarkers([A, A, B]).length;
+      build.markers = [A, B]; renderBuildAll();
+      openMarkerDialog(0);
+      const cel = (m) => [...document.querySelectorAll('#md-tags .md-cell')].find(c => c.dataset.m === JSON.stringify(m));
+      const dialogo = { B: cel(B) && cel(B).disabled, A: cel(A) && !cel(A).disabled, C: cel(C) && !cel(C).disabled };
+      closeMarkerDialog();
+      setMarker(0, B);
+      const depois = JSON.stringify(build.markers) === JSON.stringify([A, B]);
+      const d = buildResumo(build); d.markers = normMarkers([A, A, B]);
+      const falta = faltaParaPublicar(d).some(f => f.includes('marcador'));
+      build.markers = []; renderBuildAll();
+      return { norm, dialogo, depois, falta }; })()""")
+    p.conta("marcadores", "o mesmo marcador não repete",
+            rep["norm"] == 2 and rep["dialogo"]["B"] and rep["dialogo"]["A"] and rep["dialogo"]["C"] and rep["depois"] and rep["falta"],
+            "%s" % rep)
+
 
 def garantir_build_editavel(s):
     """Runas, habilidades e texto são da build ativa, e a grade de habilidades só

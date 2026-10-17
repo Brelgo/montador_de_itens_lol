@@ -4517,6 +4517,8 @@ body.forja #som-volume { accent-color: #ff7a1e; }
 .md-cell { width: 54px; height: 54px; border: 1px solid #3a3029; border-radius: 4px; background: rgba(0,0,0,.35); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0; }
 .md-cell:hover { border-color: var(--forja-brasa); box-shadow: 0 0 10px var(--forja-brasa-glow); }
 .md-cell.ativo { border-color: #c9973f; box-shadow: 0 0 0 1px #c9973f; }
+.md-cell.usado { opacity: .3; cursor: not-allowed; }
+.md-cell.usado:hover { border-color: #3a3029; box-shadow: none; }
 .md-cell .mk { width: 40px; height: 40px; }
 .md-note { font-family: var(--loja-texto); font-style: italic; color: var(--forja-texto-suave); margin: 4px 0 0; font-size: 13px; }
 .md-note[hidden] { display: none; }
@@ -5775,11 +5777,15 @@ function marcadorUrl(id) { return MARCADORES_DIR + "citadel_build_tag_" + id + "
 function normMarkers(list) {
   if (!Array.isArray(list)) return [];
   const out = [];
+  // F13-T47 (nº 59; Leo, 17/10/2026: o mesmo marcador não pode repetir): o
+  // repetido sai — [Vitalidade, Vitalidade, Dano] contava três e liberava publicar
+  const vistos = new Set();
+  const poe = (m) => { const k = JSON.stringify(m); if (!vistos.has(k)) { vistos.add(k); out.push(m); } };
   list.forEach(m => {
     if (!m || out.length >= MAX_MARCADORES) return;
-    if (m.t === "tag" && MARCADORES.some(x => x.id === m.id)) out.push({ t: "tag", id: m.id });
-    else if (m.t === "hab" && /^[QWER]$/.test(String(m.letter))) out.push({ t: "hab", letter: String(m.letter) });
-    else if (m.t === "item" && byId[m.slug]) out.push({ t: "item", slug: m.slug });
+    if (m.t === "tag" && MARCADORES.some(x => x.id === m.id)) poe({ t: "tag", id: m.id });
+    else if (m.t === "hab" && /^[QWER]$/.test(String(m.letter))) poe({ t: "hab", letter: String(m.letter) });
+    else if (m.t === "item" && byId[m.slug]) poe({ t: "item", slug: m.slug });
   });
   return out;
 }
@@ -7825,7 +7831,12 @@ function openMarkerDialog(i, dono) {
   const dlg = document.getElementById("marker-dialog");
   const atual = normMarkers(alvo.markers)[i] || null;
   const same = (m) => atual && JSON.stringify(m) === JSON.stringify(atual);
-  const cell = (m, inner, label) => `<button type="button" class="md-cell${same(m) ? " ativo" : ""}" data-m='${esc(JSON.stringify(m))}' title="${esc(label)}">${inner}</button>`;
+  // F13-T47 (nº 59): o que já está noutro espaço fica apagado e não se escolhe
+  const outros = normMarkers(alvo.markers).map((m, j) => j === i ? null : JSON.stringify(m));
+  const cell = (m, inner, label) => {
+    const j = outros.indexOf(JSON.stringify(m));
+    return `<button type="button" class="md-cell${same(m) ? " ativo" : ""}${j >= 0 ? " usado" : ""}" data-m='${esc(JSON.stringify(m))}' title="${esc(label)}${j >= 0 ? ` — já é o marcador ${j + 1}` : ""}"${j >= 0 ? " disabled" : ""}>${inner}</button>`;
+  };
   // padrão
   document.getElementById("md-tags").innerHTML = MARCADORES.map(t => cell({ t: "tag", id: t.id }, `<img class="mk" src="${marcadorUrl(t.id)}" alt="">`, t.label)).join("");
   // habilidades do campeão
@@ -7855,6 +7866,7 @@ function closeMarkerDialog() { document.getElementById("marker-dialog").hidden =
 function setMarker(i, m) {
   const alvo = donoDeMarcadores();
   const ms = normMarkers(alvo.markers);
+  if (m && ms.some((x, j) => j !== i && markerEquals(x, m))) return;   // F13-T47: já está noutro espaço
   if (m) { if (i < ms.length) ms[i] = m; else ms.push(m); }
   else ms.splice(i, 1);
   alvo.markers = normMarkers(ms);
