@@ -44,6 +44,9 @@ Um registro por campeão, com pelo menos:
 | `formas` | quando o campeão tem dois conjuntos que dividem pontos |
 | `ordemSugerida` | a subida recomendada, se você quiser o botão de preencher sozinho |
 | `observacao` | o texto que explica a exceção, para aparecer na grade |
+| `classes` | a classe do campeão pela sua curadoria — a etiqueta da Riot "distribui muito mal" (Leo, 15/10/2026); é ela que abre a calculadora de armadura embutida na forja para os tanques |
+
+Os atributos base e por nível (vida, armadura, resistência mágica) **não** precisam estar aqui: vêm do `champion.json` do Data Dragon, que o app já baixa (decisão do Leo, 15/10/2026). O kit em números (o que cada ponto de habilidade dá) continua sendo deste capítulo.
 
 A fonte desses campos é sua decisão — wiki oficial, curadoria própria, ou uma mistura, como foi com as runas. O que importa para mim é ser **um arquivo**, com um gerador que faça a checagem de integridade e relate o que falta, igual ao `catalog.js` e ao `runas.js`.
 
