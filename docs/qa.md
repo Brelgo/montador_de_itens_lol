@@ -73,7 +73,14 @@ barra dupla, link, e linhas que parecem cabeçalho do formato (#, -, =, [ ]);
 texto escrito à mão: " / " separa a descrição, " ¶ " a observação, "/"
 colado é barra; texto exportado antes: a barra na observação continua barra;
 quebras que chegam por fora (U+2028, \r, observação só de espaço, nome com
-quebra) não derrubam item, caixa nem descrição; fragmento e modo que chegam
+quebra) não derrubam item, caixa nem descrição; F13-T37 (bug nº 19): o texto
+de várias builds (Selecionar → Copiar como texto) volta como várias builds,
+cada uma com runas, fragmentos, habilidades, Mestre Forjador e campeão, pelo
+botão de verdade; o cabeçalho de cada build fica com ela (comentário no meio,
+régua dentro da build, cabeçalho entre a régua e o BUILD:); a mensagem avisa a
+build sem caixa e o campeão desconhecido sem apagar o resumo nem a mensagem
+mais nova, e "sem internet" é uma frase só; importar 10 builds grava e
+redesenha uma vez; fragmento e modo que chegam
 de fora não desmontam a linha; texto antigo com uma quebra invisível no meio
 da linha fica inteiro; um campo de uma linha com uma quebra dentro não abre
 linha nova.

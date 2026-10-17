@@ -867,6 +867,110 @@ def checar_texto(s, p):
       return { nome: r.name, desc: (r.cats[0] || {}).desc, marco: (r.cats[0] || {}).marco, itens: ((r.cats[0] || {}).items || []).length }; })()""")
     p.conta("texto", "texto antigo com uma quebra invisível no meio da linha fica inteiro",
             u28["nome"] == "Jinx" and u28["desc"] == "contra AD AP no fim" and u28["marco"] == "~14min 6.500g" and u28["itens"] == 1, "%s" % u28)
+    # F13-T37 (bug nº 19): o texto de várias builds (Selecionar → Copiar como texto)
+    # voltava como UMA build, com o nome da última, todas as caixas empilhadas, a
+    # régua virando marco — e sem runas, fragmentos, habilidades nem Mestre
+    # Forjador, que o lote nem escrevia. Três builds diferentes, pelo botão de verdade.
+    RETRATO37 = """(b => JSON.stringify({ nome: b.name, modo: b.mode, desc: b.desc, layout: layoutValido(b.layout), mf: !!b.masterwork,
+      camp: b.champion ? b.champion.key : null, marc: normMarkers(b.markers), runas: normRunas(b.runas), hab: normHabilidades(b.habilidades),
+      caixas: (b.cats || []).map(c => ({ n: c.name, d: c.desc || '', m: c.marco || '', k: c.kind, w: catCols(c), h: catRows(c),
+        i: c.items.map(e => [e.itemId, e.note || '', !!e.mf, e.frag || '']) })) }))"""
+    texto37 = s.js("""(async () => { await Campeoes.carregar();
+      const t = RUNAS.trilhas[0], t2 = RUNAS.trilhas[1], F = RUNAS.fragmentos;
+      const lend = CATALOG.items.filter(i => i.tier === 'Lendário' && mfEligible(i)).slice(0, 2);
+      const champs = [Campeoes.porNome('Jinx'), Campeoes.porNome('Ahri'), null];
+      const ids = [];
+      ['Lote A', 'Lote B', 'Lote C'].forEach((nome, k) => {
+        createNewBuild(nome, [{ id: 'cat-qa37-' + k, name: 'Core ' + k, desc: 'caixa ' + k, marco: '~' + (k + 14) + 'min', kind: 'comum', span: 2, cols: 3, rows: 1,
+          items: lend.map((it, j) => ({ itemId: it.slug, note: 'nota ' + k + j, ...(j === 0 && k !== 2 ? { mf: true } : {}) })) }],
+          k === 1 ? 'ARAM' : "Summoner's Rift", champs[k], [{ t: 'hab', letter: 'Q' }]);
+        build.desc = 'descrição ' + k; build.layout = k === 0 ? 'arvore' : 'tabuleiro'; build.masterwork = k !== 2;
+        build.runas = normRunas({ primaria: t.id, assinatura: t.slots[0].runas[k % t.slots[0].runas.length].id,
+          slots: [t.slots[1].runas[0].id, t.slots[2].runas[0].id, t.slots[3].runas[0].id],
+          secundaria: t2.id, secundarios: [t2.slots[1].runas[0].id, t2.slots[2].runas[0].id], fragmentos: [F[0].runas[0].id, F[1].runas[0].id, F[2].runas[0].id] });
+        build.habilidades = normHabilidades(['Q','W','E','Q','Q','R','Q','W','Q','W','R','W','W','E','E','R','E','E']);
+        gravarBuild(); ids.push(build.id);
+      });
+      window.__qa37 = ids; return loteParaTexto(ids); })()""")
+    antes37 = s.js("window.__qa37.map(id => (%s)(library.builds.find(b => b.id === id)))" % RETRATO37)
+    s.js("switchTab('build'); showBuildScreen('lista'); document.getElementById('toggle-io').classList.add('active')")
+    time.sleep(0.4)
+    s.js("document.getElementById('import-text').value = %s" % json.dumps(texto37))
+    s.js("document.getElementById('import-btn').click()")
+    time.sleep(2.5)   # o campeão vem da lista do Data Dragon, depois
+    r37 = s.js("""(() => { const novas = library.builds.filter(b => !window.__qa37.includes(b.id) && /^Lote [ABC]$/.test(b.name));
+      return { depois: ['Lote A', 'Lote B', 'Lote C'].map(n => { const b = novas.find(x => x.name === n); return b ? (%s)(b) : null; }),
+        quantas: novas.length, msg: document.getElementById('io-msg').textContent }; })()""" % RETRATO37)
+    difs = [("ABC"[k], json.loads(a), json.loads(d) if d else None) for k, (a, d) in enumerate(zip(antes37, r37["depois"])) if a != d]
+    det = "3 builds iguais às originais · %s" % r37["msg"][:70] if not difs and r37["quantas"] == 3 else "%d build(s) importada(s) · diferenças: %s · %s" % (
+        r37["quantas"], "; ".join("%s: %s" % (n, "faltou" if d is None else ", ".join(k for k in a if a[k] != d[k])) for n, a, d in difs) or "nenhuma", r37["msg"][:90])
+    p.conta("texto", "o texto de várias builds volta como várias builds, com runas, habilidades, Mestre Forjador e campeão",
+            not difs and r37["quantas"] == 3 and "Importadas 3 builds" in r37["msg"], det)
+    # o cabeçalho de cada build fica com ela: escrito antes do BUILD: da seguinte (texto à
+    # mão ou de IA) não vai para a anterior; e um BUILD: repetido no cabeçalho só renomeia
+    cab = s.js("""(() => { const N = String.fromCharCode(10), it = CATALOG.items.filter(i => i.tier === 'Lendário')[0].namePt;
+      const dois = textoParaBlocos = dividirBuilds(['BUILD: Alfa', "MODO: Summoner's Rift", 'CAMPEÃO: Jinx', '[COMUM] Core | 2x1', '- ' + it, '',
+        'MODO: ARAM', 'CAMPEÃO: Ahri', 'BUILD: Beta', '[COMUM] Core | 2x1', '- ' + it].join(N)).map(textToBuild);
+      const um = dividirBuilds(['BUILD: rascunho', 'MODO: ARAM', 'CAMPEÃO: Jinx', 'DESCRIÇÃO: crítico puro', 'MESTRE FORJADOR: sim',
+        'BUILD: Jinx crítico', '[COMUM] Core | 2x1', '- ' + it].join(N)).map(textToBuild);
+      const R = '=========='; const it2 = CATALOG.items.filter(i => i.tier === 'Lendário')[1].namePt;
+      const reguaTitulo = dividirBuilds(['BUILD: Alfa', "MODO: Summoner's Rift", R, '[COMUM] Core | 2x1', '- ' + it, '',
+        'BUILD: Beta', 'MODO: ARAM', R, '[COMUM] Core | 2x1', '- ' + it2].join(N)).map(textToBuild);
+      const reguaCaixas = dividirBuilds(['BUILD: Alfa', '[COMUM] Core | 2x1', '- ' + it, R, '[OPCIONAL] Situacional | 2x1', '- ' + it2, '',
+        'BUILD: Beta', '[COMUM] Core | 2x1', '- ' + it].join(N)).map(textToBuild);
+      const comentario = dividirBuilds(['BUILD: Alfa', "MODO: Summoner's Rift", '[COMUM] Core | 2x1', '- ' + it, '',
+        'MODO: ARAM', 'Segunda opção:', 'BUILD: Beta', '[COMUM] Core | 2x1', '- ' + it2].join(N)).map(textToBuild);
+      const reguaDepois = dividirBuilds(['BUILD: Alfa', '[COMUM] Core | 2x1', '- ' + it, R, 'MODO: ARAM', 'BUILD: Beta', '[COMUM] Core | 2x1', '- ' + it2].join(N)).map(textToBuild);
+      const resumo = rs => rs.map(r => [r.name, r.mode, r.cats.length]);
+      return { dois: dois.map(r => [r.name, r.mode, r.championName]), um: um.map(r => [r.name, r.mode, r.championName, r.desc, r.masterwork, r.cats.length]),
+        reguaTitulo: resumo(reguaTitulo), reguaCaixas: resumo(reguaCaixas), comentario: resumo(comentario), reguaDepois: resumo(reguaDepois) }; })()""")
+    p.conta("texto", "o cabeçalho de cada build fica com ela (antes do BUILD: da seguinte, com comentário no meio; BUILD: repetido só renomeia; régua dentro da build é só enfeite)",
+            cab["dois"] == [["Alfa", "Summoner's Rift", "Jinx"], ["Beta", "ARAM", "Ahri"]]
+            and cab["um"] == [["Jinx crítico", "ARAM", "Jinx", "crítico puro", True, 1]]
+            and cab["reguaTitulo"] == [["Alfa", "Summoner's Rift", 1], ["Beta", "ARAM", 1]]
+            and cab["reguaCaixas"] == [["Alfa", "", 2], ["Beta", "", 1]]
+            and cab["comentario"] == [["Alfa", "Summoner's Rift", 1], ["Beta", "ARAM", 1]]
+            and cab["reguaDepois"] == [["Alfa", "", 1], ["Beta", "ARAM", 1]], "%s" % cab)
+    # a mensagem do lote: a build sem caixa é avisada pelo nome (com uma build ou várias),
+    # e o aviso do campeão entra no resumo, com o nome da build, em vez de apagá-lo
+    def importa(texto, espera=1.8):
+        s.js("switchTab('build'); showBuildScreen('lista'); document.getElementById('toggle-io').classList.add('active')")
+        time.sleep(0.3)
+        s.js("document.getElementById('import-text').value = %s; document.getElementById('import-btn').click(); 'ok'" % json.dumps(texto))
+        time.sleep(espera)
+        return s.js("document.getElementById('io-msg').textContent")
+    item1 = s.js("CATALOG.items.filter(i => i.tier === 'Lendário')[0].namePt")
+    REGUA = chr(10) + chr(10) + "=" * 40 + chr(10) + chr(10)
+    s.js("Campeoes.carregar().then(() => 'ok')")
+    m1 = importa(REGUA.join(["BUILD: Vazia V" + chr(10) + "MODO: ARAM", "BUILD: Rica A" + chr(10) + "[COMUM] Core | 2x1" + chr(10) + "- " + item1]))
+    m2 = importa(REGUA.join(["BUILD: Rica B" + chr(10) + "CAMPEÃO: Fulano Inexistente" + chr(10) + "[COMUM] Core | 2x1" + chr(10) + "- " + item1,
+                             "BUILD: Rica C" + chr(10) + "[COMUM] Core | 2x1" + chr(10) + "- " + item1]))
+    m4 = importa(REGUA.join(["BUILD: Vazia W" + chr(10) + "MODO: ARAM", "BUILD: Rica D" + chr(10) + "CAMPEÃO: Fulano Inexistente" + chr(10) + "[COMUM] Core | 2x1" + chr(10) + "- " + item1]))
+    # o aviso que chega depois (a lista do Data Dragon atrasada) entra no fim da mensagem mais nova, sem apagá-la
+    s.js("window.__carOrig37 = Campeoes.carregar; Campeoes.carregar = () => new Promise(r => setTimeout(r, 900)); 'ok'")
+    importa(REGUA.join(["BUILD: Rica E" + chr(10) + "CAMPEÃO: Fulano Atrasado" + chr(10) + "[COMUM] Core | 2x1" + chr(10) + "- " + item1,
+                        "BUILD: Rica F" + chr(10) + "[COMUM] Core | 2x1" + chr(10) + "- " + item1]), 0.1)
+    s.js("showIoMsg('Mensagem mais nova.', false); 'ok'"); time.sleep(1.6)
+    m5 = s.js("document.getElementById('io-msg').textContent")
+    # sem internet: uma frase só para todas as builds (doze builds eram um paredão de 7.500 caracteres)
+    s.js("Campeoes.carregar = () => Promise.reject(new Error('sem rede')); 'ok'")
+    m6 = importa(REGUA.join("BUILD: Sem Rede %d" % k + chr(10) + "CAMPEÃO: Jinx" + chr(10) + "[COMUM] Core | 2x1" + chr(10) + "- " + item1 for k in range(12)), 1.2)
+    s.js("Campeoes.carregar = window.__carOrig37; 'ok'")
+    p.conta("texto", "a mensagem do lote avisa a build sem caixa e o campeão desconhecido, sem apagar o resumo",
+            "Vazia W" in m4 and "Fulano Inexistente" in m4 and m5.startswith("Mensagem mais nova.") and "Fulano Atrasado" in m5
+            and m6.count("Sem internet") == 1 and "e mais 4" in m6 and len(m6) < 600 and
+            "Vazia V" in m1 and "Importado" in m1 and "modo ARAM" not in m1 and "Importadas 2 builds" in m2 and "Rica B" in m2 and "Fulano Inexistente" in m2,
+            "uma build + uma sem caixa: %s · duas, uma com campeão desconhecido: %s · uma + sem caixa + campeão: %s · atrasado: %s · sem internet (%d caracteres): %s" % (
+                m1[:90], m2[:120], m4[:140], m5[:100], len(m6), m6[:120]))
+    # o lote grava a biblioteca uma vez, no fim (60 builds travavam a página 7,5 s: 4 gravações e 2 redesenhos por build)
+    lote10 = REGUA.join("BUILD: Lote %d" % k + chr(10) + "[COMUM] Core | 2x1" + chr(10) + "- " + item1 for k in range(10))
+    s.js("""(() => { window.__gravacoes = 0; window.__redesenhos = 0; window.__setOrig37 = Storage.prototype.setItem; window.__rbOrig37 = renderBuild;
+      Storage.prototype.setItem = function (k, v) { if (k === 'lol-builds-v3') window.__gravacoes++; return window.__setOrig37.call(this, k, v); };
+      renderBuild = (...a) => { window.__redesenhos++; return window.__rbOrig37(...a); }; return 'ok'; })()""")
+    m3 = importa(lote10, 1.0)
+    grav = s.js("(() => { Storage.prototype.setItem = window.__setOrig37; renderBuild = window.__rbOrig37; return [window.__gravacoes, window.__redesenhos]; })()")
+    p.conta("texto", "importar 10 builds grava a biblioteca e redesenha a forja uma vez, no fim", grav[0] <= 2 and grav[1] <= 3 and "Importadas 10 builds" in m3,
+            "%s gravação(ões), %s redesenho(s) da forja · %s" % (grav[0], grav[1], m3[:60]))
     # um campo de uma linha só (descrição e nome da caixa, marco) com uma quebra que chegou por fora não abre linha nova
     umal = s.js("""(() => { const c = build.cats.find(x => x.items.length); const antes = { desc: c.desc, name: c.name, marco: c.marco };
       c.desc = 'linha 1' + String.fromCharCode(10) + '- Gume do Infinito'; c.marco = 'marco' + String.fromCharCode(10) + '[COMUM] falsa'; c.name = 'Core' + String.fromCharCode(10) + '# nome falso';

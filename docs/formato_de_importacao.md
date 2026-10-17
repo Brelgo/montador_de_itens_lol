@@ -87,6 +87,10 @@ Dentro da caixa:
 - A build importada entra como rascunho: precisa de **Salvar** para ficar na biblioteca.
 - **Runas ficam de fora**: o formato só trata itens do catálogo do Capítulo 1.
 
+## Várias builds num texto só
+
+Em **Builds → Selecionar → Copiar como texto**, o Montador põe várias builds num texto só, uma depois da outra, separadas por uma régua de `=`. A importação lê do mesmo jeito: cada `BUILD:` começa uma build nova, e a régua (uma linha só de `=`, de três para cima) separa uma da outra — dentro de uma build (abaixo do título ou entre caixas), ela é só enfeite. O cabeçalho de cada build (`MODO:`, `CAMPEÃO:`, `RUNAS:`...) vem antes da primeira caixa dela — antes ou depois do `BUILD:`; um `BUILD:` repetido antes de qualquer caixa só renomeia. **Importar como nova build** cria todas de uma vez e diz quantas entraram. Uma build sem nenhuma caixa fica de fora, e a mensagem diz qual.
+
 ## Prompt pronto para uma IA
 
 ```

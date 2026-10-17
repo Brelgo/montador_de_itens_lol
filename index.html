@@ -5987,11 +5987,13 @@ function gravarMetadados(b, campos, conteudo) {
 // de saída fica armado até uma gravação passar — antes, o coração, a janela
 // "Falta pouco" e o ID de uma publicação sumiam calados ao recarregar.
 let bibliotecaNaoGravada = false;
+let importandoLote = false;   // F13-T37: a importação de várias builds grava e redesenha uma vez, no fim
 function gravarBiblioteca() {
   if (!souDona) {   // F13-T35: só a aba dona grava (a outra está parada, sob o véu)
     if (decidido) return false;
     gravarAoDecidir = true; return true;   // a trava responde em milissegundos; grava quando vier
   }
+  if (importandoLote) return true;   // o laço é síncrono: ninguém lê o disco no meio, e o fim grava
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       builds: library.builds.filter(b => !b.temp),   // visualizações de builds públicas morrem com a página
@@ -6813,22 +6815,27 @@ function linhaDoItem(e, it) {
   const fr = fragmentoDe(it, e);
   return `- ${it.namePt}${fr ? " [" + fragKey(fr) + "]" : ""}${nota ? " * " + nota : ""}`;
 }
-function buildToText() {
-  const lines = [`BUILD: ${umaLinha(build.name)}`];
-  if (build.mode) lines.push(`MODO: ${build.mode}`);
-  if (build.champion) lines.push(`CAMPEÃO: ${umaLinha(build.champion.name)}`);
-  if (build.desc) lines.push(`DESCRIÇÃO: ${linhasParaTexto(build.desc)}`);
-  if (build.layout && build.layout !== "tabuleiro") lines.push(`LAYOUT: ${LAYOUTS[build.layout]}`);
-  const marks = normMarkers(build.markers);
+// F13-T37 (bug nº 19): um escritor só, para a build aberta ("Copiar esta build")
+// e para o lote (Selecionar → "Copiar como texto"). O lote tinha uma cópia dele
+// e não levava Mestre Forjador, runas, fragmentos nem habilidades — quem usava
+// o lote como cópia de segurança perdia tudo isso calado.
+function textoDaBuild(d) {
+  const lines = [`BUILD: ${umaLinha(d.name)}`];
+  if (ALL_MODES.includes(d.mode)) lines.push(`MODO: ${d.mode}`);   // F13-T36: o da pública vem cru do servidor
+  if (d.champ) lines.push(`CAMPEÃO: ${umaLinha(d.champ.name)}`);
+  if (d.desc) lines.push(`DESCRIÇÃO: ${linhasParaTexto(d.desc)}`);
+  if (d.layout && d.layout !== "tabuleiro") lines.push(`LAYOUT: ${LAYOUTS[d.layout]}`);
+  const marks = normMarkers(d.markers);
   if (marks.length) lines.push(`MARCADORES: ${marks.map(m => m.t === "hab" ? `Habilidade ${m.letter}` : markerLabel(m, null)).join(" | ")}`);
-  if (build.masterwork) {
-    const f = forgedEntry();
+  const cats = d.cats || [];
+  if (d.masterwork) {
+    const f = cats.flatMap(c => c.items).find(e => e.mf);
     lines.push(`MESTRE FORJADOR: ${f && byId[f.itemId] ? byId[f.itemId].namePt : "sim"}`);
   }
-  linhasDeRunas(build.runas).forEach(l => lines.push(l));
-  const hab = normHabilidades(build.habilidades);
+  linhasDeRunas(d.runas).forEach(l => lines.push(l));
+  const hab = normHabilidades(d.habilidades);
   if (hab.some(Boolean)) lines.push(`HABILIDADES: ${hab.map(L => L || "-").join(" ")}`);
-  build.cats.forEach(cat => {
+  cats.forEach(cat => {
     lines.push("");
     lines.push(`[${KIND_LABEL[cat.kind].toUpperCase()}] ${umaLinha(cat.name)} | ${catCols(cat)}×${catRows(cat)}`);
     if (cat.desc) lines.push(`# ${umaLinha(cat.desc)}`);
@@ -6840,6 +6847,37 @@ function buildToText() {
     });
   });
   return lines.join("\n");
+}
+function buildToText() { return textoDaBuild(buildResumo(build)); }
+// O texto de várias builds volta como várias: cada BUILD: começa uma, e a régua
+// de "=" que o lote põe entre elas é só régua (antes virava o marco da última
+// caixa da build anterior, e todas as caixas caíam numa build só, com o nome
+// da última).
+function dividirBuilds(text) {
+  const BUILD = /^\s*BUILD\s*:/i;
+  const CORPO = /^\s*(\[[^\]]+\]|[-•*]\s*\S)/;   // caixa ou item
+  const DA_CAIXA = /^\s*[#=]/;                    // descrição e marco de caixa
+  const blocos = [[]];
+  let regua = -1;   // onde a última régua caiu no bloco atual (-1: nenhuma desde o último BUILD:)
+  String(text || "").split(/\r\n?|\n/).forEach(l => {
+    const atual = blocos[blocos.length - 1];
+    if (/^\s*={3,}\s*$/.test(l)) { regua = atual.length; return; }
+    // a régua só é fronteira se nenhuma caixa ou item veio depois dela (uma régua
+    // à mão logo abaixo do BUILD: ou entre duas caixas é só enfeite)
+    const reguaVale = regua >= 0 && !atual.slice(regua).some(x => CORPO.test(x));
+    // um BUILD: repetido no cabeçalho (sem caixa no meio) só renomeia, como sempre;
+    // build nova é a que vem depois de uma caixa ou item, ou de uma régua que vale
+    if (BUILD.test(l) && atual.some(x => BUILD.test(x)) && (reguaVale || atual.some(x => CORPO.test(x)))) {
+      let k = reguaVale ? regua : atual.length;
+      // sem régua, tudo depois da última caixa da anterior (cabeçalho, comentário
+      // solto, linha em branco) é desta
+      if (!reguaVale) while (k > 0 && !CORPO.test(atual[k - 1]) && !DA_CAIXA.test(atual[k - 1])) k--;
+      blocos.push(atual.splice(k));
+    }
+    if (BUILD.test(l)) regua = -1;
+    blocos[blocos.length - 1].push(l);
+  });
+  return blocos.map(b => b.join("\n"));
 }
 
 // ---------------- Conjunto de itens do cliente do LoL (Fase 6, T6) ----------------
@@ -7589,6 +7627,7 @@ function renderBuild() {
 // Usada quando os preços exibidos mudam (modo Reembolso), aí o seletor
 // também precisa ser atualizado.
 function renderBuildAll() {
+  if (importandoLote) return;   // F13-T37: o fim do lote redesenha
   renderBuild();
   renderPicker();
 }
@@ -9434,6 +9473,7 @@ function buildResumo(b) {
     desc: isActive ? (build.desc || "") : (b.desc || ""),
     runas: isActive ? build.runas : (b.runas || null),
     habilidades: isActive ? build.habilidades : (b.habilidades || null),
+    masterwork: isActive ? !!build.masterwork : !!b.masterwork,   // F13-T37: o texto do lote escreve o MESTRE FORJADOR
     fav: isActive ? !!build.fav : !!b.fav,
     updatedAt: isActive ? (build.updatedAt || 0) : (b.updatedAt || 0),
     pubId: (isActive ? build.pubId : b.pubId) || null,
@@ -9786,21 +9826,7 @@ function loteParaTexto(ids) {
   ids.forEach(id => {
     const d = resumoPorId(id);
     if (!d) return;
-    const linhas = [`BUILD: ${umaLinha(d.name)}`];
-    if (ALL_MODES.includes(d.mode)) linhas.push(`MODO: ${d.mode}`);   // F13-T36: o da pública vem cru do servidor
-    if (d.champ) linhas.push(`CAMPE\u00c3O: ${umaLinha(d.champ.name)}`);
-    if (d.desc) linhas.push(`DESCRI\u00c7\u00c3O: ${linhasParaTexto(d.desc)}`);
-    if (d.layout && d.layout !== "tabuleiro") linhas.push(`LAYOUT: ${LAYOUTS[d.layout]}`);
-    const marks = normMarkers(d.markers);
-    if (marks.length) linhas.push(`MARCADORES: ${marks.map(m => m.t === "hab" ? `Habilidade ${m.letter}` : markerLabel(m, d.champ)).join(" | ")}`);
-    d.cats.forEach(cat => {
-      linhas.push("");
-      linhas.push(`[${KIND_LABEL[cat.kind].toUpperCase()}] ${umaLinha(cat.name)} | ${catCols(cat)}\u00d7${catRows(cat)}`);
-      if (cat.desc) linhas.push(`# ${umaLinha(cat.desc)}`);
-      if (cat.marco) linhas.push(`= ${umaLinha(cat.marco)}`);
-      cat.items.forEach(e => { const it = byId[e.itemId]; if (it) linhas.push(linhaDoItem(e, it)); });
-    });
-    partes.push(linhas.join("\n"));
+    partes.push(textoDaBuild(d));   // F13-T37: o mesmo escritor do "Copiar esta build"
   });
   return partes.join(SEP);
 }
@@ -10362,25 +10388,37 @@ function initLibrary() {
       });
       return;
     }
-    const r = textToBuild(text);
-    if (!r.cats.length) { showIoMsg("Não encontrei nenhuma categoria ou item válido nesse texto.", true); return; }
-    confirmarSaida(() => importarTexto(r));
+    // F13-T37: o texto do lote traz várias builds; cada uma vira uma build nova
+    const blocos = dividirBuilds(text).map(textToBuild);
+    const rs = blocos.filter(r => r.cats.length);
+    const fora = blocos.filter(r => !r.cats.length).map(r => r.name || "sem nome");   // avisadas pelo nome, sempre
+    if (!rs.length) { showIoMsg("Não encontrei nenhuma categoria ou item válido nesse texto.", true); return; }
+    confirmarSaida(() => rs.length === 1 ? importarTexto(rs[0], false, fora) : importarVarias(rs, fora));
   });
   // A outra metade do Importar, depois da pergunta pelo rascunho (F13-T25).
-  function importarTexto(r) {
+  function importarTexto(r, emLote, fora = []) {
     createNewBuild(r.name || "Build importada", r.cats, r.mode, null, r.markers);
     if (r.desc) { build.desc = r.desc; }
     if (r.layout) { build.layout = r.layout; }
     if (r.runas) { build.runas = normRunas(r.runas); renderRunasDaForja(); }
     if (r.habilidades) { build.habilidades = normHabilidades(r.habilidades); renderHabilidades(); }
     if (r.desc || r.layout || r.runas || r.habilidades) gravarBuild();
+    // F13-T37: o aviso do campeão chega depois (a lista do Data Dragon) e não apaga
+    // o resumo: volta como dado ({ nome, campeao, semNet }) e entra no fim da mensagem
+    let avisoCampeao = Promise.resolve(null);
     if (r.championName) {
-      const idNova = build.id;
-      esperarInternet(Campeoes.carregar().then(() => {
-        const c = Campeoes.porNome(r.championName);
-        if (c && build.id === idNova) { build.champion = c; gravarImportado(); renderBuildAll(); }
-        else if (!c) showIoMsg(`Campeão "${r.championName}" não está na lista do Data Dragon; a build ficou em Todos os campeões.`, true);
-      }).catch(() => showIoMsg(`Sem internet para conferir o campeão "${r.championName}"; a build ficou em Todos os campeões.`, true)));
+      const idNova = build.id, nomeBuild = build.name, campeao = r.championName;
+      avisoCampeao = esperarInternet(Campeoes.carregar().then(() => {
+        const c = Campeoes.porNome(campeao);
+        if (!c) return { nome: nomeBuild, campeao, semNet: false };
+        if (build.id === idNova) { build.champion = c; gravarImportado(); renderBuildAll(); return null; }
+        // F13-T37: a lista chega depois; com várias builds importadas (ou outra
+        // aberta nesse meio-tempo), a importada não é mais a aberta — o campeão
+        // vai para ela na biblioteca, em vez de se perder
+        const b = library.builds.find(x => x.id === idNova);
+        if (b) { gravarMetadados(b, { champion: c }); if (buildScreen === "lista") renderBuildIndex(); }
+        return null;
+      }).catch(() => ({ nome: nomeBuild, campeao, semNet: true })));
     }
     if (r.masterwork) {
       build.masterwork = true;
@@ -10391,13 +10429,50 @@ function initLibrary() {
     }
 
     const total = r.cats.reduce((s, c) => s + c.items.length, 0);
+    if (emLote) return { nome: build.name, caixas: r.cats.length, itens: total, unknown: r.unknown, avisoCampeao };
     let msg = `Importado: ${r.cats.length} categoria(s), ${total} item(ns)${r.mode ? `, modo ${r.mode}` : ""}.`;
+    if (fora.length) msg += ` ${avisoFora(fora)}`;
     if (r.unknown.length) {
       const amostra = r.unknown.slice(0, 3).join(", ");
       msg += ` ${r.unknown.length} nome(s) não encontrado(s) no catálogo: ${amostra}${r.unknown.length > 3 ? "..." : ""}`;
     }
-    showIoMsg(msg, r.unknown.length > 0);
+    showIoMsg(msg, r.unknown.length > 0 || fora.length > 0);
     document.getElementById("import-text").value = "";
+    avisoCampeao.then(a => acrescentarAvisos([a]));
+  }
+  // Os avisos do campeão entram no fim do que a mensagem mostra AGORA: não apagam o
+  // resumo nem uma mensagem mais nova (e não se perdem). Sem internet é uma causa
+  // só: uma frase para todas as builds.
+  function acrescentarAvisos(av) {
+    const lista = av.filter(Boolean);
+    if (!lista.length) return;
+    const fora = lista.filter(a => !a.semNet).map(a => `${a.nome}: campeão "${a.campeao}" não está na lista do Data Dragon (ficou em Todos os campeões).`);
+    const semNet = lista.filter(a => a.semNet).map(a => a.nome);
+    if (semNet.length) fora.push(`Sem internet para conferir o campeão de ${semNet.length === 1 ? semNet[0] : `${semNet.length} builds (${nomesCurtos(semNet)})`}: ${semNet.length === 1 ? "ficou" : "ficaram"} em Todos os campeões.`);
+    const el = document.getElementById("io-msg");
+    showIoMsg(`${el.textContent} ${fora.join(" ")}`.trim(), true);
+  }
+  function nomesCurtos(nomes) { return nomes.length <= 8 ? nomes.join(", ") : `${nomes.slice(0, 8).join(", ")} e mais ${nomes.length - 8}`; }
+  function avisoFora(fora) {
+    return `${fora.length === 1 ? "Ficou de fora, sem nenhuma caixa" : `Ficaram de fora ${fora.length} builds sem nenhuma caixa`}: ${nomesCurtos(fora)}.`;
+  }
+  // F13-T37: várias builds de uma vez (o texto do Selecionar → "Copiar como texto").
+  function importarVarias(rs, fora) {
+    let feitas;
+    importandoLote = true;
+    try { feitas = rs.map(r => importarTexto(r, true)); }
+    finally { importandoLote = false; }
+    gravarBiblioteca();
+    renderBuildAll(); renderRunasDaForja(); renderHabilidades();
+    if (buildScreen === "lista") renderBuildIndex();
+    const caixas = feitas.reduce((s, f) => s + f.caixas, 0), itens = feitas.reduce((s, f) => s + f.itens, 0);
+    const unknown = feitas.flatMap(f => f.unknown);
+    let msg = `Importadas ${feitas.length} builds (${nomesCurtos(feitas.map(f => f.nome))}): ${caixas} categoria(s), ${itens} item(ns).`;
+    if (fora.length) msg += ` ${avisoFora(fora)}`;
+    if (unknown.length) msg += ` ${unknown.length} nome(s) não encontrado(s) no catálogo: ${unknown.slice(0, 3).join(", ")}${unknown.length > 3 ? "..." : ""}`;
+    showIoMsg(msg, unknown.length > 0 || fora.length > 0);
+    document.getElementById("import-text").value = "";
+    Promise.all(feitas.map(f => f.avisoCampeao)).then(acrescentarAvisos);
   }
 }
 
