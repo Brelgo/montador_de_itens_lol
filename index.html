@@ -7610,7 +7610,10 @@ function renderBuildTotals() {
   const box = document.getElementById("build-totals");
   if (!box) return;
   const all = [];
-  build.cats.forEach(c => itensContados(c).forEach(e => all.push(e)));
+  // F13-T42: sem as caixas Opcionais, como o "Total (sem opcionais)", o detalhe
+  // da build e o "Puxar" da Calculadora — o painel nasceu antes dessa regra e
+  // era o único que ainda somava os itens de quando precisar.
+  build.cats.filter(c => c.kind !== "opcional").forEach(c => itensContados(c).forEach(e => all.push(e)));
   if (!all.length) { box.className = "build-totals"; box.innerHTML = ""; return; }
   const totals = sumAttributes(all);
   const eff = goldEfficiency(all);
@@ -10854,8 +10857,11 @@ function renderCalc() {
 function statsFromBuild() {
   const totals = { Vida: 0, "Armadura": 0, "Resistência Mágica": 0 };
   let count = 0;
-  (build.cats || []).forEach(cat => {
-    cat.items.forEach(e => {
+  // F13-T42 (nº 23): os mesmos itens do "Total (sem opcionais)" — sem as caixas
+  // Opcionais e, na Escolha 1, só o padrão (o de cima). Antes somava tudo, e a
+  // Escolha com Presságio e Espinhos dava o dobro de armadura.
+  (build.cats || []).filter(cat => cat.kind !== "opcional").forEach(cat => {
+    itensContados(cat).forEach(e => {
       const it = byId[e.itemId];
       if (!it) return;
       count++;
@@ -10894,12 +10900,13 @@ function initCalc() {
     if (!e.target.closest("#calc-from-build")) return;
     const { totals, count } = statsFromBuild();
     if (!count) {
-      alert("A build ativa ainda não tem itens.");
+      alert("A build ativa ainda não tem itens fora das caixas Opcionais.");
       return;
     }
-    // Vida base de campeão não está no catálogo; somamos só o que os itens dão
-    // e mantemos a vida atual como piso, para o número não ficar irreal.
-    calc.hp = Math.max(1, totals["Vida"]);
+    // Vida base de campeão não está no catálogo; somamos só o que os itens dão.
+    // F13-T42 (nº 31): itens sem vida não apagam a vida digitada (antes ela
+    // virava 1, e a vida efetiva, o equilíbrio e o veredito saíam de 1 de vida).
+    if (totals["Vida"] > 0) calc.hp = totals["Vida"];
     calc.armor = totals["Armadura"];
     calc.mr = totals["Resistência Mágica"];
     renderCalc();

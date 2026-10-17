@@ -57,6 +57,12 @@ Joia da Ruína e o Cetro Vampírico ("100,0%") entram no filtro "100% a 119%" e
 no grupo de 100; o seletor de atributo conta itens; o preço com Reembolso sai
 com as casas do catálogo (2.543,75g, 3.083,03g) e a soma da caixa fecha.
 
+**Calculadora** (F13-T42, bugs nºs 23 e 31) — o "Puxar da build ativa" usa
+os itens que a build compra: sem as caixas Opcionais e, na Escolha 1, só o
+padrão, e o painel "Atributos da build" da forja conta a mesma build; itens
+sem vida não apagam a vida digitada. Roda depois dos grupos da
+forja, porque troca de aba e de caixas.
+
 **Forja** — a build nova nasce com as 8 caixas; item entra na caixa; o modo
 leitura esconde os atributos.
 

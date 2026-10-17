@@ -203,7 +203,7 @@ Status de cada um:
 
 ### 23. "Puxar da build ativa" na Calculadora soma as alternativas da Escolha 1 e as caixas Opcionais
 
-`index.html:9783` · media · achado por: Catalogo, filtros e numeros · **passou pelos céticos**
+`index.html:9783` · media · achado por: Catalogo, filtros e numeros · **CONSERTADO na F13-T42 (17/10/2026)** — o "Puxar" usa os itens do "Total (sem opcionais)": sem as caixas Opcionais e, na Escolha 1, só o padrão. A revisão achou que o painel "Atributos da build" da forja ainda somava as Opcionais (o único que fazia isso): passou a contar a mesma build
 
 **Como quebra:** Todo o resto da forja conta os itens por `itensContados(cat)` (numa "Escolha 1" só o primeiro conta; as demais são trocas para a MESMA vaga). `statsFromBuild` ignora isso e varre `cat.items` inteiro. Passo a passo: 1) Aba Builds > abrir uma build > ligar "Editar"; 2) criar uma caixa e mudar o tipo para "Escolha 1"; 3) marcar nela "Presságio de Randuin" (+350 Vida, +75 Armadura) e depois "Armadura de Espinhos" (+150 Vida, +75 Armadura); 4) a placa da caixa diz "Atributos do padrão (o de cima)" e o painel "Atributos da build" mostra +350 Vida, +75 Armadura — correto; 5) ir para a aba Calculadora e clicar em "Puxar da build ativa"; 6) os campos vêm com Vida total 500 e Armadura 150 — o dobro, somando um item que o usuário escolheu NÃO usar. O mesmo vale para caixas do tipo "Opcional", que o "Total (sem opcionais)" exclui de propósito. Daí para frente todo o veredito da calculadora (vida efetiva, ponto de equilíbrio, dano absorvido) sai calculado em cima de uma build que não existe.
 
@@ -260,7 +260,7 @@ Status de cada um:
 
 ### 31. "Puxar da build ativa" zera a Vida digitada para 1 quando os itens não dão vida
 
-`index.html:9827` · baixa · achado por: Catalogo, filtros e numeros · **passou pelos céticos**
+`index.html:9827` · baixa · achado por: Catalogo, filtros e numeros · **CONSERTADO na F13-T42 (17/10/2026)** — itens sem vida não mexem na vida digitada
 
 **Como quebra:** O comentário diz que a vida atual é o piso; o código usa 1 como piso e descarta o que o usuário digitou. Passo a passo: 1) Aba Calculadora, deixar "Vida total" no padrão 2000; 2) na aba Builds, montar uma build só com itens sem Vida — por exemplo "Cota de Malha" (+40 Armadura, nada de vida); 3) voltar à Calculadora e clicar em "Puxar da build ativa"; 4) o campo "Vida total" vira 1; 5) os dois cartões passam a dizer "Vida efetiva 1", "Equilíbrio para 1 de vida: 0 de armadura" e "Sobra armadura: 40 pontos além do equilíbrio" — e o 2000 que estava lá foi perdido, sem desfazer.
 
@@ -484,3 +484,9 @@ O `itemSetToBuild` cria cada caixa sem `cols` e sem `rows`. Na sessão, o `catCo
 `index.html` (`.card-sortstat` × `.tier-badge` no card do Catálogo) · **média** · achado na F13-T43 (17/10/2026) medindo os cards · **já era assim antes**, não consertado
 
 Com o Catálogo ordenado por "Eficiência de ouro", o selo do tier (ÉPICO, LENDÁRIO…) cobre a linha "Eficiência de ouro: …" em 145 dos 225 cards a 1440, 132 a 1920 e 116 a 900 — medido pelo retângulo dos dois elementos no Chrome do roteiro, com o Reembolso ligado. A captura `fase13-t43-eficiencia-e-grupo.png` mostra a Joia da Ruína com o "ÉPICO" em cima do "100,0%". É o número que a ordenação acabou de prometer, escondido.
+
+### 58. Mestre Forjador na alternativa de baixo de uma Escolha 1: o painel diz que está aplicado, e nada soma
+
+`index.html` (`setForged`, `forgedEntry`, `renderBuildTotals`) · **baixa** · achado na revisão da F13-T42 (17/10/2026) · reproduzido em node · **já era assim antes**, não consertado
+
+O `setForged` deixa forjar qualquer posição, inclusive a 2ª de uma Escolha 1 (que não conta: só o padrão, o de cima). Com Presságio de Randuin no padrão e a Armadura de Espinhos forjada embaixo, o painel diz "Com Mestre Forjador em Armadura de Espinhos", mas os números são só os do Presságio (+350 Vida, +75 Armadura) — a Calculadora concorda com eles. A nota anuncia uma forja que não entra em lugar nenhum.

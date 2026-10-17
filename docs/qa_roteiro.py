@@ -543,6 +543,51 @@ def checar_catalogo(s, p):
             "preços %s (catálogo: %s e %s) · caixa %s · soma %s" % (n43["precos"], n43["netArco"], n43["netForca"], n43["caixa"], n43["soma"]))
 
 
+def checar_calculadora(s, p):
+    """F13-T42 (bugs nºs 23 e 31): o "Puxar da build ativa" usa os itens que a
+    build de fato compra — sem as caixas Opcionais e, na Escolha 1, só o padrão —
+    e não apaga a vida digitada quando os itens não dão vida."""
+    print("\n%sCALCULADORA%s" % (AMARELO, FIM))
+    s.nova_build()
+    garantir_build_editavel(s)
+    puxa = """(() => { document.getElementById('calc-from-build').click(); return { hp: calc.hp, armor: calc.armor, mr: calc.mr }; })()"""
+    r = s.js("""(() => { const it = n => CATALOG.items.find(i => i.namePt === n);
+      const ent = n => ({ itemId: it(n).slug, note: '' });
+      const pr = it('Presságio de Randuin'), es = it('Armadura de Espinhos'), wa = it('Armadura de Warmog');
+      const v = (x, st) => (x.attributes || []).filter(a => a.stat === st && a.unit === 'flat').reduce((t, a) => t + a.value, 0);
+      build.cats = [
+        { id: 'cat-c1', name: 'Escolha', desc: '', kind: 'escolha', span: 2, cols: 1, rows: 2, items: [ent('Presságio de Randuin'), ent('Armadura de Espinhos')] },
+        { id: 'cat-c2', name: 'Se precisar', desc: '', kind: 'opcional', span: 2, cols: 6, rows: 1, items: [ent('Armadura de Warmog')] },
+      ];
+      gravarBuild(); renderBuildAll();
+      return { esperado: { hp: v(pr, 'Vida'), armor: v(pr, 'Armadura') }, comTudo: { hp: v(pr, 'Vida') + v(es, 'Vida') + v(wa, 'Vida'), armor: v(pr, 'Armadura') + v(es, 'Armadura') + v(wa, 'Armadura') } }; })()""")
+    s.js("switchTab('calc')")
+    time.sleep(0.6)
+    veio = s.js(puxa)
+    p.conta("calculadora", "Puxar da build ativa: sem Opcionais e só o padrão da Escolha 1",
+            veio["hp"] == r["esperado"]["hp"] and veio["armor"] == r["esperado"]["armor"] and r["esperado"] != r["comTudo"],
+            "veio vida %s / armadura %s · o padrão dá %s / %s · somando tudo daria %s / %s" % (
+                veio["hp"], veio["armor"], r["esperado"]["hp"], r["esperado"]["armor"], r["comTudo"]["hp"], r["comTudo"]["armor"]))
+    # a revisão da T42: o painel "Atributos da build" da forja somava as
+    # Opcionais, e a Calculadora deixou de somar — os dois contam a mesma build
+    painel = s.js("""(() => { switchTab('build'); showBuildScreen('forja'); renderBuildTotals();
+      const t = document.querySelector('#build-totals .bt-title'), l = document.querySelector('#build-totals .cs-list');
+      return { titulo: t ? t.textContent : '', lista: l ? l.textContent : '' }; })()""")
+    s.js("switchTab('calc')")
+    time.sleep(0.4)
+    p.conta("calculadora", "o painel Atributos da build conta a mesma build",
+            "1 item" in painel["titulo"] and ("+%d" % r["esperado"]["hp"]) in painel["lista"]
+            and ("+%d" % r["comTudo"]["hp"]) not in painel["lista"], "%s · %s" % (painel["titulo"], painel["lista"][:80]))
+    s.js("""(() => { const it = CATALOG.items.find(i => i.namePt === 'Cota de Malha');
+      build.cats = [{ id: 'cat-c1', name: 'Núcleo', desc: '', kind: 'comum', span: 2, cols: 6, rows: 1, items: [{ itemId: it.slug, note: '' }] }];
+      gravarBuild(); calc.hp = 2000; renderCalc(); return 'ok'; })()""")
+    veio = s.js(puxa)
+    p.conta("calculadora", "Puxar da build ativa: itens sem vida não apagam a vida digitada",
+            veio["hp"] == 2000 and veio["armor"] > 0, "vida %s (era 2000) · armadura %s" % (veio["hp"], veio["armor"]))
+    s.js("switchTab('build')")
+    s.nova_build()
+
+
 def checar_forja(s, p):
     print("\n%sFORJA%s" % (AMARELO, FIM))
     s.nova_build()
@@ -2366,6 +2411,7 @@ GRUPOS = [
     ("troca", checar_troca),
     ("acessibilidade", checar_acessibilidade),
     ("resoluções", checar_resolucoes),
+    ("calculadora", checar_calculadora),
     # Por último de propósito: com as 38 builds publicadas na tela, o navegador
     # fica pesado, e daí em diante qualquer medida sai contaminada.
     ("públicas", checar_publicas),
