@@ -52,6 +52,10 @@ entrar na loja sem exceção.
 oficina com o estandarte de 46 px; a aba Todos volta a ser uma grade só.
 No modo Ícones, o mouse não aciona o golpe do AD nem apaga o ícone (F13-T29,
 bug nº 46); nos Cards, o golpe continua.
+O número que a tela mostra é o que o resto usa (F13-T43, nºs 24, 32 e 33): a
+Joia da Ruína e o Cetro Vampírico ("100,0%") entram no filtro "100% a 119%" e
+no grupo de 100; o seletor de atributo conta itens; o preço com Reembolso sai
+com as casas do catálogo (2.543,75g, 3.083,03g) e a soma da caixa fecha.
 
 **Forja** — a build nova nasce com as 8 caixas; item entra na caixa; o modo
 leitura esconde os atributos.

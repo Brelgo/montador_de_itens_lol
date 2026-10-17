@@ -505,6 +505,43 @@ def checar_catalogo(s, p):
     p.conta("catálogo", "Cards: o golpe do AD continua (caminho antigo)", len(cd) >= 3 and all(v["variante"] > 0 for v in cd),
             "%d cards AD; variantes %s" % (len(cd), [v["variante"] for v in cd]))
 
+    # F13-T43 (nºs 24, 32 e 33): o número que a tela mostra é o mesmo que o
+    # filtro, o cabeçalho do grupo, o seletor e a soma usam. O pior dado: a Joia
+    # da Ruína (99,995%) e o Cetro Vampírico (99,98%), que aparecem "100,0%";
+    # Sapatos Enfeitiçados, com Penetração Mágica plana e em %; o Arco do Axioma
+    # (2.543,75g com Reembolso) e a Força da Trindade (3.083,03g).
+    n43 = s.js("""(() => {
+      const it = n => CATALOG.items.find(i => i.namePt === n);
+      const joia = it('Joia da Ruína'), cetro = it('Cetro Vampírico');
+      const antes = { eff: new Set(state.efficiency), sort: state.sort, cash: state.applyCashback };
+      state.efficiency = new Set(['100-119']);
+      const noFiltro = [joia, cetro].map(x => itemMatchesFilters(x));
+      const naTela = [joia, cetro].map(x => fmtEff(itemEfficiency(x)));
+      state.efficiency = antes.eff;
+      state.sort = 'eff-desc';
+      const grupo = [joia, cetro].map(x => groupLabelFn(CATALOG.items)(x));
+      state.sort = antes.sort;
+      const opt = [...document.querySelectorAll('#sort-attr-select option')].find(o => o.value === 'Penetração Mágica');
+      const comPen = CATALOG.items.filter(x => (x.attributes || []).some(a => a.stat === 'Penetração Mágica')).length;
+      state.applyCashback = true;
+      const arco = it('Arco do Axioma'), forca = it('Força da Trindade');
+      const precos = [arco, forca].map(x => fmtG(effectivePrice(x)));
+      const caixa = catTotal({ items: [{ itemId: arco.slug }, { itemId: forca.slug }], kind: 'comum' });
+      const soma = [arco, forca].reduce((t, x) => t + effectivePrice(x), 0);
+      state.applyCashback = antes.cash;
+      return { noFiltro, naTela, grupo, opt: opt ? opt.textContent : null, comPen, precos, caixa: fmtG(caixa), soma: fmtG(soma),
+               netArco: arco.cashback.netGold, netForca: forca.cashback.netGold };
+    })()""")
+    p.conta("catálogo", "eficiência que a tela mostra é a do filtro e a do grupo",
+            n43["naTela"] == ["100,0%", "100,0%"] and n43["noFiltro"] == [True, True]
+            and all(g.startswith("Eficiência: 100") for g in n43["grupo"]),
+            "na tela %s · no filtro 100–119%% %s · grupo %s" % (n43["naTela"], n43["noFiltro"], n43["grupo"]))
+    p.conta("catálogo", "o seletor de atributo conta itens",
+            n43["opt"] == "Penetração Mágica (%d itens)" % n43["comPen"], "%s · itens com o atributo: %d" % (n43["opt"], n43["comPen"]))
+    p.conta("catálogo", "preço com Reembolso com as casas do catálogo",
+            n43["precos"] == ["2.543,75g", "3.083,03g"] and n43["caixa"] == n43["soma"] == "5.626,78g",
+            "preços %s (catálogo: %s e %s) · caixa %s · soma %s" % (n43["precos"], n43["netArco"], n43["netForca"], n43["caixa"], n43["soma"]))
+
 
 def checar_forja(s, p):
     print("\n%sFORJA%s" % (AMARELO, FIM))

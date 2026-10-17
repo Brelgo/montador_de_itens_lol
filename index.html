@@ -11060,9 +11060,11 @@ const state = {
 
 // Todos os stats que aparecem no catálogo, para o seletor de ordenação por atributo.
 const ALL_STATS = (() => {
+  // F13-T43 (nº 32): conta itens, não linhas — um item com o mesmo atributo
+  // plano e em % (Sapatos Enfeitiçados) contava duas vezes no seletor
   const counts = new Map();
-  CATALOG.items.forEach(it => (it.attributes || []).forEach(a => {
-    counts.set(a.stat, (counts.get(a.stat) || 0) + 1);
+  CATALOG.items.forEach(it => new Set((it.attributes || []).map(a => a.stat)).forEach(stat => {
+    counts.set(stat, (counts.get(stat) || 0) + 1);
   }));
   return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "pt-BR"));
 })();
@@ -11169,6 +11171,15 @@ function itemEfficiency(item) {
 }
 function fmtEff(e) {
   return e === null ? "sem análise" : e.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
+}
+// F13-T43 (nº 24): a eficiência como a tela mostra (uma casa). O filtro e o
+// cabeçalho do grupo testavam o número cru: a Joia da Ruína (99,995%) aparecia
+// "100,0%" debaixo de "50 a 99%" e sumia do filtro "100% a 119%".
+// O número sai do mesmo formatador (Intl, uma casa) que o fmtEff usa: com
+// Math.round os dois discordavam no meio exato e perto dele.
+const EFF_UMA_CASA = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1, useGrouping: false });
+function effNaTela(e) {
+  return e === null ? null : Number(EFF_UMA_CASA.format(e));
 }
 
 // Valor de um stat num item (null se o item não concede aquele atributo).
@@ -11576,7 +11587,7 @@ function itemMatchesFilters(item) {
     if (!PRICE_BANDS.some(b => state.prices.has(b.value) && b.test(p))) return false;
   }
   if (state.efficiency.size) {
-    const e = itemEfficiency(item);
+    const e = effNaTela(itemEfficiency(item));
     if (!EFF_BANDS.some(b => state.efficiency.has(b.value) && b.test(e))) return false;
   }
   if (state.stats.size && !(item.attributes || []).some(a => state.stats.has(a.stat))) return false;
@@ -11633,9 +11644,11 @@ function effectivePrice(item) {
   return item.priceGold;
 }
 
-// Ouro em pt-BR: 3.237,5g (o Reembolso deixa meio ouro).
+// Ouro em pt-BR: 3.237,5g. F13-T43 (nº 33): o Reembolso deixa meio ouro, quarto
+// de ouro (2.543,75g) e até centavos (Força da Trindade, 3.083,03g) — com uma
+// casa só, a tela mostrava 2.543,8g, um preço que o catálogo não tem.
 function fmtG(n) {
-  return (n === null || n === undefined || Number.isNaN(Number(n))) ? "—" : Number(n).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "g";
+  return (n === null || n === undefined || Number.isNaN(Number(n))) ? "—" : Number(n).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + "g";
 }
 
 function priceLabel(item) {
@@ -12007,7 +12020,7 @@ function groupLabelFn(list) {
       const step = niceStep(Math.max(...vals));
       return it => {
         const e = itemEfficiency(it);
-        return e === null ? "Sem análise de custo" : `Eficiência: ${bandLabel(Math.floor(e), step, "%")}`;
+        return e === null ? "Sem análise de custo" : `Eficiência: ${bandLabel(Math.floor(effNaTela(e)), step, "%")}`;
       };
     }
 

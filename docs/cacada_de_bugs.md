@@ -209,13 +209,13 @@ Status de cada um:
 
 ### 24. Eficiência arredondada para exibição não bate com a faixa do filtro nem com o cabeçalho do grupo
 
-`index.html:10008` · media · achado por: Catalogo, filtros e numeros · **passou pelos céticos**
+`index.html:10008` · media · achado por: Catalogo, filtros e numeros · **CONSERTADO na F13-T43 (17/10/2026)** — o filtro e o cabeçalho do grupo usam a eficiência como a tela mostra (uma casa, `effNaTela`)
 
 **Como quebra:** O card exibe `fmtEff` (1 casa, arredondando) mas o filtro e o rótulo de grupo testam o número cru. "Joia da Ruína" tem efficiencyBase 99,995 e "Cetro Vampírico" 99,98. Passo a passo: 1) Catálogo > "Ordenar por" > "Eficiência de ouro" (maior primeiro); 2) buscar "Joia da Ruína" — o card mostra "Eficiência de ouro: 100,0%", mas o cabeçalho do grupo acima dele diz "Eficiência: 50 a 99%"; 3) limpar a busca, Filtros > Eficiência de ouro > marcar "100% a 119%"; 4) o contador do topo não inclui Joia da Ruína nem Cetro Vampírico — os dois itens que a tela acabou de anunciar como 100,0% somem da lista; 5) marcar "80% a 99%" e eles reaparecem, ainda exibindo "100,0%".
 
 ### 25. Ordenar por atributo lê só o primeiro atributo do item e mistura valor plano com porcentagem na mesma régua
 
-`index.html:10034` · media · achado por: Catalogo, filtros e numeros · **passou pelos céticos**
+`index.html:10034` · media · achado por: Catalogo, filtros e numeros · **passou pelos céticos** · fica para a F13-T43b: mostrar o plano e o % do mesmo atributo pede uma escolha visual do Leo (duas opções renderizadas)
 
 **Como quebra:** No catálogo, "Penetração Mágica" aparece como `flat` em uns itens e `percent` em outros, e "Sapatos Enfeitiçados" tem as duas (+20 plana e +8%). Passo a passo: 1) Catálogo > Filtros > Atributo > marcar o chip "Penetração Mágica" (a lista fica com 7 itens); 2) clicar em "Maior primeiro"; 3) a ordem sai Cajado do Vazio (+40%), Criptoflora (+30%), Sapatos Enfeitiçados (+20), Chama Sombria (+15), Ápice da Tempestade (+15), Joia da Ruína (+13%), Sapatos do Feiticeiro (+12) — ou seja, 40% e 30% são tratados como "maiores" que 20 pontos planos, que é comparar coisas diferentes; 4) o card de Sapatos Enfeitiçados mostra "Penetração Mágica: +20" e esconde o +8% (o find() para no primeiro), e o filtro/ordenação nunca enxergam o segundo; 5) os cabeçalhos de faixa saem repetidos: "Penetração Mágica: 10 a 14%" (Joia da Ruína) e logo abaixo "Penetração Mágica: 10 a 14" (Sapatos do Feiticeiro), duas faixas com o mesmo intervalo na mesma lista. Mesmo problema em "Velocidade de Movimento" (65 planos x 10%).
 
@@ -266,13 +266,13 @@ Status de cada um:
 
 ### 32. A contagem do seletor "Ordenar pelo atributo" conta ocorrências, não itens
 
-`index.html:9990` · baixa · achado por: Catalogo, filtros e numeros · **passou pelos céticos**
+`index.html:9990` · baixa · achado por: Catalogo, filtros e numeros · **CONSERTADO na F13-T43 (17/10/2026)** — o seletor conta itens
 
 **Como quebra:** "Sapatos Enfeitiçados" tem duas entradas de "Penetração Mágica" (+20 plana e +8%), então o item é contado duas vezes. Passo a passo: 1) Catálogo > "Ordenar por" > "Maior valor do atributo" para o seletor "Ordenar pelo atributo:" aparecer; 2) abrir esse seletor e ler a opção "Penetração Mágica (8 itens)"; 3) Filtros > Atributo > marcar o chip "Penetração Mágica"; 4) o contador do topo diz "7 de 225 itens". O rótulo promete 8, a lista entrega 7.
 
 ### 33. fmtG corta o preço com Reembolso em 1 casa e mostra um valor que não existe no catálogo
 
-`index.html:10459` · baixa · achado por: Catalogo, filtros e numeros · **passou pelos céticos**
+`index.html:10459` · baixa · achado por: Catalogo, filtros e numeros · **CONSERTADO na F13-T43 (17/10/2026)** — o preço sai com as casas do catálogo (até duas: 2.543,75g, 3.083,03g), e a soma da caixa fecha com os preços impressos. Recontado na revisão: são 16 itens com quarto de ouro e 1 com centavos
 
 **Como quebra:** O comentário assume que "o Reembolso deixa meio ouro", mas 17 dos 109 itens com cashback têm quarto de ouro (netGold 2.543,75) e um tem centavos (Força da Trindade, 3.083,03). Passo a passo: 1) Catálogo > Filtros > Runas > marcar "Aplicar Reembolso aos preços"; 2) buscar "Arco do Axioma"; 3) o card mostra o preço "2.543,8g" — número que o catálogo não tem; 4) abrir o pergaminho do mesmo item: a linha "Com Reembolso" imprime "(3.465g ÷ 2.543,75g)", usando `toLocaleString` sem limite de casas. As duas telas mostram preços diferentes para o mesmo campo `cashback.netGold`. O mesmo arredondamento entra em `catTotal`/`buildTotal`, então a soma da caixa na forja também não fecha com a soma dos preços impressos nos itens.
 
@@ -478,3 +478,9 @@ O `itemSetToBuild` cria cada caixa sem `cols` e sem `rows`. Na sessão, o `catCo
 `index.html` (`dividirBuilds`) · **baixa** · achado na reconferência da F13-T36b (17/10/2026) · reproduzido em node, igual no código de antes · não consertado
 
 `BUILD: Jinx` / `=====` / `MODO: ARAM` / `BUILD: Jinx (ARAM)` / `[COMUM] Core` / `- Gume do Infinito` vira duas partes, e "Jinx" fica de fora como build sem caixa. O documento diz que a régua abaixo do título é só enfeite e que um `BUILD:` repetido antes de qualquer caixa só renomeia. É ambíguo com o lote que o próprio Montador exporta quando uma build não tem caixa (ela também termina numa régua seguida de `BUILD:`), então o conserto precisa decidir qual dos dois casos vence.
+
+### 57. Ordenado por eficiência (ou por atributo), a linha do número fica por baixo do selo do tier no card
+
+`index.html` (`.card-sortstat` × `.tier-badge` no card do Catálogo) · **média** · achado na F13-T43 (17/10/2026) medindo os cards · **já era assim antes**, não consertado
+
+Com o Catálogo ordenado por "Eficiência de ouro", o selo do tier (ÉPICO, LENDÁRIO…) cobre a linha "Eficiência de ouro: …" em 145 dos 225 cards a 1440, 132 a 1920 e 116 a 900 — medido pelo retângulo dos dois elementos no Chrome do roteiro, com o Reembolso ligado. A captura `fase13-t43-eficiencia-e-grupo.png` mostra a Joia da Ruína com o "ÉPICO" em cima do "100,0%". É o número que a ordenação acabou de prometer, escondido.
