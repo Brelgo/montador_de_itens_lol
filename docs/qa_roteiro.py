@@ -529,13 +529,18 @@ def checar_catalogo(s, p):
       const caixa = catTotal({ items: [{ itemId: arco.slug }, { itemId: forca.slug }], kind: 'comum' });
       const soma = [arco, forca].reduce((t, x) => t + effectivePrice(x), 0);
       state.applyCashback = antes.cash;
-      return { noFiltro, naTela, grupo, opt: opt ? opt.textContent : null, comPen, precos, caixa: fmtG(caixa), soma: fmtG(soma),
+      return { noFiltro, naTela, grupo, curto: [fmtEff(106.1), fmtEff(100), fmtEff(1450 / 2500 * 100)], opt: opt ? opt.textContent : null, comPen, precos, caixa: fmtG(caixa), soma: fmtG(soma),
                netArco: arco.cashback.netGold, netForca: forca.cashback.netGold };
     })()""")
+    # (Leo, 17/10/2026: a eficiência nunca arredonda para cima) 99,995% e 99,98%
+    # saem 99,9%, ficam fora de "100% a 119%" e no grupo que vai até 99
+    import re as _re
+    faixas = [tuple(int(x) for x in _re.findall(r"\d+", g)[:2]) for g in n43["grupo"]]
     p.conta("catálogo", "eficiência que a tela mostra é a do filtro e a do grupo",
-            n43["naTela"] == ["100,0%", "100,0%"] and n43["noFiltro"] == [True, True]
-            and all(g.startswith("Eficiência: 100") for g in n43["grupo"]),
-            "na tela %s · no filtro 100–119%% %s · grupo %s" % (n43["naTela"], n43["noFiltro"], n43["grupo"]))
+            n43["naTela"] == ["99,9%", "99,9%"] and n43["noFiltro"] == [False, False]
+            and all(len(f) == 2 and f[0] <= 99 <= f[1] for f in faixas)
+            and n43["curto"] == ["106,1%", "100,0%", "58,0%"],
+            "na tela %s · no filtro 100–119%% %s · grupo %s · 106,1, 100 e 1450÷2500 (57,99999…): %s" % (n43["naTela"], n43["noFiltro"], n43["grupo"], n43["curto"]))
     p.conta("catálogo", "o seletor de atributo conta itens",
             n43["opt"] == "Penetração Mágica (%d itens)" % n43["comPen"], "%s · itens com o atributo: %d" % (n43["opt"], n43["comPen"]))
     p.conta("catálogo", "preço com Reembolso com as casas do catálogo",

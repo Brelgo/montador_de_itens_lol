@@ -11176,17 +11176,15 @@ function itemEfficiency(item) {
   }
   return typeof ca.efficiencyBase === "number" ? ca.efficiencyBase : null;
 }
+// F13-T43 (nº 24): a eficiência nunca arredonda para cima (Leo, 17/10/2026). A
+// Joia da Ruína (99,995%) aparecia "100,0%" debaixo de "50 a 99%" e sumia do
+// filtro "100% a 119%"; cortada numa casa, ela sai 99,9% — e o card, a ficha, o
+// filtro e o grupo dizem a mesma coisa. O 1e-9 segura o 106,1 que o ponto
+// flutuante guarda como 106,0999…
 function fmtEff(e) {
-  return e === null ? "sem análise" : e.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
-}
-// F13-T43 (nº 24): a eficiência como a tela mostra (uma casa). O filtro e o
-// cabeçalho do grupo testavam o número cru: a Joia da Ruína (99,995%) aparecia
-// "100,0%" debaixo de "50 a 99%" e sumia do filtro "100% a 119%".
-// O número sai do mesmo formatador (Intl, uma casa) que o fmtEff usa: com
-// Math.round os dois discordavam no meio exato e perto dele.
-const EFF_UMA_CASA = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1, useGrouping: false });
-function effNaTela(e) {
-  return e === null ? null : Number(EFF_UMA_CASA.format(e));
+  if (e === null) return "sem análise";
+  const v = Math.floor(e * 10 + 1e-9) / 10;
+  return v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
 }
 
 // Valor de um stat num item (null se o item não concede aquele atributo).
@@ -11594,7 +11592,7 @@ function itemMatchesFilters(item) {
     if (!PRICE_BANDS.some(b => state.prices.has(b.value) && b.test(p))) return false;
   }
   if (state.efficiency.size) {
-    const e = effNaTela(itemEfficiency(item));
+    const e = itemEfficiency(item);
     if (!EFF_BANDS.some(b => state.efficiency.has(b.value) && b.test(e))) return false;
   }
   if (state.stats.size && !(item.attributes || []).some(a => state.stats.has(a.stat))) return false;
@@ -12027,7 +12025,7 @@ function groupLabelFn(list) {
       const step = niceStep(Math.max(...vals));
       return it => {
         const e = itemEfficiency(it);
-        return e === null ? "Sem análise de custo" : `Eficiência: ${bandLabel(Math.floor(effNaTela(e)), step, "%")}`;
+        return e === null ? "Sem análise de custo" : `Eficiência: ${bandLabel(Math.floor(e), step, "%")}`;
       };
     }
 

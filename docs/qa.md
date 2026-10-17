@@ -53,8 +53,8 @@ oficina com o estandarte de 46 px; a aba Todos volta a ser uma grade só.
 No modo Ícones, o mouse não aciona o golpe do AD nem apaga o ícone (F13-T29,
 bug nº 46); nos Cards, o golpe continua.
 O número que a tela mostra é o que o resto usa (F13-T43, nºs 24, 32 e 33): a
-Joia da Ruína e o Cetro Vampírico ("100,0%") entram no filtro "100% a 119%" e
-no grupo de 100; o seletor de atributo conta itens; o preço com Reembolso sai
+eficiência nunca arredonda para cima — a Joia da Ruína e o Cetro Vampírico
+saem 99,9%, fora do filtro "100% a 119%" e no grupo que vai até 99; o seletor de atributo conta itens; o preço com Reembolso sai
 com as casas do catálogo (2.543,75g, 3.083,03g) e a soma da caixa fecha.
 
 **Calculadora** (F13-T42, bugs nºs 23 e 31) — o "Puxar da build ativa" usa

@@ -209,7 +209,7 @@ Status de cada um:
 
 ### 24. Eficiência arredondada para exibição não bate com a faixa do filtro nem com o cabeçalho do grupo
 
-`index.html:10008` · media · achado por: Catalogo, filtros e numeros · **CONSERTADO na F13-T43 (17/10/2026)** — o filtro e o cabeçalho do grupo usam a eficiência como a tela mostra (uma casa, `effNaTela`)
+`index.html:10008` · media · achado por: Catalogo, filtros e numeros · **CONSERTADO na F13-T43 (17/10/2026)** — a eficiência nunca arredonda para cima (decisão do Leo): a Joia da Ruína sai 99,9%, e o card, a ficha, o filtro e o grupo dizem a mesma coisa
 
 **Como quebra:** O card exibe `fmtEff` (1 casa, arredondando) mas o filtro e o rótulo de grupo testam o número cru. "Joia da Ruína" tem efficiencyBase 99,995 e "Cetro Vampírico" 99,98. Passo a passo: 1) Catálogo > "Ordenar por" > "Eficiência de ouro" (maior primeiro); 2) buscar "Joia da Ruína" — o card mostra "Eficiência de ouro: 100,0%", mas o cabeçalho do grupo acima dele diz "Eficiência: 50 a 99%"; 3) limpar a busca, Filtros > Eficiência de ouro > marcar "100% a 119%"; 4) o contador do topo não inclui Joia da Ruína nem Cetro Vampírico — os dois itens que a tela acabou de anunciar como 100,0% somem da lista; 5) marcar "80% a 99%" e eles reaparecem, ainda exibindo "100,0%".
 
