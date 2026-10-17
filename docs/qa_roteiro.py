@@ -543,6 +543,33 @@ def checar_catalogo(s, p):
             "na tela %s · no filtro 100–119%% %s · grupo %s · 106,1, 100 e 1450÷2500 (57,99999…): %s" % (n43["naTela"], n43["noFiltro"], n43["grupo"], n43["curto"]))
     p.conta("catálogo", "o seletor de atributo conta itens",
             n43["opt"] == "Penetração Mágica (%d itens)" % n43["comPen"], "%s · itens com o atributo: %d" % (n43["opt"], n43["comPen"]))
+    # F13-T43b (nº 25, opção A do Leo): ordenar por um atributo com pontos e %
+    # misturados nunca compara os dois — primeiro os pontos, depois a %, cada
+    # grupo diz qual é, e o card mostra todos os valores do item
+    t25 = s.js("""(() => { const antes = { sort: state.sort, attr: state.sortAttr, stats: new Set(state.stats) };
+      const ordem = (stat, sort) => { state.sort = sort; state.sortAttr = stat; state.stats = new Set([stat]);
+        const { list } = getFilteredSorted(); const g = groupLabelFn(list);
+        return list.map(it => ({ nome: it.namePt, vs: statValores(it, stat), grupo: g(it) })); };
+      const pen = ordem('Penetração Mágica', 'attr-desc'), vm = ordem('Velocidade de Movimento', 'attr-asc'), ph = ordem('Poder de Habilidade', 'attr-desc');
+      state.sort = 'attr-desc'; state.sortAttr = 'Penetração Mágica'; state.stats = new Set(['Penetração Mágica']); render();
+      const card = [...document.querySelectorAll('.card')].find(c => c.querySelector('.card-name') && c.querySelector('.card-name').textContent.startsWith('Sapatos Enfeitiçados'));
+      const linha = card && card.querySelector('.card-sortstat') ? card.querySelector('.card-sortstat').textContent : '';
+      state.sort = antes.sort; state.sortAttr = antes.attr; state.stats = antes.stats; render();
+      return { pen, vm, ph, linha }; })()""")
+
+    def partes_ok(lst, desc):
+        parte = [0 if any(not v["pct"] for v in x["vs"]) else 1 for x in lst]
+        valor = [next((v["v"] for v in x["vs"] if not v["pct"]), x["vs"][0]["v"]) for x in lst]
+        if parte != sorted(parte):
+            return False
+        for i in range(1, len(lst)):
+            if parte[i] == parte[i - 1] and ((valor[i] > valor[i - 1]) if desc else (valor[i] < valor[i - 1])):
+                return False
+        return all((" em pontos" in x["grupo"]) == (p_ == 0) and (" em %" in x["grupo"]) == (p_ == 1) for x, p_ in zip(lst, parte))
+    p.conta("catálogo", "ordenar por atributo não mistura pontos com %",
+            partes_ok(t25["pen"], True) and partes_ok(t25["vm"], False) and all(" em " not in x["grupo"] for x in t25["ph"])
+            and "+20" in t25["linha"] and "+8%" in t25["linha"],
+            "Penetração: %s · card dos Sapatos Enfeitiçados: %r" % ([(x["nome"], x["grupo"].split(":")[0]) for x in t25["pen"]][:8], t25["linha"]))
     p.conta("catálogo", "preço com Reembolso com as casas do catálogo",
             n43["precos"] == ["2.543,75g", "3.083,03g"] and n43["caixa"] == n43["soma"] == "5.626,78g",
             "preços %s (catálogo: %s e %s) · caixa %s · soma %s" % (n43["precos"], n43["netArco"], n43["netForca"], n43["caixa"], n43["soma"]))

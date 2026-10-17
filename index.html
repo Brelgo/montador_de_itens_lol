@@ -11229,6 +11229,26 @@ function statUnit(item, stat) {
   const found = (item.attributes || []).find(a => a.stat === stat);
   return found && found.unit === "percent" ? "%" : "";
 }
+// F13-T43b (nº 25; opção A do Leo, 17/10/2026): na ordenação por atributo, pontos
+// e % nunca se comparam. Penetração Mágica e Velocidade de Movimento vêm planos
+// num item e em % noutro (os Sapatos Enfeitiçados têm os dois): a lista sai em
+// duas partes — primeiro os pontos, depois a % —, cada grupo diz qual é, e o
+// card mostra todos os valores do item.
+function statValores(item, stat) {
+  return (item.attributes || []).filter(a => a.stat === stat && typeof a.value === "number").map(a => ({ v: a.value, pct: a.unit === "percent" }));
+}
+const ATRIBUTO_MISTO = new Set((() => {
+  const u = {};
+  CATALOG.items.forEach(it => (it.attributes || []).forEach(a => { (u[a.stat] = u[a.stat] || new Set()).add(a.unit === "percent"); }));
+  return Object.keys(u).filter(k => u[k].size > 1);
+})());
+// [parte, valor]: parte 0 = pontos (o valor plano, quando o item tem), 1 = %
+function chaveAtributo(item, stat) {
+  const vs = statValores(item, stat);
+  if (!vs.length) return null;
+  const plano = vs.find(x => !x.pct);
+  return plano ? [0, plano.v] : [1, vs[0].v];
+}
 
 // Elegibilidade de runa, derivada do JSON.
 function masterworkState(item) {
@@ -11660,13 +11680,14 @@ function getFilteredSorted() {
       if (!state.sortAttr) { list.sort((a, b) => a.namePt.localeCompare(b.namePt, "pt-BR")); break; }
       const dir = state.sort === "attr-desc" ? -1 : 1;
       list.sort((a, b) => {
-        const va = statValue(a, state.sortAttr);
-        const vb = statValue(b, state.sortAttr);
+        const ka = chaveAtributo(a, state.sortAttr);
+        const kb = chaveAtributo(b, state.sortAttr);
         // Itens que não concedem o atributo vão sempre para o fim, nas duas direções.
-        if (va === null && vb === null) return a.namePt.localeCompare(b.namePt, "pt-BR");
-        if (va === null) return 1;
-        if (vb === null) return -1;
-        return (va - vb) * dir || a.namePt.localeCompare(b.namePt, "pt-BR");
+        if (ka === null && kb === null) return a.namePt.localeCompare(b.namePt, "pt-BR");
+        if (ka === null) return 1;
+        if (kb === null) return -1;
+        // F13-T43b: primeiro os pontos, depois a % — nas duas direções
+        return ka[0] - kb[0] || (ka[1] - kb[1]) * dir || a.namePt.localeCompare(b.namePt, "pt-BR");
       });
       break;
     }
@@ -11966,12 +11987,13 @@ function renderCard(item, attrSorting) {
     if (e === null) card.classList.add("dimmed");
     sortStatHtml = `<div class="card-sortstat${e === null ? " none" : ""}"><span class="label">Eficiência de ouro:</span> ${fmtEff(e)}</div>`;
   } else if (attrSorting) {
-    const v = statValue(item, state.sortAttr);
-    if (v === null) {
+    const vs = statValores(item, state.sortAttr);
+    if (!vs.length) {
       card.classList.add("dimmed");
       sortStatHtml = `<div class="card-sortstat none"><span class="label">${state.sortAttr}:</span> não concede</div>`;
     } else {
-      sortStatHtml = `<div class="card-sortstat"><span class="label">${state.sortAttr}:</span> +${v}${statUnit(item, state.sortAttr)}</div>`;
+      // F13-T43b: todos os valores do item (Sapatos Enfeitiçados: +20 · +8%)
+      sortStatHtml = `<div class="card-sortstat"><span class="label">${state.sortAttr}:</span> ${vs.map(x => `+${x.v}${x.pct ? "%" : ""}`).join(" · ")}</div>`;
     }
   }
 
@@ -12041,13 +12063,15 @@ function groupLabelFn(list) {
     case "attr-asc":
     case "attr-desc": {
       if (!state.sortAttr) return null;
-      const vals = list.map(it => statValue(it, state.sortAttr)).filter(v => v !== null);
-      if (!vals.length) return () => `Nenhum item concede ${state.sortAttr}`;
-      const step = niceStep(Math.max(...vals));
+      const chaves = list.map(it => chaveAtributo(it, state.sortAttr)).filter(Boolean);
+      if (!chaves.length) return () => `Nenhum item concede ${state.sortAttr}`;
+      // F13-T43b: a régua de cada parte é dela (pontos e % não dividem o passo)
+      const passo = [0, 1].map(parte => { const vs = chaves.filter(k => k[0] === parte).map(k => k[1]); return vs.length ? niceStep(Math.max(...vs)) : 1; });
+      const misto = ATRIBUTO_MISTO.has(state.sortAttr);
       return it => {
-        const v = statValue(it, state.sortAttr);
-        if (v === null) return `Não concede ${state.sortAttr}`;
-        return `${state.sortAttr}: ${bandLabel(v, step, statUnit(it, state.sortAttr))}`;
+        const k = chaveAtributo(it, state.sortAttr);
+        if (k === null) return `Não concede ${state.sortAttr}`;
+        return `${state.sortAttr}${misto ? (k[0] ? " em %" : " em pontos") : ""}: ${bandLabel(k[1], passo[k[0]], k[0] ? "%" : "")}`;
       };
     }
 

@@ -215,7 +215,7 @@ Status de cada um:
 
 ### 25. Ordenar por atributo lê só o primeiro atributo do item e mistura valor plano com porcentagem na mesma régua
 
-`index.html:10034` · media · achado por: Catalogo, filtros e numeros · **passou pelos céticos** · fica para a F13-T43b: mostrar o plano e o % do mesmo atributo pede uma escolha visual do Leo (duas opções renderizadas)
+`index.html:10034` · media · achado por: Catalogo, filtros e numeros · **passou pelos céticos** · **CONSERTADO na F13-T43b (17/10/2026)**, opção A do Leo — a lista sai em duas partes (primeiro os pontos, depois a %), cada grupo diz qual é, e o card mostra todos os valores do item ("+20 · +8%")
 
 **Como quebra:** No catálogo, "Penetração Mágica" aparece como `flat` em uns itens e `percent` em outros, e "Sapatos Enfeitiçados" tem as duas (+20 plana e +8%). Passo a passo: 1) Catálogo > Filtros > Atributo > marcar o chip "Penetração Mágica" (a lista fica com 7 itens); 2) clicar em "Maior primeiro"; 3) a ordem sai Cajado do Vazio (+40%), Criptoflora (+30%), Sapatos Enfeitiçados (+20), Chama Sombria (+15), Ápice da Tempestade (+15), Joia da Ruína (+13%), Sapatos do Feiticeiro (+12) — ou seja, 40% e 30% são tratados como "maiores" que 20 pontos planos, que é comparar coisas diferentes; 4) o card de Sapatos Enfeitiçados mostra "Penetração Mágica: +20" e esconde o +8% (o find() para no primeiro), e o filtro/ordenação nunca enxergam o segundo; 5) os cabeçalhos de faixa saem repetidos: "Penetração Mágica: 10 a 14%" (Joia da Ruína) e logo abaixo "Penetração Mágica: 10 a 14" (Sapatos do Feiticeiro), duas faixas com o mesmo intervalo na mesma lista. Mesmo problema em "Velocidade de Movimento" (65 planos x 10%).
 

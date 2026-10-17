@@ -56,6 +56,8 @@ O número que a tela mostra é o que o resto usa (F13-T43, nºs 24, 32 e 33): a
 eficiência nunca arredonda para cima — a Joia da Ruína e o Cetro Vampírico
 saem 99,9%, fora do filtro "100% a 119%" e no grupo que vai até 99; o seletor de atributo conta itens; o preço com Reembolso sai
 com as casas do catálogo (2.543,75g, 3.083,03g) e a soma da caixa fecha.
+Ordenar por atributo não mistura pontos com % (F13-T43b, nº 25): primeiro os
+pontos, depois a %, e o card dos Sapatos Enfeitiçados mostra "+20 · +8%".
 
 **Calculadora** (F13-T42, bugs nºs 23 e 31) — o "Puxar da build ativa" usa
 os itens que a build compra: sem as caixas Opcionais e, na Escolha 1, só o
