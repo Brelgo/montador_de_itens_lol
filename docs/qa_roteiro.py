@@ -124,7 +124,7 @@ class Sessao:
         # perfil próprio: dois Chromes no mesmo user-data-dir e o segundo não sobe
         perfil = tempfile.mkdtemp(prefix="qa-montador-")
         self.proc = subprocess.Popen(
-            [chrome, "--headless=new", "--remote-debugging-port=%d" % porta, "--user-data-dir=" + perfil,
+            [chrome, "--headless=new", "--mute-audio", "--remote-debugging-port=%d" % porta, "--user-data-dir=" + perfil,
              "--window-size=1920,1080", "--no-first-run", "--hide-scrollbars", "about:blank"],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         atexit.register(self.fechar)
@@ -591,6 +591,45 @@ def checar_calculadora(s, p):
             veio["hp"] == 2000 and veio["armor"] > 0, "vida %s (era 2000) · armadura %s" % (veio["hp"], veio["armor"]))
     s.js("switchTab('build')")
     s.nova_build()
+
+
+def checar_som(s, p):
+    """F13-T46 (Leo, 17/10/2026: "os sons estão muito altos por padrão"): o volume
+    geral padrão caiu 30% (0,8 → 0,55), quem tinha o 0,8 antigo gravado passa ao
+    novo uma vez, quem escolheu outro volume fica com ele, e o hover dos cards do
+    Catálogo toca 60% mais baixo. O Chrome do roteiro roda mudo (--mute-audio)."""
+    print("\n%sSOM%s" % (AMARELO, FIM))
+
+    def recarregar(prepara):
+        s.js(prepara)
+        s.js("location.reload()")
+        time.sleep(2.0)
+        s.entrar()
+        return s.js("({ vol: Som.estado.volume, gravado: localStorage.getItem('som.volume'), marca: localStorage.getItem('som.padrao') })")
+
+    novo = recarregar("localStorage.removeItem('som.volume'); localStorage.removeItem('som.padrao'); 'ok'")
+    antigo = recarregar("localStorage.setItem('som.volume', '0.8'); localStorage.removeItem('som.padrao'); 'ok'")
+    depois = recarregar("'ok'")
+    escolheu = recarregar("localStorage.setItem('som.volume', '0.3'); localStorage.removeItem('som.padrao'); 'ok'")
+    oito = recarregar("localStorage.setItem('som.volume', '0.8'); localStorage.setItem('som.padrao', '2'); 'ok'")
+    p.conta("som", "volume geral padrão 30% mais baixo (e o 0,8 antigo passa ao novo uma vez)",
+            novo["vol"] == 0.55 and antigo["vol"] == 0.55 and antigo["gravado"] == "0.55" and depois["vol"] == 0.55
+            and escolheu["vol"] == 0.3 and oito["vol"] == 0.8,
+            "sem nada gravado %s · com o 0,8 antigo %s (gravou %s) · recarregando %s · quem escolheu 0,3 %s · 0,8 escolhido depois %s" % (
+                novo["vol"], antigo["vol"], antigo["gravado"], depois["vol"], escolheu["vol"], oito["vol"]))
+    s.js("Som.setVolume(0.55); 'ok'")
+    vols = s.js("""(() => { window.__vols = []; const orig = HTMLMediaElement.prototype.play;
+      HTMLMediaElement.prototype.play = function () { window.__vols.push([this.src.split('/').pop(), this.volume]); return orig.call(this); };
+      const it = CATALOG.items.find(i => i.itemClass && i.itemClass.core === 'AD' && /^Lendário/.test(i.tier));
+      Som.play('catalog:hover', { item: it });
+      Som.play('catalog:click', { item: it });
+      HTMLMediaElement.prototype.play = orig;
+      return window.__vols; })()""")
+    hover = [v for f, v in vols if f.startswith("ui_catalog_mod_hover_")]
+    clique = [v for f, v in vols if f.startswith("ui_shop_click_")]
+    p.conta("som", "hover dos cards do Catálogo 60% mais baixo",
+            len(hover) == 1 and abs(hover[0] - 0.55 * 0.4) < 1e-6 and len(clique) == 1 and abs(clique[0] - 0.55) < 1e-6,
+            "hover %s · clique %s (volume geral 0,55)" % (hover, clique))
 
 
 def checar_forja(s, p):
@@ -2417,6 +2456,7 @@ GRUPOS = [
     ("acessibilidade", checar_acessibilidade),
     ("resoluções", checar_resolucoes),
     ("calculadora", checar_calculadora),
+    ("som", checar_som),
     # Por último de propósito: com as 38 builds publicadas na tela, o navegador
     # fica pesado, e daí em diante qualquer medida sai contaminada.
     ("públicas", checar_publicas),

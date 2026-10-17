@@ -5454,7 +5454,10 @@ const Som = (() => {
   const TIERS_NEUTROS = ["Consumível", "Distribuído", "Trinket"];
   // Canais (Leo, 15/09/2026: "tenho amigos que mutaram tudo só para mutar o shopkeeper"):
   // interface (cliques, hover, chips, abrir/fechar), forja (moldes, martelo) e lojista (falas).
-  const estado = { volume: 0.8, mudo: false, destravado: false, canais: { interface: true, forja: true, lojista: true } };
+  // F13-T46 (Leo, 17/10/2026: "os sons estão muito altos por padrão, dá uma reduzida
+  // em 30%"): o volume geral padrão caiu de 0,8 para 0,55 (30%, no passo de 5 do controle).
+  const VOLUME_ANTIGO = 0.8, VOLUME_PADRAO = 0.55;
+  const estado = { volume: VOLUME_PADRAO, mudo: false, destravado: false, canais: { interface: true, forja: true, lojista: true } };
   function canalDe(base, opts) {
     if (opts.lojista || base.startsWith("shopkeeper_")) return "lojista";
     if (base.startsWith("build_") || base.startsWith("ui_build")) return "forja";
@@ -5488,8 +5491,14 @@ const Som = (() => {
 
   function carregar() {
     try {
-      const v = localStorage.getItem("som.volume");
+      let v = localStorage.getItem("som.volume");
       const m = localStorage.getItem("som.mudo");
+      // Quem tem o 0,8 antigo gravado ficou no padrão de antes: leva o padrão novo,
+      // uma vez só (a marca som.padrao impede de desfazer quem escolher 0,8 depois).
+      if (localStorage.getItem("som.padrao") !== "2") {
+        if (v !== null && Number(v) === VOLUME_ANTIGO) { v = String(VOLUME_PADRAO); localStorage.setItem("som.volume", v); }
+        localStorage.setItem("som.padrao", "2");
+      }
       if (v !== null && !Number.isNaN(Number(v))) estado.volume = Math.min(1, Math.max(0, Number(v)));
       estado.mudo = m === "1";
       const c = JSON.parse(localStorage.getItem("som.canais") || "null");
@@ -5563,7 +5572,9 @@ const Som = (() => {
       case "build:open":    return tocar("build_open");
       case "build:close":   return tocar("build_close");
       case "build:save":    return tocar("build_open", { cooldown: 300, grupo: "save" });   // martelo curto ao gravar
-      case "catalog:hover": return n ? tocar("ui_catalog_mod_hover_" + n) : false;   // sem cooldown: toca em todo card que o mouse tocar
+      // sem cooldown: toca em todo card que o mouse tocar. F13-T46 (Leo, 17/10/2026):
+      // 60% mais baixo que o resto (ganho 0,4 sobre o volume geral)
+      case "catalog:hover": return n ? tocar("ui_catalog_mod_hover_" + n, { ganho: 0.4 }) : false;
       case "catalog:click": {
         const neutro = !n || (ctx.item && TIERS_NEUTROS.includes(ctx.item.tier));
         return tocar(neutro ? "ui_shop_click_consumivel_distribuido_talisma" : "ui_shop_click_" + n, { cooldown: 80, grupo: "click" });
