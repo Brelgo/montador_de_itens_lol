@@ -407,7 +407,7 @@ A visualização aberta de uma pública aparece em Minhas com o coração. Clica
 
 ### 45. Na janela "Falta pouco para publicar", a build aberta com rascunho mostra o rascunho, e o que se escolhe ali vai para a cópia salva
 
-`index.html` (`donoDoPopup`, marcador "Itens no guia") · **baixa** · achado na revisão da F13-T25 · passou pela revisão, não reproduzido com gestos
+`index.html` (`donoDoPopup`, marcador "Itens no guia") · **baixa** · achado na revisão da F13-T25 · passou pela revisão, não reproduzido com gestos · **CONSERTADO na F13-T45 (17/10/2026)** — com rascunho, publicar pergunta antes da janela (Continuar editando, Descartar, Salvar e sair); a janela nunca mais abre em cima do rascunho
 
 Para a build aberta, a janela lê os marcadores e os itens do rascunho (`build`), e o marcador escolhido grava a lista inteira na cópia salva: um marcador que só existia no rascunho, ou um "item no guia" que a versão salva não tem, vira versão salva sem o Salvar. A revisão só chegou lá montando o estado por JS — com gestos, sair da forja com rascunho pergunta, e o Catálogo muda itens mas não marcadores —, então o caso é o de um item do Catálogo escolhido como marcador na janela antes de salvar.
 
@@ -433,13 +433,13 @@ O controle de verdade é um checkbox escondido atrás do desenho (o roteiro já 
 
 ### 49. Tirar do site duas vezes seguidas: o segundo pedido cobre o sucesso com um erro falso
 
-`index.html` (`despublicarBuild`) · **baixa** · achado na revisão da F13-T30 · passou pela revisão, não reproduzido à parte
+`index.html` (`despublicarBuild`) · **baixa** · achado na revisão da F13-T30 · passou pela revisão, não reproduzido à parte · **já resolvido pela trava da F13-T34** (o segundo clique mostra "Ainda tirando do site" e espera); a F13-T45 pôs uma checagem que prova, vista falhando com a trava desligada
 
 Despublicar não tem a trava que o publicar ganhou na F13-T30. Com a placa fechada depois do aviso de demora, clicar de novo em "Tirar do site" manda outro `apagar_build`; o primeiro apaga, o segundo não acha e a placa diz para apagar pelo painel do Supabase.
 
 ### 50. Na janela "Falta pouco para publicar", o campo do nome (e o da descrição) some na primeira letra
 
-`index.html` (`renderFaltaPublicar`) · **baixa** · achado na revisão da F13-T31 · passou pela revisão, não reproduzido à parte
+`index.html` (`renderFaltaPublicar`) · **baixa** · achado na revisão da F13-T31 · passou pela revisão, não reproduzido à parte · **CONSERTADO na F13-T45 (17/10/2026)** — o que faltava ao abrir a janela fica na tela até fechar
 
 A janela mostra só o que falta, e redesenha a cada tecla: o nome deixa de "faltar" na primeira letra, o grupo dele some com o campo em que se digitava, e o foco cai no `body`. Já era assim antes da F13-T31.
 
@@ -457,7 +457,7 @@ O mouseup compara a grade vista com o `cols`/`rows` guardados, e não com a grad
 
 ### 53. Na janela "Falta pouco para publicar", escolher de novo o mesmo marcador carimba a data
 
-`index.html` (`donoDoPopup`, `gravarNaBuild` → `gravarMetadados(…, true)`) · **baixa** · achado na revisão da F13-T33 · passou pela revisão, não reproduzido à parte
+`index.html` (`donoDoPopup`, `gravarNaBuild` → `gravarMetadados(…, true)`) · **baixa** · achado na revisão da F13-T33 · passou pela revisão, não reproduzido à parte · **CONSERTADO na F13-T45 (17/10/2026)** — a janela compara antes de gravar: o mesmo marcador ou o mesmo nome não carimbam a data
 
 A janela grava com "conteúdo mudou" a cada escolha (e a cada tecla no nome e na descrição) sem comparar — a forja, depois da F13-T33, só carimba quando a build muda de fato.
 
@@ -490,3 +490,9 @@ Com o Catálogo ordenado por "Eficiência de ouro", o selo do tier (ÉPICO, LEND
 `index.html` (`setForged`, `forgedEntry`, `renderBuildTotals`) · **baixa** · achado na revisão da F13-T42 (17/10/2026) · reproduzido em node · **já era assim antes**, não consertado
 
 O `setForged` deixa forjar qualquer posição, inclusive a 2ª de uma Escolha 1 (que não conta: só o padrão, o de cima). Com Presságio de Randuin no padrão e a Armadura de Espinhos forjada embaixo, o painel diz "Com Mestre Forjador em Armadura de Espinhos", mas os números são só os do Presságio (+350 Vida, +75 Armadura) — a Calculadora concorda com eles. A nota anuncia uma forja que não entra em lugar nenhum.
+
+### 59. Marcador repetido conta como um dos três e libera a publicação
+
+`index.html` (`setMarker`, `normMarkers`, `faltaParaPublicar`) · **baixa** · achado na revisão da F13-T45 (17/10/2026) · reproduzido em node · **já era assim antes** (na forja e na janela), não consertado
+
+Com os marcadores [AD, Vitalidade], escolher Vitalidade no primeiro espaço grava [Vitalidade, Vitalidade]; escolher Dano no terceiro deixa [Vitalidade, Vitalidade, Dano]. O `faltaParaPublicar` conta 3 e a build fica pronta para publicar com dois marcadores diferentes. Nada tira repetido. Pode ser de propósito — não achei decisão sobre isso.

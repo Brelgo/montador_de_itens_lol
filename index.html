@@ -7145,13 +7145,16 @@ async function publicarBuild(id) {
   }
   const b = library.builds.find(x => x.id === id);
   if (!b) return;
+  // F13-T25: publicar a build aberta com alterações não salvas publicava o
+  // rascunho e o gravava calado. Pergunta antes, como sair da forja.
+  // F13-T45 (nº 45): e pergunta ANTES da janela "Falta pouco para publicar" —
+  // com o rascunho, ela mostrava os marcadores e os itens dele, e o marcador
+  // escolhido ali gravava a lista do rascunho na cópia salva, sem o Salvar.
+  if (id === build.id && rascunho.sujo) { confirmarSaida(() => publicarBuild(id)); return; }
   const d = buildResumo(b);
   const falta = faltaParaPublicar(d);
   // F12-T1: em vez da placa que só informa, abre a janela que deixa resolver.
   if (falta.length) { abrirFaltaPublicar(id); return; }
-  // F13-T25: publicar a build aberta com alterações não salvas publicava o
-  // rascunho e o gravava calado. Pergunta antes, como sair da forja.
-  if (id === build.id && rascunho.sujo) { confirmarSaida(() => publicarBuild(id)); return; }
   if (!Servidor.ativo()) { mostrarPub("Sem servidor", "A página não tem a URL e a chave do servidor (data/servidor.js).", "erro"); return; }
   noServidor.set(id, "publicando");
   try {
@@ -8928,12 +8931,19 @@ function abrirFaltaPublicar(id) {
   // troca o objeto em library.builds, e o que se digitava depois ia para uma
   // cópia solta: aparecia na tela, saía na publicação e sumia do disco.
   pubFalta = { id, get b() { return library.builds.find(x => x.id === id) || b; } };
+  pubFalta.nomeOriginal = valorAtual("name");   // F13-T45: campo vazio volta a ele, nunca grava nome vazio
   const dlg = document.getElementById("pub-falta");
   const nomeAtual = valorAtual("name");
   // Nome padrão é justamente o que a validação recusa: melhor o campo vazio.
   const padrao = !nomeAtual.trim() || /^Build \d+$/.test(nomeAtual.trim()) || nomeAtual.trim() === "Build sem nome";
   document.getElementById("pf-nome").value = padrao ? "" : nomeAtual;
   document.getElementById("pf-desc").value = valorAtual("desc");
+  // F13-T45 (nº 50): o que faltava ao abrir fica na tela até fechar. A janela
+  // redesenha a cada tecla e escondia o nome assim que ele deixava de faltar —
+  // na primeira letra —, com o campo e o foco junto.
+  const faltava = faltaParaPublicar(buildResumo(pubFalta.b));
+  const tinha = (parte) => faltava.some(f => f.startsWith(parte));
+  pubFalta.mostrar = { nome: tinha("nome"), desc: tinha("descrição"), marks: faltava.some(f => f.includes("marcador")), itens: tinha("itens") };
   dlg.hidden = false;
   renderFaltaPublicar();
   Som.play("catalog:pergaminho");
@@ -8945,18 +8955,26 @@ function valorAtual(campo) {
   if (!pubFalta) return "";
   return (pubFalta.id === build.id ? build[campo] : pubFalta.b[campo]) || "";
 }
+// F13-T45 (nº 53): a "Última atualização" só muda quando a build muda — como na
+// forja depois da F13-T33. Antes, escolher de novo o mesmo marcador (ou uma tecla
+// que não muda o texto, como um espaço no fim) carimbava a data.
 function gravarNaBuild(campo, valor) {
   if (!pubFalta) return;
+  if ((valorAtual(campo) || "") === valor) return;
   gravarMetadados(pubFalta.b, { [campo]: valor }, true);
 }
 function donoDoPopup() {
   const ativo = pubFalta.id === build.id;
+  let mudou = false;
   return {
     get markers() { return ativo ? build.markers : pubFalta.b.markers; },
-    set markers(v) { pubFalta.b.markers = v; if (ativo) build.markers = v; },
+    set markers(v) {
+      mudou = JSON.stringify(normMarkers(this.markers)) !== JSON.stringify(normMarkers(v));
+      pubFalta.b.markers = v; if (ativo) build.markers = v;
+    },
     champion: ativo ? build.champion : pubFalta.b.champion,
     cats: ativo ? build.cats : pubFalta.b.cats,
-    aoMudar: () => { gravarMetadados(pubFalta.b, {}, true); renderFaltaPublicar(); renderBuildIndex(); },
+    aoMudar: () => { gravarMetadados(pubFalta.b, {}, mudou); renderFaltaPublicar(); renderBuildIndex(); },
   };
 }
 
@@ -8965,10 +8983,11 @@ function renderFaltaPublicar() {
   const d = buildResumo(pubFalta.b);
   const falta = faltaParaPublicar(d);
   const tem = (parte) => falta.some(f => f.startsWith(parte));
-  document.getElementById("pf-nome-g").hidden = !tem("nome");
-  document.getElementById("pf-desc-g").hidden = !tem("descrição");
-  document.getElementById("pf-marks-g").hidden = !falta.some(f => f.includes("marcador"));
-  document.getElementById("pf-itens-g").hidden = !tem("itens");
+  const ja = pubFalta.mostrar || {};
+  document.getElementById("pf-nome-g").hidden = !(ja.nome || tem("nome"));
+  document.getElementById("pf-desc-g").hidden = !(ja.desc || tem("descrição"));
+  document.getElementById("pf-marks-g").hidden = !(ja.marks || falta.some(f => f.includes("marcador")));
+  document.getElementById("pf-itens-g").hidden = !(ja.itens || tem("itens"));
 
   const ms = normMarkers(d.markers);
   document.getElementById("pf-marks").innerHTML = Array.from({ length: MAX_MARCADORES }, (_, i) => {
@@ -8998,7 +9017,10 @@ function fecharFaltaPublicar() {
 function initFaltaPublicar() {
   const nome = document.getElementById("pf-nome");
   const desc = document.getElementById("pf-desc");
-  nome.addEventListener("input", () => { gravarNaBuild("name", nome.value.trim()); renderFaltaPublicar(); });
+  // F13-T45: o campo abre vazio quando o nome é o padrão ("Build 3"); um espaço
+  // ali gravava nome vazio — a build ficava sem nome na lista. Vazio é "não
+  // escolhi ainda": fica (ou volta) o nome com que a janela abriu.
+  nome.addEventListener("input", () => { gravarNaBuild("name", nome.value.trim() || pubFalta.nomeOriginal); renderFaltaPublicar(); });
   desc.addEventListener("input", () => { gravarNaBuild("desc", desc.value.trim()); renderFaltaPublicar(); });
   document.getElementById("pf-marks").addEventListener("click", (e) => {
     const x = e.target.closest(".mark-x");

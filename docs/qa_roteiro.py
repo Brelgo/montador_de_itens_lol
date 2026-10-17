@@ -632,6 +632,66 @@ def checar_som(s, p):
             "hover %s · clique %s (volume geral 0,55)" % (hover, clique))
 
 
+def checar_falta_publicar(s, p):
+    """F13-T45 (nºs 50 e 53): na janela "Falta pouco para publicar", o campo do
+    nome sumia na primeira letra (com o foco dentro), e escolher de novo o mesmo
+    marcador (ou uma tecla que não muda o texto) carimbava a "Última atualização"."""
+    print("\n%sFALTA POUCO PARA PUBLICAR%s" % (AMARELO, FIM))
+    s.nova_build()
+    s.js("""(() => { if (build.editing) document.getElementById('edit-switch').click();
+      build.desc = ''; build.markers = []; build.cats[3].items = [{ itemId: 'long-sword', note: '' }]; gravarBuild();
+      showBuildScreen('lista'); biSelected = build.id; renderBuildIndex(); return 'ok'; })()""")
+    time.sleep(0.5)
+    s.clicar('#bi-detail [data-act="publish"]', 0.8)
+    aberta = s.js("!document.getElementById('pub-falta').hidden")
+    s.clicar("#pf-nome", 0.2)
+    s.envia("Input.insertText", {"text": "T"})
+    time.sleep(0.4)
+    r = s.js("({ grupo: !document.getElementById('pf-nome-g').hidden, foco: document.activeElement && document.activeElement.id })")
+    s.envia("Input.insertText", {"text": "ítulo"})
+    time.sleep(0.3)
+    nome = s.js("(library.builds.find(b => b.id === biSelected) || {}).name")
+    p.conta("falta publicar", "o campo do nome fica na tela enquanto se digita",
+            aberta and r["grupo"] and r["foco"] == "pf-nome" and nome == "Título",
+            "janela %s · grupo visível %s · foco em %s · nome gravado %r" % (aberta, r["grupo"], r["foco"], nome))
+    d = s.js("""(async () => { const b = () => library.builds.find(x => x.id === biSelected);
+      const m = { t: 'tag', id: MARCADORES[0].id };
+      markerDono = donoDoPopup(); markerSlot = 0; setMarker(0, m); markerDono = null;
+      const t1 = b().updatedAt; await new Promise(r => setTimeout(r, 30));
+      markerDono = donoDoPopup(); markerSlot = 0; setMarker(0, m); markerDono = null;
+      const t2 = b().updatedAt; await new Promise(r => setTimeout(r, 30));
+      gravarNaBuild('name', b().name);
+      const t3 = b().updatedAt; await new Promise(r => setTimeout(r, 30));
+      markerDono = donoDoPopup(); markerSlot = 1; setMarker(1, { t: 'tag', id: MARCADORES[1].id }); markerDono = null;
+      const t4 = b().updatedAt;
+      return { mesmoMarcador: t2 === t1, mesmoNome: t3 === t1, outroMarcador: t4 > t1 }; })()""")
+    s.clicar("#pf-close", 0.3)
+    p.conta("falta publicar", "a data só muda quando a build muda",
+            d["mesmoMarcador"] and d["mesmoNome"] and d["outroMarcador"], "%s" % d)
+    # a revisão da T45: com o nome padrão o campo abre vazio, e um espaço ali
+    # gravava nome vazio (a build ficava sem nome na lista) e carimbava a data
+    s.nova_build()
+    s.js("""(() => { if (build.editing) document.getElementById('edit-switch').click();
+      build.desc = ''; build.markers = []; build.cats[3].items = [{ itemId: 'long-sword', note: '' }]; gravarBuild();
+      showBuildScreen('lista'); biSelected = build.id; renderBuildIndex(); return 'ok'; })()""")
+    time.sleep(0.5)
+    antes = s.js("(() => { const b = library.builds.find(x => x.id === biSelected); return { nome: b.name, data: b.updatedAt }; })()")
+    s.clicar('#bi-detail [data-act="publish"]', 0.8)
+    s.clicar("#pf-nome", 0.2)
+    s.envia("Input.insertText", {"text": " "})
+    time.sleep(0.4)
+    espaco = s.js("(() => { const b = library.builds.find(x => x.id === biSelected); return { nome: b.name, data: b.updatedAt }; })()")
+    s.envia("Input.insertText", {"text": "X"})
+    time.sleep(0.3)
+    s.js("(() => { const c = document.getElementById('pf-nome'); c.value = ''; c.dispatchEvent(new Event('input', { bubbles: true })); return 'ok'; })()")
+    time.sleep(0.3)
+    apagou = s.js("(library.builds.find(x => x.id === biSelected) || {}).name")
+    s.clicar("#pf-close", 0.3)
+    p.conta("falta publicar", "campo do nome vazio não apaga o nome da build",
+            antes["nome"] and espaco["nome"] == antes["nome"] and espaco["data"] == antes["data"] and apagou == antes["nome"],
+            "nome %r · depois de um espaço %r (data igual %s) · depois de apagar %r" % (antes["nome"], espaco["nome"], espaco["data"] == antes["data"], apagou))
+
+
 def checar_forja(s, p):
     print("\n%sFORJA%s" % (AMARELO, FIM))
     s.nova_build()
@@ -2005,6 +2065,22 @@ def checar_orfa(s, p):
     s.js("fecharPub(); window.__soltarApagar && window.__soltarApagar(); 'ok'"); time.sleep(0.6)
     p.conta("publicação órfã", "publicar durante uma exclusão no ar espera", exc["placa"] == "Ainda tirando do site" and exc["pubs"] == pubs,
             "placa: %s · publicar_build: %d" % (exc["placa"] or "—", exc["pubs"] - pubs))
+    # F13-T45 (nº 49): tirar do site duas vezes — o segundo pedido cobria o
+    # sucesso do primeiro com um erro falso ("apague pelo painel do Supabase")
+    s.js("""(() => { fecharPub(); createNewBuild('Dupla'); build.desc = 'descrição'; build.markers = normMarkers(MARCADORES.slice(0, 3).map(m => ({ t: 'tag', id: m.id })));
+      build.cats[3].items = [{ itemId: 'long-sword', note: '' }]; gravarBuild();
+      gravarMetadados(library.builds.find(b => b.id === build.id), { pubId: 'qa0049', pubVersao: 1, pubEm: Date.now(), pubPatch: CATALOG.meta.patch });
+      window.__apagarPreso = true; window.__soltarApagar = null; showBuildScreen('lista'); biSelected = build.id; renderBuildIndex(); return 'ok'; })()""")
+    time.sleep(0.5)
+    ap = len(s.js("window.__apagados")); nd = len(s.dialogos)
+    s.clicar('#bi-detail [data-act="unpub"]', 0.9); s.clicar("#pub-close", 0.3)
+    s.clicar('#bi-detail [data-act="unpub"]', 0.5)
+    dupla = s.js("({ placa: document.getElementById('pub-dialog').hidden ? '' : document.getElementById('pub-title').textContent, apagados: window.__apagados.length })")
+    s.js("fecharPub(); window.__soltarApagar && window.__soltarApagar(); 'ok'"); time.sleep(0.8)
+    final = s.js("({ placa: document.getElementById('pub-dialog').hidden ? '' : document.getElementById('pub-title').textContent })")
+    p.conta("publicação órfã", "tirar do site duas vezes: o segundo espera, sem erro falso",
+            dupla["placa"] == "Ainda tirando do site" and dupla["apagados"] - ap == 1 and len(s.dialogos) - nd == 1 and final["placa"] == "Build retirada do site",
+            "segundo clique: %s · apagar_build: %d · perguntas: %d · no fim: %s" % (dupla["placa"] or "—", dupla["apagados"] - ap, len(s.dialogos) - nd, final["placa"] or "—"))
     s.js("fecharPub(); window.setTimeout = window.__stOrig; window.fetch = window.__fetchOrig; 'ok'")
     p.conta("publicação órfã", "se a build some mesmo assim, a publicação sai do site", fim["placa"] == "Publicação desfeita" and "qa0042b" in fim["apagados"],
             "placa: %s · apagar_build: %s" % (fim["placa"] or "—", fim["apagados"]))
@@ -2190,35 +2266,32 @@ def checar_troca(s, p):
     e = estado()
     p.conta("troca", "excluir outra build não grava o rascunho", not e["existe_c"] and e["sujo"] and not e["a_disco"],
             "excluída %s, sujo %s, rascunho de A no disco %s" % (not e["existe_c"], e["sujo"], e["a_disco"]))
+    # F13-T45 (nº 45): com rascunho, publicar pergunta ANTES da janela "Falta
+    # pouco" — antes ela abria com o rascunho, e o marcador escolhido ali levava
+    # a lista do rascunho para a cópia salva. Continuar editando não grava nada.
     preparar()
     s.clicar('.bi-row[data-id="%s"]' % id_a, 0.5)
     s.clicar('#bi-detail [data-act="publish"]', 0.8)
-    aberta = s.js("!document.getElementById('pub-falta').hidden")
-    s.clicar("#pf-nome", 0.2)
-    s.envia("Input.insertText", {"text": "Nome da troca"})
-    time.sleep(0.6)
     e = estado()
-    s.clicar("#pf-close", 0.4)
-    p.conta("troca", "\"Falta pouco para publicar\" grava o nome, não as caixas",
-            aberta and e["nome_a"] == "Nome da troca" and e["sujo"] and not e["a_disco"],
-            "janela %s, nome no disco %r, sujo %s, rascunho no disco %s" % (aberta, e["nome_a"], e["sujo"], e["a_disco"]))
-    # Achado pela revisão da T25: um Ctrl+S com a janela aberta troca o objeto da
-    # build na biblioteca, e o que se digitava depois ia para uma cópia solta.
+    aberta = s.js("!document.getElementById('pub-falta').hidden")
+    responder("voltar")
+    p.conta("troca", "publicar com rascunho pergunta antes da janela \"Falta pouco\"",
+            e["dialogo"] and not aberta and not e["a_disco"],
+            "pergunta %s, janela %s, rascunho no disco %s" % (e["dialogo"], aberta, e["a_disco"]))
+    # Salvar e seguir: a janela abre depois, e o que se digita nela grava na cópia
+    # viva (a da T25: o Salvar troca o objeto da build na biblioteca).
     preparar()
     s.clicar('.bi-row[data-id="%s"]' % id_a, 0.5)
     s.clicar('#bi-detail [data-act="publish"]', 0.8)
-    s.clicar("#pf-desc", 0.2)   # a janela só mostra o que falta: o nome já foi
-    for tipo in ("rawKeyDown", "keyUp"):
-        s.envia("Input.dispatchKeyEvent", {"type": tipo, "key": "s", "code": "KeyS", "windowsVirtualKeyCode": 83, "modifiers": 2})
-    time.sleep(0.6)
-    salvou = s.js("!rascunho.sujo")
+    responder("salvar")
+    aberta = s.js("!document.getElementById('pub-falta').hidden")
     s.clicar("#pf-desc", 0.2)
-    s.envia("Input.insertText", {"text": "Descrição depois do Ctrl+S"})
+    s.envia("Input.insertText", {"text": "Descrição depois do Salvar"})
     time.sleep(0.6)
     desc = s.js("(JSON.parse(localStorage.getItem('lol-builds-v3')).builds.find(b => b.id === %s) || {}).desc || ''" % json.dumps(id_a))
     s.clicar("#pf-close", 0.4)
-    p.conta("troca", "Ctrl+S com a janela aberta: o que vem depois grava", salvou and desc == "Descrição depois do Ctrl+S",
-            "Ctrl+S salvou %s, descrição no disco %r" % (salvou, desc))
+    p.conta("troca", "Salvar e seguir: a janela abre e o que se digita grava", aberta and desc == "Descrição depois do Salvar",
+            "janela %s, descrição no disco %r" % (aberta, desc))
     limpar_a()
     preparar()
     s.js("showBuildScreen('forja'); 'ok'"); time.sleep(0.6)
@@ -2453,6 +2526,7 @@ GRUPOS = [
     ("atualização", checar_atualizacao),
     ("rascunho", checar_rascunho),
     ("troca", checar_troca),
+    ("falta publicar", checar_falta_publicar),
     ("acessibilidade", checar_acessibilidade),
     ("resoluções", checar_resolucoes),
     ("calculadora", checar_calculadora),

@@ -63,6 +63,12 @@ padrão, e o painel "Atributos da build" da forja conta a mesma build; itens
 sem vida não apagam a vida digitada. Roda depois dos grupos da
 forja, porque troca de aba e de caixas.
 
+**Falta pouco para publicar** (F13-T45, nºs 45, 49, 50 e 53) — com rascunho na
+forja, publicar pergunta antes de abrir a janela; o campo do nome fica na tela
+(e com o foco) enquanto se digita; o mesmo marcador ou o mesmo nome não
+carimbam a "Última atualização"; tirar do site duas vezes faz o segundo
+esperar, sem erro falso.
+
 **Forja** — a build nova nasce com as 8 caixas; item entra na caixa; o modo
 leitura esconde os atributos.
 
