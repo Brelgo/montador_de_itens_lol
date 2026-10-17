@@ -790,6 +790,36 @@ def checar_texto(s, p):
                         for k in a if a[k] != d[k])
     p.conta("texto", "exportar e reimportar devolve a mesma build", importou and antes == depois, det)
 
+    # F13-T38 (bug nº 35): a linha RUNAS só saía com runa na primária. Com a
+    # trilha escolhida e sem runa, o texto ia só com RUNAS 2 e FRAGMENTOS, e na
+    # volta a secundária sumia junto (o normRunas não guarda secundária sem
+    # primária) — sem aviso. O pior dado: primária sem runa com a secundária
+    # cheia; só a trilha; a secundária escolhida sem runa.
+    r38 = s.js("""(() => { const t = RUNAS.trilhas[0], t2 = RUNAS.trilhas[1], F = RUNAS.fragmentos;
+      const it = CATALOG.items.find(i => i.tier === 'Lendário').namePt;
+      const volta = (pg) => { const linhas = linhasDeRunas(pg);
+        const r = textToBuild(['BUILD: T38', ...linhas, '[COMUM] Núcleo', '- ' + it].join(String.fromCharCode(10)));
+        return { ok: JSON.stringify(normRunas(pg)) === JSON.stringify(normRunas(r.runas)) && !r.unknown.length,
+                 linhas: linhas.join(' ¦ '), unknown: r.unknown }; };
+      return {
+        semRuna: volta({ primaria: t.id, secundaria: t2.id, secundarios: [t2.slots[1].runas[0].id, t2.slots[3].runas[0].id],
+                         fragmentos: [F[0].runas[0].id, F[1].runas[0].id, F[2].runas[0].id] }),
+        soTrilha: volta({ primaria: t.id }),
+        secSemRuna: volta({ primaria: t.id, assinatura: t.slots[0].runas[0].id, secundaria: t2.id }),
+      }; })()""")
+    p.conta("texto", "primária sem runa não leva a secundária junto", r38["semRuna"]["ok"], r38["semRuna"]["linhas"][:150])
+    p.conta("texto", "trilha escolhida sem runa volta no texto",
+            r38["soTrilha"]["ok"] and r38["secSemRuna"]["ok"],
+            "só a trilha: %s · secundária sem runa: %s" % (r38["soTrilha"]["linhas"][:60], r38["secSemRuna"]["linhas"][:90]))
+    # a revisão da T38: o link também perdia a trilha sem runa (só levava a
+    # página com alguma runa escolhida) — o texto e o link levam a mesma página
+    lk = s.js("""(() => { const t = RUNAS.trilhas[0], t2 = RUNAS.trilhas[1];
+      const vai = (pg) => { const b = { ...build, id: 'lk38', isActive: false, runas: normRunas(pg) };
+        const url = buildParaLink(b); const volta = linkParaBuild(url.slice(url.indexOf('#b=')));
+        return JSON.stringify(normRunas(pg)) === JSON.stringify(normRunas(volta && volta.runas)); };
+      return { soTrilha: vai({ primaria: t.id }), comSec: vai({ primaria: t.id, secundaria: t2.id }) }; })()""")
+    p.conta("texto", "o link leva a trilha escolhida sem runa", lk["soTrilha"] and lk["comSec"], "%s" % lk)
+
     # F13-T36 (bugs nºs 17 e 28): a descrição e a observação têm várias linhas,
     # e o texto é uma linha por campo. A observação saía com a quebra crua (a
     # segunda linha sumia, ou virava descrição da caixa com "#", ou item com

@@ -24,8 +24,8 @@ python data/gerar_runas_json.py
 | F9 | Cabeçalho: nota de Força Adaptativa | Leo | ✔ resolvido (F13-T16) |
 | F9b | Cabeçalho: o que é "movimento debilitado" (as páginas da wiki divergem entre si) | Leo | **aberto, é escolha sua** |
 | A1 | O leitor jogava fora o bloco "Controle de grupo válido" de 5 runas, calado | Forjador | ✔ resolvido em 23/09/2026 (F13-T17) |
-| A2 | Bug nº 35: o texto perde a primária e a secundária quando a primária está sem runa | Forjador | aberto (média) |
-| A3 | Bug nº 19: "Copiar como texto" do lote não leva runas | Forjador | aberto (média) |
+| A2 | Bug nº 35: o texto perde a primária e a secundária quando a primária está sem runa | Forjador | ✔ resolvido em 17/10/2026 (F13-T38); resta o aviso para `RUNAS 2:` escrito à mão sem `RUNAS:` |
+| A3 | Bug nº 19: "Copiar como texto" do lote não leva runas | Forjador | ✔ resolvido em 01/10/2026 (F13-T37, aprovada em 17/10/2026): o lote usa o mesmo escritor da build |
 | A4 | Bug nº 29: build publicada aberta "só para ver" tem as runas editáveis | Forjador | aberto (baixa) |
 | A5 | O app não aplica nenhuma troca automática, só avisa, e a tela não dizia isso | Forjador | ✔ resolvido em 23/09/2026 (F13-T18) |
 | A6 | Documentos desatualizados (o SQL do servidor é o que tem risco) | Forjador | aberto (média) |
@@ -122,10 +122,10 @@ O `gerar_runas_json.py` só reconhece `Atributos:`, `Classes:`, `Força Adaptati
 
 O conteúdo desses blocos confere com a wiki. É o mesmo defeito do leitor que descartava 4 runas em 18/09: ele ignora o que não entende e não avisa. O conserto é ler o bloco e mostrá-lo na ficha, ou no mínimo contar as linhas que não reconhece e apontar como pendência. (A parte do `Atributos: —` já foi feita na F13-T16.)
 
-### A2. Bug nº 35 (novo, reproduzido em 23/09/2026): o texto perde a primária e a secundária
+### A2. ✔ Bug nº 35 (reproduzido em 23/09/2026; consertado na F13-T38, 17/10/2026): o texto perde a primária e a secundária
 A linha `RUNAS:` só sai quando alguma runa da primária está escolhida. Com a trilha primária escolhida mas sem runa, e a secundária completa, o texto leva só `RUNAS 2:` e `FRAGMENTOS:`. Na volta, o `normRunas` sem primária descarta também a secundária. Resultado: a página volta só com os fragmentos, sem aviso nenhum. É da mesma família dos nºs 6 e 16. O link e a publicação não têm esse problema.
 
-### A3. Bug nº 19 (a parte das runas): "Copiar como texto" do lote
+### A3. ✔ Bug nº 19 (a parte das runas; consertado na F13-T37): "Copiar como texto" do lote
 `loteParaTexto` não chama `linhasDeRunas`. Quem usa o lote como cópia de segurança perde a página de runas, a ordem de habilidades e o Mestre Forjador. A outra metade do nº 19 (várias builds reimportadas viram uma só) não é de runa.
 
 ### A4. Bug nº 29: build publicada aberta "só para ver" tem as runas editáveis

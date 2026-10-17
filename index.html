@@ -6775,10 +6775,13 @@ function linhasDeRunas(pagina) {
   // habilidades. Antes os vazios eram espremidos e a leitura, que confia na
   // posição, punha a runa do Slot 3 no Slot 2 e jogava fora — calada.
   const vaga = (id) => nome(id) || "-";
+  // F13-T38 (bug nº 35): a trilha escolhida sai mesmo sem runa. A linha RUNAS
+  // só saía com runa na primária; sem ela, a leitura não tinha primária e o
+  // normRunas jogava fora a secundária junto — calado.
   const prim = [p.assinatura, ...p.slots];
-  if (prim.some(nome) && trilha(p.primaria)) out.push(`RUNAS: ${trilha(p.primaria)} > ${prim.map(vaga).join(" | ")}`);
+  if (trilha(p.primaria)) out.push(`RUNAS: ${trilha(p.primaria)} > ${prim.map(vaga).join(" | ")}`);
   const sec = p.secundarios.map(nome).filter(Boolean);   // secundária: duas, reconhecidas pelo nome
-  if (sec.length && trilha(p.secundaria)) out.push(`RUNAS 2: ${trilha(p.secundaria)} > ${sec.join(" | ")}`);
+  if (trilha(p.secundaria)) out.push(`RUNAS 2: ${trilha(p.secundaria)} > ${sec.length ? sec.join(" | ") : "- | -"}`);
   if (p.fragmentos.some(nome)) out.push(`FRAGMENTOS: ${p.fragmentos.map(vaga).join(" | ")}`);
   return out;
 }
@@ -6988,7 +6991,8 @@ function buildParaLink(b) {
   // link deixava de fora runas, habilidades, layout e o Mestre Forjador. Campos
   // opcionais: link antigo, sem eles, continua abrindo como sempre abriu.
   const p = normRunas(d.runas);
-  if (runasEscolhidas(p)) compacto.r = [p.primaria, p.assinatura, p.slots, p.secundaria, p.secundarios, p.fragmentos];
+  // F13-T38: a trilha escolhida vai mesmo sem runa — o texto e o link levam a mesma página
+  if (runasEscolhidas(p) || p.primaria) compacto.r = [p.primaria, p.assinatura, p.slots, p.secundaria, p.secundarios, p.fragmentos];
   const h = normHabilidades(d.habilidades);
   if (h.some(Boolean)) compacto.h = h.map(x => x || "-").join("");        // 18 letras, "-" = nível em branco
   if (layoutValido(d.layout) !== "tabuleiro") compacto.l = layoutValido(d.layout);

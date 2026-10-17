@@ -85,6 +85,10 @@ de fora não desmontam a linha; texto antigo com uma quebra invisível no meio
 da linha fica inteiro; um campo de uma linha com uma quebra dentro não abre
 linha nova.
 
+**Texto, a trilha sem runa** (F13-T38, bug nº 35) — a primária escolhida sem
+runa não leva a secundária junto na ida e volta; só a trilha, ou a secundária
+escolhida sem runa, também voltam.
+
 **Texto, o que o formato promete** (F13-T36b, achados da revisão da T36) —
 pelo botão Importar: tópico de IA (`* dica`, `• dica`) antes da primeira caixa
 vai para o "não encontrei" sem deixar uma caixa "Importados" vazia; texto só de

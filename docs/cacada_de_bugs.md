@@ -327,9 +327,9 @@ O atributo do Biscoito no catálogo é uma frase longa ("+30 Vida máxima perman
 
 ### 35. O texto perde a trilha primária e a secundária quando a primária está sem runa
 
-`index.html` (`linhasDeRunas` e `normRunas`) · média · achado pela varredura das runas em 23/09/2026 · **REPRODUZIDO**
+`index.html` (`linhasDeRunas` e `normRunas`) · média · achado pela varredura das runas em 23/09/2026 · **CONSERTADO na F13-T38 (17/10/2026)** — a trilha escolhida sai no texto mesmo sem runa (`RUNAS: Precisão > - | - | - | -`, e `RUNAS 2: … > - | -`), e a ida e volta devolve a página igual. A revisão achou o mesmo defeito no link ("o link e a publicação não sofrem disso" só valia com alguma runa escolhida): o link também passou a levar a trilha sem runa. Fica de fora: texto escrito à mão (ou por IA) só com `RUNAS 2:`, sem `RUNAS:`, ainda perde a secundária sem aviso — o documento passou a dizer que a secundária precisa da primária, e o aviso pede um lugar próprio na mensagem da importação (a lista de "não encontrei" fala de nomes do catálogo)
 
-A linha `RUNAS:` só sai quando alguma runa da primária está escolhida. Com Precisão escolhida sem runa e Dominação com Golpe Desleal e Sexto Sentido, o texto saiu só com `RUNAS 2:` e `FRAGMENTOS:`. Na volta, o `normRunas` sem primária descarta a secundária, e a página voltou só com os fragmentos, sem aviso nenhum (`unknown` vazio). É da mesma família dos nºs 6 e 16. O link e a publicação não sofrem disso. Registrado também em `docs/pendencias_runas.md` (A2).
+A linha `RUNAS:` só sai quando alguma runa da primária está escolhida. Com Precisão escolhida sem runa e Dominação com Golpe Desleal e Sexto Sentido, o texto saiu só com `RUNAS 2:` e `FRAGMENTOS:`. Na volta, o `normRunas` sem primária descarta a secundária, e a página voltou só com os fragmentos, sem aviso nenhum (`unknown` vazio). É da mesma família dos nºs 6 e 16. O link e a publicação não sofrem disso (o link só quando há alguma runa escolhida — sem nenhuma, ele também perdia a trilha; consertado junto na F13-T38). Registrado também em `docs/pendencias_runas.md` (A2).
 
 ### 36. Com a Leitura calma, a tela de Runas rola de lado em 1280 (modos Resumido e Completo)
 
