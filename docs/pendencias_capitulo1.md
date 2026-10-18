@@ -16,7 +16,7 @@ Fica fora daqui o que já foi decidido no Capítulo 1 (`docs/decisoes_capitulo1.
 | A2 | Redenção: eficiência sobre o preço errado | ✔ 97,83% | ✔ automático (F13-T19) |
 | B1 | `goldValueTotal` com dois sentidos | ✔ "Valor de Ouro (atributos)" e "(base)" nos 225 | ✔ F13-T20: o valor em ouro é o `goldValueBase`, o contorno da T15 saiu, e a ficha mostra "Só atributos" quando o efeito conta |
 | B2 | Biscoito: nota de pesquisa no atributo | ✔ nota movida para Notas | ✔ automático (F13-T19) |
-| C1, C2 | Atlas Mundial e Bússola Rúnica no 26.19 | sem mudança: o Data Dragon ainda é 16.18.1 | nada a fazer até o patch do catálogo subir |
+| C1, C2 | Atlas Mundial e Bússola Rúnica no 26.19 | ✔ 16.19.1 (03/10) e 16.20.1 (18/10/2026) | ✔ F13-T49: o catálogo do app passou ao 16.20.1 |
 | D1 | Ápice em números | ✔ "Ápice numérico" em 102 itens | ✔ F13-T21 (atributos: Atma 50%, Couraça 841,18) e F13-T22 (valor e eficiência no ápice; sem valor fixo, o texto do catálogo) |
 | D2 | Ouro do Mestre Forjador | ✔ tabelas de preço + "Mestre Forjador (ouro)" (1.000g nos 109) | ✔ F13-T22: o item forjado soma os 1.000g na caixa e na build; a ficha mostra "Forjado" |
 | D3 | Fragmentos do Atributo adicional | ✔ bloco `Fragmentos[]` (34) | ✔ F13-T23: cada Atributo adicional da build guarda o fragmento escolhido, que entra nos atributos e no ouro |

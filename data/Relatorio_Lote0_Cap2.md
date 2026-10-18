@@ -1,6 +1,6 @@
 # Relatório — Lote 0 do Capítulo 2 (catálogo → JSON)
 
-Fonte: `Catalogo_Itens_LoL.md` · Patch: **16.18.1** · Itens: **225** · Saída: `catalog.json`
+Fonte: `Catalogo_Itens_LoL.md` · Patch: **16.20.1** · Itens: **225** · Saída: `catalog.json`
 
 ## Tiers
 
@@ -12,8 +12,8 @@ Fonte: `Catalogo_Itens_LoL.md` · Patch: **16.18.1** · Itens: **225** · Saída
 - Básico: 15
 - Épico: 44
 - Lendário: 114
-- Evolução: 10
-- Lendário (Evolução): 2
+- Evolução: 11
+- Lendário (Evolução): 1
 - Épico (Evolução): 1
 
 ## Modos de jogo (contagem de itens)
@@ -31,7 +31,7 @@ Fonte: `Catalogo_Itens_LoL.md` · Patch: **16.18.1** · Itens: **225** · Saída
 
 ## Categoria de Atributo — 29 valores em uso
 
-Aceleração de Feitiços de Invocador (2), Aceleração de Habilidade (70), Aceleração de Habilidade Básica (1), Aceleração de Ultimate (4), Acerto Crítico (18), Armadura (25), Dano Crítico (1), Dano a Tropas (4), Dano de Ataque (70), Efeitos ao Contato (6), Geração de Ouro (8), Letalidade (14), Mana (19), Movimento (38), Penetração Mágica (4), Penetração Mágica Percentual (4), Penetração de Armadura (4), Poder de Cura e Escudo (8), Poder de Habilidade (54), Regeneração de Mana (24), Regeneração de Vida (20), Resistência Mágica (22), Resistência a Lentidão (3), Roubo de Vida (7), Tenacidade (5), Vampirismo (6), Velocidade de Ataque (26), Vida (78), none (os fragmentos possíveis estão em Habilidade) (1)
+Aceleração de Feitiços de Invocador (2), Aceleração de Habilidade (70), Aceleração de Habilidade Básica (1), Aceleração de Ultimate (4), Acerto Crítico (18), Armadura (25), Dano Crítico (1), Dano a Tropas (4), Dano de Ataque (70), Efeitos ao Contato (6), Geração de Ouro (8), Letalidade (14), Mana (19), Movimento (38), Penetração Mágica (4), Penetração Mágica Percentual (4), Penetração de Armadura (4), Poder de Cura e Escudo (8), Poder de Habilidade (54), Regeneração de Mana (24), Regeneração de Vida (20), Resistência Mágica (22), Resistência a Lentidão (3), Roubo de Vida (7), Tenacidade (5), Vampirismo (6), Velocidade de Ataque (26), Vida (77), none (os fragmentos possíveis estão em Habilidade) (1)
 
 ## Efeitos Especiais — 56 valores em uso
 
