@@ -2150,9 +2150,14 @@ select.sort-select, .sort-attr-wrap select {
    O hover (inclinação 3D, brilho, explosão de raios) é o do HTML anterior:
    as regras de transform/transition/animation não são tocadas — só cores. */
 :root {
-  --loja-ad: #c8641e;
-  --loja-ap: #7b4fb5;
-  --loja-vit: #4d8b3a;
+  /* F13-T50: as cores do jogo com nome próprio — a amostra "Desligado" do menu
+     de acessibilidade lê daqui, e o modo de daltonismo troca só as --loja-* */
+  --dalt-padrao-ad: #c8641e;
+  --dalt-padrao-ap: #7b4fb5;
+  --dalt-padrao-vit: #4d8b3a;
+  --loja-ad: var(--dalt-padrao-ad);
+  --loja-ap: var(--dalt-padrao-ap);
+  --loja-vit: var(--dalt-padrao-vit);
   /* Cera de cada tier (o selo). Starter e Básico são tinta, não cera. */
   --tier-starter: #5a4630;
   --tier-basic: #5a4630;
@@ -2957,6 +2962,28 @@ body:not(.editando) .build-habs .bh-limpar { display: none; }
   font-size: 11.5px; line-height: 1.45; color: #8f8074;
 }
 
+/* F13-T50: o grupo do daltonismo — o rádio na coluna das caixas de cima, o
+   texto na coluna do texto delas */
+.dalt-grupo { display: grid; grid-template-columns: 18px 1fr; column-gap: 8px; padding: 5px 0 2px; }
+.dalt-tit, .dalt-dica, .dalt-diz { grid-column: 2; }
+.dalt-tit { font-size: 14px; color: #e2d6c2; }
+.dalt-dica, .dalt-diz { font-size: 11.5px; font-style: italic; color: #8f8074; line-height: 1.3; }
+.dalt-dica { margin-bottom: 3px; }
+.dalt-diz { margin-top: 3px; min-height: 15px; }
+.dalt-op {
+  grid-column: 1 / -1; display: grid; grid-template-columns: 18px 36px 1fr; column-gap: 8px;
+  align-items: center; padding: 2px 0; cursor: pointer;
+}
+.dalt-op input { margin: 0; accent-color: #c9973f; width: 15px; height: 15px; }
+.dalt-op span { font-size: 13.5px; color: #cfc2ad; }
+.dalt-op input:checked ~ span { color: #e9b36a; }
+.dalt-op input:focus-visible ~ span { outline: 1px dotted #e9b36a; outline-offset: 2px; }
+.pinta { display: inline-flex; gap: 3px; }
+.pinta b { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.25); }
+.pinta b:nth-child(1) { background: var(--a); }
+.pinta b:nth-child(2) { background: var(--b); }
+.pinta b:nth-child(3) { background: var(--c); }
+
 /* 1. Menos movimento — a mesma coisa que o prefers-reduced-motion já faz,
    agora ligável à mão por quem tem o sistema configurado de outro jeito. */
 body.ac-movimento *, body.ac-movimento *::before, body.ac-movimento *::after {
@@ -3061,29 +3088,44 @@ body.ac-leitura .runa { background-image: none; }
 body.ac-leitura .card-surface { background-image: none; }
 body.ac-leitura .oficina::before { display: none; }
 
-/* 4. Daltonismo — paleta de Okabe & Ito, feita para se separar em protanopia,
-   deuteranopia e tritanopia. O símbolo de cada núcleo continua lá: a cor nunca
-   é a única pista, e aqui ela deixa de atrapalhar. */
+/* 4. Daltonismo — F13-T50 (Leo, 18/10/2026: "mais variações de daltonismo"):
+   a Geral e uma paleta por tipo. Nenhum trio é de gosto: cada um foi escolhido
+   medindo — as cores passam pela simulação de Machado, Oliveira e Fernandes
+   (2009), na forma plena e na parcial, e a menor distância ΔE2000 entre AD, AP e
+   Vitalidade tem de ficar alta. Pior caso: Geral 35 nos três tipos, Protanopia
+   46, Deuteranopia 41, Tritanopia 41 — as cores do jogo caem a 6, e a Okabe-Ito
+   que a Geral usava até aqui caía a 12 na tritanopia. A conta mora no roteiro
+   de QA (grupo acessibilidade). O símbolo de cada núcleo continua lá: a cor
+   nunca é a única pista. */
+:root {
+  --dalt-geral-ad: #c03802;  --dalt-geral-ap: #5a4aae;  --dalt-geral-vit: #44bdaf;   /* ferrugem, violeta, verdete */
+  --dalt-protan-ad: #b70012; --dalt-protan-ap: #247dbf; --dalt-protan-vit: #42c421;
+  --dalt-deutan-ad: #fa8f46; --dalt-deutan-ap: #e784ff; --dalt-deutan-vit: #036651;
+  --dalt-tritan-ad: #e70123; --dalt-tritan-ap: #6f33cc; --dalt-tritan-vit: #00bfb8;
+}
 body.ac-daltonismo {
-  --loja-ad: #e69f00;    /* laranja-âmbar */
-  --loja-ap: #0072b2;    /* azul */
-  --loja-vit: #009e73;   /* verde-azulado */
   --forja-brasa: #e69f00;
   --forja-brasa-clara: #f0c46a;
 }
-body.ac-daltonismo .class-tab[data-classe="AD"]  { --metal: linear-gradient(180deg, #6b4a1a, #35230a); --letra: #f5d28a; }
-body.ac-daltonismo .class-tab[data-classe="AP"]  { --metal: linear-gradient(180deg, #2f4f6e, #16283c); --letra: #b8d9f2; }
-body.ac-daltonismo .class-tab[data-classe="Vitalidade"] { --metal: linear-gradient(180deg, #2d5f52, #14302a); --letra: #a9e2cf; }
-body.ac-daltonismo.nucleo-ap {
-  --nuc-fundo: radial-gradient(circle at 20% 30%, rgba(120,190,255,.10) 0 2px, transparent 3px),
-               radial-gradient(circle at 70% 60%, rgba(120,190,255,.08) 0 2px, transparent 3px),
-               radial-gradient(circle at 45% 85%, rgba(120,190,255,.07) 0 1.5px, transparent 3px),
-               linear-gradient(180deg, #16222e, #0e161d);
+/* --dalt-q..r: a cor de cada letra na ordem das habilidades, medida do mesmo jeito */
+body.dalt-geral  { --loja-ad: var(--dalt-geral-ad);  --loja-ap: var(--dalt-geral-ap);  --loja-vit: var(--dalt-geral-vit);
+                   --dalt-q: #fed257; --dalt-w: #00d3ff; --dalt-e: #899d67; --dalt-r: #dc74a5; }
+body.dalt-protan { --loja-ad: var(--dalt-protan-ad); --loja-ap: var(--dalt-protan-ap); --loja-vit: var(--dalt-protan-vit);
+                   --dalt-q: #df8400; --dalt-w: #8be4fe; --dalt-e: #79f3c2; --dalt-r: #f46686; }
+body.dalt-deutan { --loja-ad: var(--dalt-deutan-ad); --loja-ap: var(--dalt-deutan-ap); --loja-vit: var(--dalt-deutan-vit);
+                   --dalt-q: #f5dc49; --dalt-w: #099def; --dalt-e: #2faa72; --dalt-r: #ffc3e9; }
+body.dalt-tritan { --loja-ad: var(--dalt-tritan-ad); --loja-ap: var(--dalt-tritan-ap); --loja-vit: var(--dalt-tritan-vit);
+                   --dalt-q: #f7da92; --dalt-w: #74ebff; --dalt-e: #889e5a; --dalt-r: #ff5e76; }
+/* as abas de núcleo: o metal e a letra saem da cor do modo, em vez de um par
+   escrito à mão para cada paleta. A aba Todos (data-classe vazio) fica no latão. */
+body.ac-daltonismo .class-tab:is([data-classe="AD"], [data-classe="AP"], [data-classe="Vitalidade"]) {
+  --metal: linear-gradient(180deg, color-mix(in srgb, var(--tab-color) 42%, #2a1d14), color-mix(in srgb, var(--tab-color) 18%, #120c06));
+  --letra: color-mix(in srgb, var(--tab-color) 35%, #fff4e0);
 }
-body.ac-daltonismo .bd-ordem i.lQ { color: #e69f00; border-color: #8a6a32; }
-body.ac-daltonismo .bd-ordem i.lW { color: #56b4e9; border-color: #35617a; }
-body.ac-daltonismo .bd-ordem i.lE { color: #009e73; border-color: #3e6b3a; }
-body.ac-daltonismo .bd-ordem i.lR { color: #cc79a7; border-color: #7a3535; }
+body.ac-daltonismo .bd-ordem i.lQ { color: var(--dalt-q); }
+body.ac-daltonismo .bd-ordem i.lW { color: var(--dalt-w); }
+body.ac-daltonismo .bd-ordem i.lE { color: var(--dalt-e); }
+body.ac-daltonismo .bd-ordem i.lR { color: var(--dalt-r); }
 
 .card-sheen {
   background:
@@ -4300,8 +4342,8 @@ body.forja #som-volume { accent-color: #ff7a1e; }
   background: rgba(255,255,255,.22); border: 1px solid var(--loja-papel-borda); border-radius: 2px;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
 }
-.calc-card.phys { --accent: #c8641e; }     /* dano físico: laranja do AD */
-.calc-card.magic { --accent: #7b4fb5; }    /* dano mágico: roxo do AP */
+.calc-card.phys { --accent: var(--loja-ad); }   /* dano físico: a cor do AD (F13-T50: segue o daltonismo) */
+.calc-card.magic { --accent: var(--loja-ap); }  /* dano mágico: a cor do AP */
 .calc-card-head { border-bottom: 1px solid rgba(90,70,48,.35); }
 .calc-card-head h3 { font-family: var(--loja-titulos); font-weight: 400; font-size: 22px; color: var(--accent); }
 .calc-res-label { font-family: var(--loja-gravado); font-size: 9.5px; letter-spacing: .18em; color: var(--loja-tinta-suave); }
@@ -4859,7 +4901,19 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
           <label class="som-opt"><input type="checkbox" id="ac-brilho"><span>Menos brilho</span><small>tira os halos, o reflexo do card e o fundo em brasa</small></label>
           <label class="som-opt"><input type="checkbox" id="ac-leitura"><span>Leitura calma</span><small>texto maior e fundo liso atrás dele; a arte da região recua</small></label>
           <div class="som-sep"></div>
-          <label class="som-opt"><input type="checkbox" id="ac-daltonismo"><span>Daltonismo</span><small>troca laranja, roxo e verde por cores que se separam nas três formas mais comuns</small></label>
+          <!-- F13-T50: o daltonismo virou escolha de tipo. As bolinhas são as três
+               cores do núcleo (AD, AP, Vitalidade) em cada modo: quem não sabe o
+               próprio tipo escolhe a fileira que mais separa. -->
+          <div class="dalt-grupo" role="radiogroup" aria-labelledby="dalt-tit" aria-describedby="dalt-diz">
+            <span class="dalt-tit" id="dalt-tit">Daltonismo</span>
+            <small class="dalt-dica">escolha a fileira cujas três bolinhas você mais separa</small>
+            <label class="dalt-op"><input type="radio" name="ac-daltonismo" value="" id="ac-dalt-off"><i class="pinta" style="--a: var(--dalt-padrao-ad); --b: var(--dalt-padrao-ap); --c: var(--dalt-padrao-vit)"><b></b><b></b><b></b></i><span>Desligado</span></label>
+            <label class="dalt-op"><input type="radio" name="ac-daltonismo" value="geral" id="ac-dalt-geral"><i class="pinta" style="--a: var(--dalt-geral-ad); --b: var(--dalt-geral-ap); --c: var(--dalt-geral-vit)"><b></b><b></b><b></b></i><span>Geral</span></label>
+            <label class="dalt-op"><input type="radio" name="ac-daltonismo" value="protan" id="ac-dalt-protan"><i class="pinta" style="--a: var(--dalt-protan-ad); --b: var(--dalt-protan-ap); --c: var(--dalt-protan-vit)"><b></b><b></b><b></b></i><span>Protanopia</span></label>
+            <label class="dalt-op"><input type="radio" name="ac-daltonismo" value="deutan" id="ac-dalt-deutan"><i class="pinta" style="--a: var(--dalt-deutan-ad); --b: var(--dalt-deutan-ap); --c: var(--dalt-deutan-vit)"><b></b><b></b><b></b></i><span>Deuteranopia</span></label>
+            <label class="dalt-op"><input type="radio" name="ac-daltonismo" value="tritan" id="ac-dalt-tritan"><i class="pinta" style="--a: var(--dalt-tritan-ad); --b: var(--dalt-tritan-ap); --c: var(--dalt-tritan-vit)"><b></b><b></b><b></b></i><span>Tritanopia</span></label>
+            <small class="dalt-diz" id="dalt-diz"></small>
+          </div>
           <p class="acess-nota">Fica guardado neste navegador. O sistema pedindo menos movimento já é obedecido sem ligar nada aqui.</p>
         </div>
       </div>
@@ -9258,11 +9312,22 @@ function marcarHabilidade(letra, nivel) {
 // Quatro interruptores independentes, guardados neste navegador. Cada um
 // desfaz uma barreira que o próprio app cria: movimento, brilho, densidade de
 // leitura e dependência de cor.
+// F13-T50: o daltonismo deixou de ser sim/não — guarda o tipo ("geral",
+// "protan", "deutan", "tritan"). O "ligado" de antes (true) vira a Geral.
 const ACESSIBILIDADE = ["movimento", "brilho", "leitura", "daltonismo"];
+const TIPOS_DALTONISMO = ["geral", "protan", "deutan", "tritan"];
+const DIZ_DALTONISMO = {
+  "": "As cores do jogo: laranja, roxo e verde.",
+  geral: "Uma paleta só, que separa as três formas: ferrugem, violeta e verdete.",
+  protan: "Para quem vê o vermelho apagado, quase escuro.",
+  deutan: "Para quem confunde verde e vermelho — a forma mais comum.",
+  tritan: "Para quem confunde azul e amarelo.",
+};
 const acess = {};
 try {
   const g = JSON.parse(localStorage.getItem("acessibilidade") || "{}");
   ACESSIBILIDADE.forEach(k => { if (g[k]) acess[k] = true; });
+  if (g.daltonismo) acess.daltonismo = TIPOS_DALTONISMO.includes(g.daltonismo) ? g.daltonismo : "geral";
 } catch (e) { /* sem persistência: tudo desligado */ }
 
 function aplicarAcessibilidade() {
@@ -9271,6 +9336,10 @@ function aplicarAcessibilidade() {
     const cx = document.getElementById("ac-" + k);
     if (cx) cx.checked = !!acess[k];
   });
+  TIPOS_DALTONISMO.forEach(t => document.body.classList.toggle("dalt-" + t, acess.daltonismo === t));
+  document.querySelectorAll('input[name="ac-daltonismo"]').forEach(r => { r.checked = r.value === (acess.daltonismo || ""); });
+  const diz = document.getElementById("dalt-diz");
+  if (diz) diz.textContent = DIZ_DALTONISMO[acess.daltonismo || ""];
   const btn = document.getElementById("acess-btn");
   const ligados = ACESSIBILIDADE.filter(k => acess[k]).length;
   if (btn) btn.title = ligados ? `Acessibilidade — ${ligados} ${ligados === 1 ? "ajuste ligado" : "ajustes ligados"}` : "Acessibilidade";
@@ -9293,6 +9362,15 @@ function initAcessibilidade() {
       aplicarAcessibilidade();
       // Trocar a paleta ou a leitura muda o que está desenhado: redesenha.
       if (k === "daltonismo" || k === "leitura") { if (typeof render === "function") render(); }
+      Som.play("catalog:tag_select");
+    });
+  });
+  document.querySelectorAll('input[name="ac-daltonismo"]').forEach(r => {
+    r.addEventListener("change", () => {
+      if (!r.checked) return;
+      if (r.value) acess.daltonismo = r.value; else delete acess.daltonismo;
+      aplicarAcessibilidade();
+      if (typeof render === "function") render();
       Som.play("catalog:tag_select");
     });
   });

@@ -111,3 +111,7 @@ As três texturas são papel amassado quase branco; nunca usadas cruas. Aplicaç
 ## Grade de encaixes (Fase 9, T4 — 15/09/2026)
 - Cada caixa do tabuleiro é uma grade de encaixes de 84 × 96 px com 7 px de vão; a largura da caixa é a das colunas. Encaixe vazio: retângulo tracejado no ferro escuro, apagado em visualização. Ao puxar o canto, a caixa acende em brasa e uma etiqueta "3 × 2" em brasa clara mostra a grade.
 
+## Daltonismo por tipo (Fase 13, T50 — 18/10/2026)
+- No menu de acessibilidade, o daltonismo é uma escolha: Desligado, Geral, Protanopia, Deuteranopia, Tritanopia. Cada fileira mostra as três bolinhas do núcleo (AD, AP, Vitalidade) daquele modo — quem não sabe o próprio tipo escolhe a fileira que mais separa. O modo troca só as `--loja-ad/ap/vit` (e a cor das letras Q W E R); tudo o que lê essas variáveis acompanha: faixa do card, abas de núcleo (o metal sai da cor por `color-mix`), estandarte, régua, calculadora.
+- Os trios não são de gosto, são medidos (simulação de Machado et al., 2009, plena e parcial; menor ΔE2000 entre as três): Geral `#c03802` ferrugem · `#5a4aae` violeta · `#44bdaf` verdete (≥ 35 nos três tipos); Protanopia `#b70012` · `#247dbf` · `#42c421` (46); Deuteranopia `#fa8f46` · `#e784ff` · `#036651` (41); Tritanopia `#e70123` · `#6f33cc` · `#00bfb8` (41). A Okabe-Ito que a Geral usava antes caía a 12 na tritanopia. Mudar um trio pede refazer a conta: o roteiro de QA reprova abaixo dos limites.
+

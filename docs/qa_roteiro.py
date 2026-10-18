@@ -21,6 +21,7 @@ import argparse
 import atexit
 import base64
 import json
+import math
 import os
 import re
 import socket
@@ -2359,12 +2360,192 @@ def checar_troca(s, p):
             "diálogo %s, depois: %s, rascunho de A no disco %s" % (e["dialogo"], e2["ativa"], e2["a_disco"]))
 
 
+# F13-T50: o daltonismo medido como a pessoa vê. Simulação de Machado, Oliveira
+# e Fernandes (2009) na severidade plena; a parcial é o meio do caminho até a
+# visão normal, em RGB linear. A distância é a ΔE2000 entre as cores (CIELAB D65).
+DALT_M = {
+    "protan": [[0.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]],
+    "deutan": [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.011820, 0.042940, 0.968881]],
+    "tritan": [[1.255528, -0.076749, -0.178779], [-0.078411, 0.930809, 0.147602], [0.004733, 0.691367, 0.303900]],
+}
+
+
+def _lin(c):
+    return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
+
+def _delin(c):
+    return 12.92 * c if c <= 0.0031308 else 1.055 * c ** (1 / 2.4) - 0.055
+
+
+def _rgb_css(txt):
+    m = re.match(r"rgba?\((\d+),\s*(\d+),\s*(\d+)", txt or "")
+    return [int(m.group(i)) / 255 for i in (1, 2, 3)] if m else None
+
+
+def _simula(rgb, tipo, sev):
+    if tipo == "normal":
+        return rgb
+    mm = [[(1 - sev) * (1 if i == j else 0) + sev * DALT_M[tipo][i][j] for j in range(3)] for i in range(3)]
+    l = [_lin(c) for c in rgb]
+    return [_delin(min(1, max(0, sum(mm[i][j] * l[j] for j in range(3))))) for i in range(3)]
+
+
+def _lab(rgb):
+    r, g, b = [_lin(c) for c in rgb]
+    x = (0.4124 * r + 0.3576 * g + 0.1805 * b) / 0.95047
+    y = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    z = (0.0193 * r + 0.1192 * g + 0.9505 * b) / 1.08883
+    f = lambda t: t ** (1 / 3) if t > 216 / 24389 else (24389 / 27 * t + 16) / 116
+    return (116 * f(y) - 16, 500 * (f(x) - f(y)), 200 * (f(y) - f(z)))
+
+
+def _de2000(l1, l2):
+    L1, a1, b1 = l1
+    L2, a2, b2 = l2
+    cb = (math.hypot(a1, b1) + math.hypot(a2, b2)) / 2
+    g = 0.5 * (1 - math.sqrt(cb ** 7 / (cb ** 7 + 25 ** 7)))
+    a1p, a2p = a1 * (1 + g), a2 * (1 + g)
+    c1p, c2p = math.hypot(a1p, b1), math.hypot(a2p, b2)
+    h1p = math.degrees(math.atan2(b1, a1p)) % 360
+    h2p = math.degrees(math.atan2(b2, a2p)) % 360
+    dh = h2p - h1p
+    if c1p * c2p == 0:
+        dh = 0
+    elif dh > 180:
+        dh -= 360
+    elif dh < -180:
+        dh += 360
+    dHp = 2 * math.sqrt(c1p * c2p) * math.sin(math.radians(dh / 2))
+    lbp, cbp = (L1 + L2) / 2, (c1p + c2p) / 2
+    if c1p * c2p == 0:
+        hbp = h1p + h2p
+    elif abs(h1p - h2p) <= 180:
+        hbp = (h1p + h2p) / 2
+    elif h1p + h2p < 360:
+        hbp = (h1p + h2p + 360) / 2
+    else:
+        hbp = (h1p + h2p - 360) / 2
+    t = (1 - 0.17 * math.cos(math.radians(hbp - 30)) + 0.24 * math.cos(math.radians(2 * hbp))
+         + 0.32 * math.cos(math.radians(3 * hbp + 6)) - 0.20 * math.cos(math.radians(4 * hbp - 63)))
+    dth = 30 * math.exp(-((hbp - 275) / 25) ** 2)
+    rc = 2 * math.sqrt(cbp ** 7 / (cbp ** 7 + 25 ** 7))
+    sl = 1 + 0.015 * (lbp - 50) ** 2 / math.sqrt(20 + (lbp - 50) ** 2)
+    sc, sh = 1 + 0.045 * cbp, 1 + 0.015 * cbp * t
+    rt = -math.sin(math.radians(2 * dth)) * rc
+    dl, dc = (L2 - L1) / sl, (c2p - c1p) / sc
+    return math.sqrt(dl ** 2 + dc ** 2 + (dHp / sh) ** 2 + rt * dc * (dHp / sh))
+
+
+def separacao(cores, tipos):
+    """A menor distância entre duas das cores, no pior dos tipos e severidades."""
+    rgbs = [_rgb_css(c) for c in cores]
+    if len(rgbs) < 2 or None in rgbs:
+        return 0.0
+    pior = 999.0
+    for tipo in tipos:
+        for sev in ((1.0,) if tipo == "normal" else (1.0, 0.5)):
+            labs = [_lab(_simula(c, tipo, sev)) for c in rgbs]
+            for i in range(len(labs)):
+                for j in range(i + 1, len(labs)):
+                    pior = min(pior, _de2000(labs[i], labs[j]))
+    return pior
+
+
+DALT_LE = r"""(() => {
+  const cor = {};
+  for (const c of document.querySelectorAll('.card[data-slug]')) {
+    const it = CATALOG.items.find(i => i.slug === c.dataset.slug);
+    const k = it && it.itemClass && it.itemClass.core;
+    const sup = c.querySelector('.card-surface');
+    if (sup && ['AD', 'AP', 'Vitalidade'].includes(k) && !cor[k]) cor[k] = getComputedStyle(sup, '::before').backgroundColor;
+  }
+  const r = document.querySelector('input[name="ac-daltonismo"]:checked');
+  const pinta = r ? [...r.parentElement.querySelectorAll('.pinta b')].map(b => getComputedStyle(b).backgroundColor) : [];
+  const t = document.createElement('div'); t.className = 'bd-ordem';
+  t.innerHTML = '<i class="lQ">Q</i><i class="lW">W</i><i class="lE">E</i><i class="lR">R</i>';
+  document.body.appendChild(t);
+  const qwer = [...t.children].map(i => getComputedStyle(i).color); t.remove();
+  const calc = document.querySelector('.calc-card.phys');
+  const todos = document.querySelector('.class-tab[data-classe=""]');
+  return { nuc: [cor.AD, cor.AP, cor.Vitalidade], pinta, qwer,
+           todos: todos ? getComputedStyle(todos).backgroundImage + ' | ' + getComputedStyle(todos).color : null,
+           marcado: r ? r.value : null,
+           classes: [...document.body.classList].filter(c => c.startsWith('dalt-')),
+           calc: calc ? getComputedStyle(calc).getPropertyValue('--accent').trim() : null,
+           ad: getComputedStyle(document.body).getPropertyValue('--loja-ad').trim() };
+})()"""
+
+
+def checar_daltonismo(s, p):
+    """F13-T50: um modo por tipo, e cada um medido na tela — a faixa de núcleo dos
+    cards de verdade, não o CSS."""
+    tipos = ("protan", "deutan", "tritan")
+    s.js("switchTab('catalog')")
+    time.sleep(0.5)
+    s.clicar("#acess-btn")
+    m = {}
+    for modo in ("geral",) + tipos:
+        s.clicar("#ac-dalt-" + modo, 0.35)
+        m[modo] = s.js(DALT_LE)
+    ok = all(m[k]["classes"] == ["dalt-" + k] and m[k]["marcado"] == k and None not in m[k]["nuc"] for k in m)
+    p.conta("acessibilidade", "cada tipo de daltonismo liga a sua paleta", ok,
+            "; ".join("%s: %s" % (k, ",".join(m[k]["classes"])) for k in m))
+    p.conta("acessibilidade", "a amostra do menu é a cor que vai à tela",
+            all(m[k]["pinta"] == m[k]["nuc"] for k in m),
+            "; ".join(k for k in m if m[k]["pinta"] != m[k]["nuc"]) or "")
+    g = separacao(m["geral"]["nuc"], tipos)
+    gn = separacao(m["geral"]["nuc"], ("normal",))
+    p.conta("acessibilidade", "a Geral separa o núcleo nas três formas", g >= 33 and gn >= 30,
+            "pior %.1f (normal %.1f)" % (g, gn))
+    det, bom = [], True
+    for t in tipos:
+        prop, dela = separacao(m[t]["nuc"], (t,)), separacao(m["geral"]["nuc"], (t,))
+        nor = separacao(m[t]["nuc"], ("normal",))
+        det.append("%s %.1f×%.1f" % (t, prop, dela))
+        bom = bom and prop >= 40 and prop >= dela + 4 and nor >= 30
+    p.conta("acessibilidade", "cada tipo separa mais que a Geral nele", bom, "; ".join(det))
+    gq = separacao(m["geral"]["qwer"], tipos)
+    det, bom = ["geral %.1f" % gq], gq >= 18
+    for t in tipos:
+        prop, dela = separacao(m[t]["qwer"], (t,)), separacao(m["geral"]["qwer"], (t,))
+        det.append("%s %.1f×%.1f" % (t, prop, dela))
+        bom = bom and prop >= 25 and prop >= dela + 4
+    p.conta("acessibilidade", "a ordem das habilidades também separa", bom, "; ".join(det))
+    p.conta("acessibilidade", "a calculadora segue a cor do núcleo",
+            all(m[k]["calc"] and m[k]["calc"] == m[k]["ad"] for k in m),
+            "; ".join("%s %s/%s" % (k, m[k]["calc"], m[k]["ad"]) for k in m if m[k]["calc"] != m[k]["ad"]))
+    s.clicar("#ac-dalt-off", 0.35)
+    d = s.js(DALT_LE)
+    padrao = [_rgb_css(c) for c in d["nuc"]]
+    esperado = [[0xc8 / 255, 0x64 / 255, 0x1e / 255], [0x7b / 255, 0x4f / 255, 0xb5 / 255], [0x4d / 255, 0x8b / 255, 0x3a / 255]]
+    p.conta("acessibilidade", "desligado volta às cores do jogo",
+            d["classes"] == [] and not s.js("document.body.classList.contains('ac-daltonismo')") and padrao == esperado,
+            ",".join(d["nuc"] or []))
+    p.conta("acessibilidade", "a aba Todos fica no latão em todo modo",
+            d["todos"] is not None and all(m[k]["todos"] == d["todos"] for k in m),
+            "; ".join(k for k in m if m[k]["todos"] != d["todos"]))
+    s.clicar("#acess-btn")
+    # o "ligado" de antes (true) não pode virar desligado nem tipo nenhum
+    s.js("localStorage.setItem('acessibilidade', JSON.stringify({ daltonismo: true }))")
+    s.abrir()
+    time.sleep(1.0)
+    s.entrar()
+    p.conta("acessibilidade", "o daltonismo ligado de antes vira a Geral",
+            s.js("""document.body.classList.contains('ac-daltonismo') && document.body.classList.contains('dalt-geral')
+                    && document.getElementById('ac-dalt-geral').checked"""))
+    s.js("localStorage.removeItem('acessibilidade')")
+    s.abrir()
+    time.sleep(1.0)
+    s.entrar()
+
+
 def checar_acessibilidade(s, p):
     print("\n%sACESSIBILIDADE%s" % (AMARELO, FIM))
     s.js("switchTab('catalog')")
     time.sleep(0.5)
     s.clicar("#acess-btn")
-    for chave in ("movimento", "brilho", "leitura", "daltonismo"):
+    for chave in ("movimento", "brilho", "leitura", "dalt-geral"):
         s.clicar("#ac-" + chave, 0.25)
     ligadas = s.js("[...document.body.classList].filter(c => c.startsWith('ac-')).length")
     p.conta("acessibilidade", "os quatro interruptores ligam", ligadas == 4, "%s de 4" % ligadas)
@@ -2402,6 +2583,10 @@ def checar_acessibilidade(s, p):
     p.conta("acessibilidade", "os ajustes sobrevivem ao recarregar",
             s.js("[...document.body.classList].filter(c => c.startsWith('ac-')).length") == 4)
     s.js("localStorage.removeItem('acessibilidade')")
+    s.abrir()
+    time.sleep(1.0)
+    s.entrar()
+    checar_daltonismo(s, p)
 
 
 def checar_publicas(s, p, online):

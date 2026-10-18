@@ -188,6 +188,16 @@ segura e a resposta atrasada vale; a placa atrasada fica por cima do
 
 **Acessibilidade** — os quatro interruptores ligam, o "menos movimento" zera as
 transições de verdade, e tudo sobrevive ao recarregar.
+O daltonismo por tipo (F13-T50) é medido como a pessoa vê: o roteiro escolhe
+cada modo com clique, lê a cor da faixa de núcleo dos cards de verdade (AD, AP,
+Vitalidade) e passa as três pela simulação de Machado, Oliveira e Fernandes
+(2009), na forma plena e na parcial; a menor distância ΔE2000 entre elas tem
+de ficar alta. A Geral não desce de 33 em nenhum dos três tipos (as cores do
+jogo caem a 6; a Okabe-Ito de antes caía a 12 na tritanopia); cada tipo passa
+de 40 no seu e ganha da Geral por 4 ou mais — senão o modo não teria razão de
+existir. A ordem das habilidades (Q, W, E, R) é medida do mesmo jeito. E ainda:
+a bolinha do menu é a cor que vai à tela, a calculadora segue a cor do núcleo,
+o Desligado volta às cores do jogo e o "ligado" guardado antes vira a Geral.
 
 **Builds publicadas** — a lista vem do servidor e não traz "permission denied".
 
