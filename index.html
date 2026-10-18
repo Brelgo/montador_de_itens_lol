@@ -5298,6 +5298,7 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
 <script src="data/regioes.js"></script>
 <script src="data/runas.js"></script>
 <script src="data/servidor.js"></script>
+<script src="data/ganho_sons.js"></script>
 <script>
 // ============================================================
 // Som — módulo único de áudio (Fase 4). docs/mapa_de_audio.md é a régua.
@@ -5456,9 +5457,15 @@ const Som = (() => {
   const TIERS_NEUTROS = ["Consumível", "Distribuído", "Trinket"];
   // Canais (Leo, 15/09/2026: "tenho amigos que mutaram tudo só para mutar o shopkeeper"):
   // interface (cliques, hover, chips, abrir/fechar), forja (moldes, martelo) e lojista (falas).
-  // F13-T46 (Leo, 17/10/2026: "os sons estão muito altos por padrão, dá uma reduzida
-  // em 30%"): o volume geral padrão caiu de 0,8 para 0,55 (30%, no passo de 5 do controle).
-  const VOLUME_ANTIGO = 0.8, VOLUME_PADRAO = 0.55;
+  // F13-T46 (Leo, 17/10/2026): o padrão caiu de 0,8 para 0,55. F13-T48 (Leo,
+  // 18/10/2026: "estou tendo que deixar o volume no mínimo"): os arquivos vêm em
+  // alturas muito diferentes (as falas do lojista ~30 dB acima dos cliques). Cada
+  // um ganha o redutor medido em data/ganho_sons.js (docs/medir_sons.py: nenhum
+  // passa de -30 dBFS RMS), o controle segue a curva dos tocadores de áudio (a
+  // metade dá ¼) e o padrão fica em 50%.
+  const VOLUME_PADRAO = 0.5;
+  const curva = v => v * v;
+  const ganhoDe = f => { const g = window.GANHO_SONS && window.GANHO_SONS[f]; return typeof g === "number" ? g : 1; };
   const estado = { volume: VOLUME_PADRAO, mudo: false, destravado: false, canais: { interface: true, forja: true, lojista: true } };
   function canalDe(base, opts) {
     if (opts.lojista || base.startsWith("shopkeeper_")) return "lojista";
@@ -5495,11 +5502,12 @@ const Som = (() => {
     try {
       let v = localStorage.getItem("som.volume");
       const m = localStorage.getItem("som.mudo");
-      // Quem tem o 0,8 antigo gravado ficou no padrão de antes: leva o padrão novo,
-      // uma vez só (a marca som.padrao impede de desfazer quem escolher 0,8 depois).
-      if (localStorage.getItem("som.padrao") !== "2") {
-        if (v !== null && Number(v) === VOLUME_ANTIGO) { v = String(VOLUME_PADRAO); localStorage.setItem("som.volume", v); }
-        localStorage.setItem("som.padrao", "2");
+      // F13-T48: o controle mudou de sentido (curva e redutor por arquivo) — o volume
+      // gravado antes leva o padrão novo, uma vez só (a marca som.padrao "3" impede
+      // de desfazer o que a pessoa escolher depois)
+      if (localStorage.getItem("som.padrao") !== "3") {
+        if (v !== null) { v = String(VOLUME_PADRAO); localStorage.setItem("som.volume", v); }
+        localStorage.setItem("som.padrao", "3");
       }
       if (v !== null && !Number.isNaN(Number(v))) estado.volume = Math.min(1, Math.max(0, Number(v)));
       estado.mudo = m === "1";
@@ -5551,7 +5559,7 @@ const Som = (() => {
     let a = cache[f];
     if (!a) { a = new Audio(BASE + f); cache[f] = a; }
     if (!a.paused && !a.ended) a = a.cloneNode(); else a.currentTime = 0;
-    a.volume = Math.min(1, estado.volume * (opts.ganho || 1));
+    a.volume = Math.min(1, curva(estado.volume) * ganhoDe(f) * (opts.ganho || 1));
     const p = a.play();
     if (p && p.catch) p.catch(() => { /* autoplay bloqueado ou arquivo ausente: silêncio */ });
     if (opts.lojista) {

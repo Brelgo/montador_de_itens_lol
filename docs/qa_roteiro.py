@@ -621,9 +621,10 @@ def checar_calculadora(s, p):
 
 
 def checar_som(s, p):
-    """F13-T46 (Leo, 17/10/2026: "os sons estão muito altos por padrão"): o volume
-    geral padrão caiu 30% (0,8 → 0,55), quem tinha o 0,8 antigo gravado passa ao
-    novo uma vez, quem escolheu outro volume fica com ele, e o hover dos cards do
+    """F13-T46 e T48 (Leo: "os sons estão muito altos"; "estou tendo que deixar o
+    volume no mínimo"): cada arquivo toca com o redutor medido em
+    data/ganho_sons.js, o controle segue a curva v² (a metade dá ¼), o padrão é
+    50%, o volume gravado antes passa ao novo uma vez, e o hover dos cards do
     Catálogo toca 60% mais baixo. O Chrome do roteiro roda mudo (--mute-audio)."""
     print("\n%sSOM%s" % (AMARELO, FIM))
 
@@ -635,28 +636,32 @@ def checar_som(s, p):
         return s.js("({ vol: Som.estado.volume, gravado: localStorage.getItem('som.volume'), marca: localStorage.getItem('som.padrao') })")
 
     novo = recarregar("localStorage.removeItem('som.volume'); localStorage.removeItem('som.padrao'); 'ok'")
-    antigo = recarregar("localStorage.setItem('som.volume', '0.8'); localStorage.removeItem('som.padrao'); 'ok'")
+    antigo = recarregar("localStorage.setItem('som.volume', '0.05'); localStorage.setItem('som.padrao', '2'); 'ok'")
     depois = recarregar("'ok'")
-    escolheu = recarregar("localStorage.setItem('som.volume', '0.3'); localStorage.removeItem('som.padrao'); 'ok'")
-    oito = recarregar("localStorage.setItem('som.volume', '0.8'); localStorage.setItem('som.padrao', '2'); 'ok'")
-    p.conta("som", "volume geral padrão 30% mais baixo (e o 0,8 antigo passa ao novo uma vez)",
-            novo["vol"] == 0.55 and antigo["vol"] == 0.55 and antigo["gravado"] == "0.55" and depois["vol"] == 0.55
-            and escolheu["vol"] == 0.3 and oito["vol"] == 0.8,
-            "sem nada gravado %s · com o 0,8 antigo %s (gravou %s) · recarregando %s · quem escolheu 0,3 %s · 0,8 escolhido depois %s" % (
-                novo["vol"], antigo["vol"], antigo["gravado"], depois["vol"], escolheu["vol"], oito["vol"]))
-    s.js("Som.setVolume(0.55); 'ok'")
-    vols = s.js("""(() => { window.__vols = []; const orig = HTMLMediaElement.prototype.play;
-      HTMLMediaElement.prototype.play = function () { window.__vols.push([this.src.split('/').pop(), this.volume]); return orig.call(this); };
+    escolheu = recarregar("localStorage.setItem('som.volume', '0.3'); localStorage.setItem('som.padrao', '3'); 'ok'")
+    p.conta("som", "volume padrão 50% (e o volume gravado antes passa ao novo uma vez)",
+            novo["vol"] == 0.5 and antigo["vol"] == 0.5 and antigo["gravado"] == "0.5" and depois["vol"] == 0.5 and escolheu["vol"] == 0.3,
+            "sem nada gravado %s · com o volume de antes (0,05) %s (gravou %s) · recarregando %s · escolhido depois 0,3 %s" % (
+                novo["vol"], antigo["vol"], antigo["gravado"], depois["vol"], escolheu["vol"]))
+    s.js("Som.setVolume(0.5); 'ok'")
+    r = s.js("""(() => { window.__vols = []; const orig = HTMLMediaElement.prototype.play;
+      HTMLMediaElement.prototype.play = function () { window.__vols.push([decodeURIComponent(this.src.split('/').pop()), this.volume]); return orig.call(this); };
       const it = CATALOG.items.find(i => i.itemClass && i.itemClass.core === 'AD' && /^Lendário/.test(i.tier));
       Som.play('catalog:hover', { item: it });
       Som.play('catalog:click', { item: it });
+      Som.play('build:open');
       HTMLMediaElement.prototype.play = orig;
-      return window.__vols; })()""")
-    hover = [v for f, v in vols if f.startswith("ui_catalog_mod_hover_")]
-    clique = [v for f, v in vols if f.startswith("ui_shop_click_")]
-    p.conta("som", "hover dos cards do Catálogo 60% mais baixo",
-            len(hover) == 1 and abs(hover[0] - 0.55 * 0.4) < 1e-6 and len(clique) == 1 and abs(clique[0] - 0.55) < 1e-6,
-            "hover %s · clique %s (volume geral 0,55)" % (hover, clique))
+      const todos = [...new Set(Object.values(Som.ARQUIVOS).flat())];
+      const G = window.GANHO_SONS || {};
+      return { vols: window.__vols, G, semGanho: todos.filter(f => typeof G[f] !== 'number'),
+               foraDaFaixa: todos.filter(f => !(G[f] > 0 && G[f] <= 1)), baixados: todos.filter(f => G[f] < 1).length, total: todos.length }; })()""")
+    esperado = {"ui_catalog_mod_hover_": 0.25 * 0.4, "ui_shop_click_": 0.25, "build_open": 0.25}
+    ok_vol = len(r["vols"]) == 3 and all(
+        any(f.startswith(k) and abs(v - e * r["G"][f]) < 1e-6 for k, e in esperado.items()) for f, v in r["vols"])
+    p.conta("som", "cada som toca na altura medida (curva v² e redutor por arquivo)",
+            ok_vol and not r["semGanho"] and not r["foraDaFaixa"] and r["baixados"] > 0,
+            "tocados %s · %d arquivos, %d com redutor · sem ganho: %s" % (
+                [(f, round(v, 4), r["G"].get(f)) for f, v in r["vols"]], r["total"], r["baixados"], r["semGanho"][:3]))
 
 
 def checar_falta_publicar(s, p):
