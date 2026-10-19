@@ -406,6 +406,25 @@ def checar_fundacao(s, p):
                 and r["ids"] == ["Brelgo#RPG:all", "brelgo:all"]):
             ruins.append("%dx%d %s" % (w, h, r))
     s.tela_normal()
+    # F13-T57 (Leo, 19/10/2026): "Bem Vindo(a)!", "Meus Contatos" e a atualização do
+    # projeto ao lado do patch — e o número não fica para trás do último commit de
+    # tarefa (com o index.html mexido, uma tarefa está em andamento: tem de estar à frente)
+    pl = s.js("""(() => ({ titulo: document.querySelector('.entrada-titulo').textContent.trim(),
+      rot: document.querySelector('.entrada-contato .ea-rot').textContent.trim(),
+      nota: document.querySelector('.entrada-nota').textContent.replace(/\\s+/g, ' ').trim(),
+      at: typeof ATUALIZACAO === 'string' ? ATUALIZACAO : null, patch: CATALOG.meta.patch }))()""")
+    try:
+        log = subprocess.run(["git", "log", "--format=%s", "-n", "400"], cwd=RAIZ, capture_output=True).stdout.decode("utf-8", "replace")
+        ultima = max([int(n) for n in re.findall(r"^F13-T(\d+)", log, re.M)] or [0])
+        mexido = bool(subprocess.run(["git", "status", "--porcelain", "index.html"], cwd=RAIZ, capture_output=True).stdout.strip())
+    except Exception:
+        ultima, mexido = None, False
+    fase, _, tarefa = (pl["at"] or "").partition(".")
+    em_dia = ultima is None or (fase == "13" and tarefa.isdigit() and (int(tarefa) > ultima if mexido else int(tarefa) >= ultima))
+    p.conta("fundação", "a placa dá as boas-vindas, com a atualização do projeto e o patch",
+            pl["titulo"] == "Bem Vindo(a)!" and pl["rot"] == "Meus Contatos"
+            and pl["nota"] == "League of Legends · Atualização %s · patch %s" % (pl["at"], pl["patch"]) and em_dia,
+            "%s; último commit de tarefa F13-T%s%s" % (pl, ultima, " (index.html mexido: a atualização tem de estar à frente)" if mexido else ""))
     p.conta("fundação", "a placa de entrada diz o hobby e o contato do autor", not ruins,
             "; ".join(ruins) or "hobby, Brelgo#RPG e brelgo à vista em %d resoluções; um clique seleciona o ID inteiro" % len(RESOLUCOES))
     s.entrar()
@@ -3094,7 +3113,7 @@ def checar_desatualizadas(s, p):
             some and all(n in r["texto"] for n in ("Atual Um", "Atual Dois", "Sem patch")) and r["desat"] == 0 and r["hoje"] == 1,
             "%s" % {k: r[k] for k in ("texto", "desat", "hoje")})
     p.conta("desatualizadas", "a lista diz quantas ficaram de fora",
-            bool(r["fora"]) and r["fora"].startswith("2 builds publicadas em catálogo antigo"),
+            bool(r["fora"]) and r["fora"] == "2 builds publicadas no catálogo estão desatualizadas estando de fora até serem republicadas para o Patch-%s. Pelo ID, ainda dá para achar." % s.js("CATALOG.meta.patch"),
             "nota: %r" % r["fora"])
     # a lista registra uma impressão por linha: a barreira da sessão segura todas na página
     barrados = s.js("window.__eventosBarrados || 0")

@@ -4938,14 +4938,15 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
   <div class="entrada-placa-wrap">
     <div class="correntes"><i></i><i></i></div>
     <div class="entrada-placa">
-      <h1 class="entrada-titulo">Montador de Itens</h1>
+      <!-- F13-T57 (Leo, 19/10/2026): a placa dá as boas-vindas; o número da atualização do projeto ao lado do patch -->
+      <h1 class="entrada-titulo">Bem Vindo(a)!</h1>
       <p class="entrada-frase">A loja está aberta. O lojista o aguarda.</p>
       <button id="entrar" class="btn-entrar" type="button">Entrar na loja</button>
-      <p class="entrada-nota">League of Legends · Catálogo do Capítulo 1 · patch <span data-patch></span></p>
+      <p class="entrada-nota">League of Legends · Atualização <span data-atualizacao></span> · patch <span data-patch></span></p>
       <!-- F13-T54 (Leo, 19/10/2026): quem fez, e como falar com ele -->
       <div class="entrada-autor">
         <p class="entrada-hobby">Este é um projeto feito por hobby sem fins lucrativos.</p>
-        <p class="entrada-contato"><span class="ea-rot">Contato do autor</span>
+        <p class="entrada-contato"><span class="ea-rot">Meus Contatos</span>
           <span class="ea-canal">League of Legends <b class="ea-id" title="Riot ID — clique para selecionar">Brelgo#RPG</b></span>
           <span class="ea-sep" aria-hidden="true">·</span>
           <span class="ea-canal">Discord <b class="ea-id" title="Clique para selecionar">brelgo</b></span>
@@ -5845,6 +5846,10 @@ function catCols(cat) { if (cat.kind === "escolha") return 1; return Math.max(1,
 function catRows(cat) { const cols = catCols(cat); return Math.max(1, Number(cat.rows) || 0, Math.ceil(cat.items.length / cols)); }
 const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 
+// F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
+// fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
+// confere que não ficou para trás do último commit "F13-T…").
+const ATUALIZACAO = "13.57";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -10069,7 +10074,7 @@ function renderPublicasIndex(rows) {
   // F13-T56: o que ficou de fora por ser de catálogo antigo é dito, não some calado
   const fora = publicas.lista.filter(p => !publicaNoCatalogoAtual(p)).length;
   const nota = fora && !(dados.length && dados.every(d => d.desatualizada))
-    ? `<div class="bi-fora">${fora === 1 ? "1 build publicada em catálogo antigo fica" : fora + " builds publicadas em catálogo antigo ficam"} de fora até ${fora === 1 ? "ser republicada" : "serem republicadas"} no ${esc(CATALOG.meta.patch)}. Pelo ID, ainda dá para achar.</div>` : "";
+    ? `<div class="bi-fora">${fora === 1 ? "1 build publicada no catálogo está desatualizada estando de fora até ser republicada" : fora + " builds publicadas no catálogo estão desatualizadas estando de fora até serem republicadas"} para o Patch-${esc(CATALOG.meta.patch)}. Pelo ID, ainda dá para achar.</div>` : "";
   rows.innerHTML = (dados.length ? dados.map(linhaHtml).join("") : `<div class="bi-empty">${q || biFilter.marker || biFilter.champ ? "Nenhuma build publicada combina com a busca ou o filtro." : fora ? `Ainda não há builds publicadas no catálogo ${esc(CATALOG.meta.patch)}.` : "Ainda não há builds publicadas."}</div>`) + nota;
   dados.forEach(d => registrarEvento(d.pubId, "impressao"));   // F10-T15: apareceu na lista
   atualizarBarraLote();
@@ -13025,6 +13030,7 @@ function init() {
   // nasce nesse clique, na Fase 4). Links diretos (#item, #ficha, #apice,
   // #animacoes) já entram na loja.
   document.querySelectorAll("[data-patch]").forEach(el => el.textContent = CATALOG.meta.patch || "");
+  document.querySelectorAll("[data-atualizacao]").forEach(el => el.textContent = ATUALIZACAO);
   setPaper(document.querySelector(".entrada-placa"), randomPaper());
   const entrada = document.getElementById("entrada");
   function entrarNaLoja(imediato) {
