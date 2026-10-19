@@ -204,6 +204,13 @@ Depois da revisão (F13-T50b): o texto da calculadora fica legível no papel
 da forja não muda, o menu se usa pelo teclado (Esc devolve o foco, Tab para fora
 fecha, a explicação do tipo é anunciada) e cada tipo sobrevive ao recarregar.
 
+**Bigorna** (F13-T51, o nº 39; a build sempre aberta, opção B do Leo) — a plaqueta sob a aba Builds nomeia a
+build em todas as telas (loja, lista, forja, Runas, Calculadora); fora da forja diz "editando" e "● não salva";
+no pior estado (nome de 63 letras, editando, não salva, caixa escolhida) nada estoura e o cabeçalho não muda de
+altura em nenhuma resolução; o Ctrl+S salva da loja; "parar de editar" pergunta com rascunho e devolve o foco;
+o nome leva à forja; renomear pelo campo muda a plaqueta e a faixa na hora; a faixa fica presa no topo ao rolar;
+a gravação recusada aparece na hora; e uma pública aberta para ver não fica com o Editar ligado (o nº 40).
+
 **Builds publicadas** — a lista vem do servidor e não traz "permission denied".
 
 **Resoluções** — 2560×1440, 1920×1080 e 1600×900, a ordem do Leo, mais

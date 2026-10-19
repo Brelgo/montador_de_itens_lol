@@ -2659,6 +2659,167 @@ def checar_daltonismo(s, p):
     time.sleep(1.0)
     s.entrar()
 
+def checar_bigorna(s, p):
+    """F13-T51 (Leo, 18/10/2026: "sempre estou em uma build ativa… precisa ter
+    alguma forma de demonstrar que tem uma build ativa ou se é para sair da
+    edição"): a plaqueta sob a aba Builds e a faixa da loja dizem, de qualquer
+    tela, qual build está aberta e se há alteração por salvar (o nº 39)."""
+    print("\n%sBIGORNA%s" % (AMARELO, FIM))
+    s.nova_build()
+    longo = "Jinx ADC — crítico com Mata-Cráquens, Gume do Infinito e Furacão"   # 63 letras: o pior nome
+    s.js("""(() => { if (build.editing) document.getElementById('edit-switch').click();
+      build.name = %s; gravarBuild(); renderBuildAll(); return 'ok'; })()""" % json.dumps(longo))
+    time.sleep(0.4)
+    le = r"""(() => { const p = document.getElementById('bigorna'), n = document.getElementById('bg-nome');
+      if (!p) return null; const r = p.getBoundingClientRect(), b = document.getElementById('search-input');
+      const aba = document.querySelector('.tab-btn[data-tab="build"]').getBoundingClientRect(), pa = document.getElementById('bg-parar');
+      return { visivel: !p.hidden && r.width > 0, estado: p.dataset.estado, nome: n.textContent, titulo: n.title,
+               rot: document.getElementById('bg-rot').textContent, info: document.getElementById('bg-estado').textContent,
+               parar: !pa.hidden && pa.getBoundingClientRect().width > 0, baixo: Math.round(r.bottom), direita: Math.round(r.right),
+               estouro: p.scrollWidth - p.clientWidth, parar_dentro: pa.hidden || pa.getBoundingClientRect().right <= r.right + 0.5,
+               desvio: Math.round(Math.abs(r.left - aba.left)),
+               busca: b && b.getBoundingClientRect().height ? Math.round(b.getBoundingClientRect().top) : null,
+               cab: Math.round(document.querySelector('header.top').getBoundingClientRect().height) }; })()"""
+    telas = [("catalog", None), ("build", "lista"), ("build", "forja"), ("runas", None), ("calc", None)]
+    ruins = []
+    for aba, tela in telas:
+        s.js("switchTab('%s'); %s window.scrollTo(0, 0); 'ok'" % (aba, ("showBuildScreen('%s');" % tela) if tela else ""))
+        time.sleep(0.4)
+        r = s.js(le)
+        if not r or not r["visivel"] or r["nome"] != longo or longo not in (r["titulo"] or ""):
+            ruins.append(aba + (":" + tela if tela else ""))
+    p.conta("bigorna", "a plaqueta nomeia a build em todas as telas", not ruins, "sem a plaqueta: " + ", ".join(ruins) if ruins else "5 telas")
+    # o nº 39: com o Editar ligado e um item por salvar, a loja, as Runas e a
+    # Calculadora dizem "não salva" — na tela, não só no DOM
+    s.js("switchTab('build'); showBuildScreen('forja'); window.scrollTo(0, 0); 'ok'")
+    time.sleep(0.4)
+    s.clicar("#edit-switch", 0.6)
+    s.js("build.cats[1].items.push({ itemId: 'long-sword', note: '' }); saveBuild(); renderBuildAll(); 'ok'")
+    time.sleep(0.3)
+    fora = {}
+    for aba in ("catalog", "runas", "calc"):
+        s.js("switchTab('%s'); window.scrollTo(0, 0); 'ok'" % aba)
+        time.sleep(0.4)
+        r = s.js(le)
+        fora[aba] = bool(r and r["visivel"] and r["estado"] == "sujo" and "não salva" in r["info"] and r["parar"])
+    s.js("switchTab('catalog'); window.scrollTo(0, 0); 'ok'")
+    time.sleep(0.3)
+    faixa = s.js("""(() => { const f = document.getElementById('cff-sujo'), x = document.getElementById('catalog-forja-faixa');
+      return !!f && !f.hidden && f.getBoundingClientRect().width > 0 && x.getBoundingClientRect().width > 0; })()""")
+    p.conta("bigorna", "fora da forja a plaqueta diz editando e não salva", all(fora.values()) and faixa,
+            "; ".join("%s %s" % (k, "ok" if v else "não diz") for k, v in fora.items()) + "; faixa %s" % faixa)
+    # o pior estado (nome longo, editando, não salva, com caixa na faixa) em cada resolução
+    s.js("build.selectedCatId = build.cats[2].id; renderBuild(); 'ok'")
+    medidas, ruins = [], []
+    for w, h in RESOLUCOES + [(1440, 900)]:
+        s.tela(w, h)
+        s.js("switchTab('catalog'); window.scrollTo(0, 0); posicionarBigorna(); 'ok'")
+        time.sleep(0.4)
+        com = s.js(le)
+        sem = s.js("(() => { const p = document.getElementById('bigorna'); p.hidden = true; const a = Math.round(document.querySelector('header.top').getBoundingClientRect().height); p.hidden = false; return a; })()") if com else None
+        fx = s.js("(() => { const f = document.getElementById('catalog-forja-faixa'), r = f.getBoundingClientRect(); return { estouro: f.scrollWidth - f.clientWidth, alto: Math.round(r.height) }; })()")
+        ok = (com and com["visivel"] and com["estado"] == "sujo" and com["cab"] == sem and com["busca"] is not None
+              and com["baixo"] <= com["busca"] and com["direita"] <= w and com["estouro"] <= 1 and com["parar_dentro"]
+              and com["desvio"] <= 8 and fx["estouro"] <= 1 and fx["alto"] <= 48)
+        medidas.append("%d: cab %s/%s, faixa %spx" % (w, com and com["cab"], sem, fx["alto"]))
+        if not ok:
+            ruins.append("%dx%d (%s; faixa %s)" % (w, h, com, fx))
+    s.js("build.selectedCatId = null; renderBuild(); 'ok'")
+    s.tela_normal()
+    p.conta("bigorna", "no pior estado, nada estoura nem mexe no cabeçalho", not ruins, "; ".join(ruins) or "; ".join(medidas))
+    # o Ctrl+S de qualquer tela
+    s.js("switchTab('catalog'); 'ok'")
+    time.sleep(0.3)
+    for tipo in ("keyDown", "keyUp"):
+        s.envia("Input.dispatchKeyEvent", {"type": tipo, "key": "s", "code": "KeyS", "modifiers": 2, "windowsVirtualKeyCode": 83})
+    time.sleep(0.5)
+    ctrl = s.js("""(() => { const d = JSON.parse(localStorage.getItem('lol-builds-v3') || '{}');
+      const b = (d.builds || []).find(x => x.id === build.id);
+      return { sujo: rascunho.sujo, noDisco: !!b && b.cats[1].items.some(e => e.itemId === 'long-sword'), estado: document.getElementById('bigorna').dataset.estado,
+               faixa_sujo: !document.getElementById('cff-sujo').hidden }; })()""")
+    p.conta("bigorna", "o Ctrl+S salva da loja", not ctrl["sujo"] and ctrl["noDisco"] and ctrl["estado"] == "editando" and not ctrl["faixa_sujo"], "%s" % ctrl)
+    # "parar de editar" pela plaqueta: com rascunho, pergunta; sem rascunho, desliga
+    s.js("build.cats[1].items.push({ itemId: 'dagger', note: '' }); saveBuild(); 'ok'")
+    time.sleep(0.3)
+    s.clicar("#bg-parar", 0.5)
+    perguntou = s.js("!document.getElementById('save-dialog').hidden")
+    if perguntou:
+        s.clicar('#save-dialog [data-sd="descartar"]', 0.6)
+    depois = s.js("({ editando: build.editing, sujo: rascunho.sujo, adaga: build.cats[1].items.some(e => e.itemId === 'dagger'), parar: !document.getElementById('bg-parar').hidden, estado: document.getElementById('bigorna').dataset.estado, foco: document.activeElement && document.activeElement.id })")
+    s.js("switchTab('build'); showBuildScreen('forja'); 'ok'")
+    time.sleep(0.3)
+    s.clicar("#edit-switch", 0.6)
+    s.js("switchTab('runas'); 'ok'")
+    time.sleep(0.3)
+    s.clicar("#bg-parar", 0.5)
+    limpo = s.js("({ editando: build.editing, dialogo: !document.getElementById('save-dialog').hidden, foco: document.activeElement && document.activeElement.id })")
+    p.conta("bigorna", "parar de editar pela plaqueta",
+            perguntou and not depois["editando"] and not depois["sujo"] and not depois["adaga"] and not depois["parar"]
+            and depois["estado"] == "aberta" and not limpo["editando"] and not limpo["dialogo"] and limpo["foco"] == "bg-nome",
+            "perguntou %s; depois de descartar %s; sem rascunho %s" % (perguntou, depois, limpo))
+    # o nome leva à forja — saindo da lista, para provar que é ele quem abre a forja
+    s.js("switchTab('build'); showBuildScreen('lista'); switchTab('calc'); 'ok'")
+    time.sleep(0.4)
+    s.clicar("#bg-nome", 0.6)
+    forja = s.js("({ aba: !document.getElementById('view-build').classList.contains('hidden'), forja: !document.getElementById('build-editor').hidden, tela: buildScreen })")
+    p.conta("bigorna", "o nome na plaqueta leva à forja", forja["aba"] and forja["forja"] and forja["tela"] == "forja", "%s" % forja)
+    # renomear pelo campo de verdade: a plaqueta e a faixa mudam sem redesenhar a loja
+    s.js("window.scrollTo(0, 0); 'ok'")
+    s.clicar("#build-name-input", 0.3)
+    s.js("document.getElementById('build-name-input').select(); 'ok'")
+    s.envia("Input.insertText", {"text": "Ezreal meio"})
+    time.sleep(0.2)
+    s.clicar('.tab-btn[data-tab="catalog"]', 0.6)
+    renome = s.js("({ nome: build.name, plaqueta: document.getElementById('bg-nome').textContent, faixa: document.getElementById('cff-build').textContent })")
+    p.conta("bigorna", "renomear muda a plaqueta e a faixa na hora",
+            renome["nome"] == "Ezreal meio" and renome["plaqueta"] == "Ezreal meio" and renome["faixa"] == "Ezreal meio", "%s" % renome)
+    # a faixa da loja: sem caixa diz a build; com caixa, a caixa; e fica no topo ao rolar
+    s.js("switchTab('catalog'); build.selectedCatId = null; renderBuild(); window.scrollTo(0, 0); 'ok'")
+    time.sleep(0.4)
+    sem_caixa = s.js("""(() => { const f = document.getElementById('catalog-forja-faixa');
+      return { visivel: !f.hidden && f.getBoundingClientRect().width > 0, build: document.getElementById('cff-build').textContent, caixa: !document.getElementById('cff-caixa').hidden,
+               dica: document.getElementById('cff-dica').textContent }; })()""")
+    s.js("window.scrollTo(0, 1600); 'ok'")
+    time.sleep(0.5)
+    presa = s.js("(() => { const r = document.getElementById('catalog-forja-faixa').getBoundingClientRect(); return [Math.round(r.top), Math.round(r.bottom)]; })()")
+    s.js("window.scrollTo(0, 0); build.selectedCatId = build.cats[2].id; renderBuild(); 'ok'")
+    time.sleep(0.3)
+    com_caixa = s.js("({ caixa: !document.getElementById('cff-caixa').hidden, nome: document.getElementById('cff-nome').textContent, soltar: !document.getElementById('cff-soltar').hidden, esperado: build.cats[2].name })")
+    s.js("build.selectedCatId = null; renderBuild(); 'ok'")
+    p.conta("bigorna", "a faixa da loja diz a build e fica no topo ao rolar",
+            sem_caixa["visivel"] and sem_caixa["build"] == "Ezreal meio" and not sem_caixa["caixa"] and "pergunta" in sem_caixa["dica"]
+            and 0 <= presa[0] <= 20 and com_caixa["caixa"] and com_caixa["nome"] == com_caixa["esperado"] and com_caixa["soltar"],
+            "sem caixa %s; rolada a 1600 a faixa fica em %s; com caixa %s" % (sem_caixa, presa, com_caixa))
+    # a gravação recusada chega à plaqueta na hora (o coração da lista, o lote…)
+    erro = s.js("""(() => { const orig = Storage.prototype.setItem;
+      Storage.prototype.setItem = function (k, v) { if (k === 'lol-builds-v3') throw new DOMException('cheio', 'QuotaExceededError'); return orig.call(this, k, v); };
+      switchTab('catalog'); gravarBiblioteca();
+      const r = { estado: document.getElementById('bigorna').dataset.estado, info: document.getElementById('bg-estado').textContent };
+      Storage.prototype.setItem = orig; if (!document.getElementById('pub-dialog').hidden) fecharPub();
+      gravarBiblioteca(); r.depois = document.getElementById('bigorna').dataset.estado; return r; })()""")
+    p.conta("bigorna", "a gravação recusada aparece na plaqueta na hora",
+            erro["estado"] == "erro" and "gravação recusada" in erro["info"] and erro["depois"] != "erro", "%s" % erro)
+    # vendo uma pública: com o Editar ligado antes, ele não atravessa para ela
+    s.js("switchTab('build'); showBuildScreen('forja'); 'ok'")
+    time.sleep(0.3)
+    if not s.js("build.editing"):
+        s.clicar("#edit-switch", 0.6)
+    s.js("""(() => { abrirPublicaTemporaria({ pubId: 'qa-bigorna', name: 'Pública do roteiro', cats: [], mode: '', champ: null,
+      markers: [], desc: '', runas: null, habilidades: null, layout: null, pubPatch: CATALOG.meta.patch }); return 'ok'; })()""")
+    time.sleep(0.6)
+    ligar = s.js("(() => { const b = document.getElementById('ml-ligar'); if (b) b.click(); return build.editing; })()")
+    s.js("switchTab('catalog'); 'ok'")
+    time.sleep(0.3)
+    vendo = s.js(le)
+    extra = s.js("({ editando: build.editing, faixa: document.getElementById('cff-rot').textContent.trim().startsWith('Vendo') })")
+    p.conta("bigorna", "vendo uma pública: só visualização, sem Editar",
+            vendo and vendo["estado"] == "vendo" and vendo["rot"] == "Vendo" and "só visualização" in vendo["info"] and not vendo["parar"]
+            and not extra["editando"] and not ligar and extra["faixa"],
+            "%s; %s; o Ligar Editar ligou: %s" % (vendo, extra, ligar))
+    # a visualização some ao recarregar; volta tudo ao normal para os grupos seguintes
+    s.abrir()
+    time.sleep(1.0)
+    s.entrar()
 
 def checar_acessibilidade(s, p):
     print("\n%sACESSIBILIDADE%s" % (AMARELO, FIM))
@@ -2884,6 +3045,7 @@ GRUPOS = [
     ("rascunho", checar_rascunho),
     ("troca", checar_troca),
     ("falta publicar", checar_falta_publicar),
+    ("bigorna", checar_bigorna),
     ("acessibilidade", checar_acessibilidade),
     ("resoluções", checar_resolucoes),
     ("calculadora", checar_calculadora),

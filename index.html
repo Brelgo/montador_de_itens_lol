@@ -3507,6 +3507,53 @@ body.nucleo .grid::before {
 .cff-dica { font-style: italic; color: #8f8074; flex: 1; }
 .cff-soltar { background: transparent; border: 1px solid #3a3029; border-radius: 3px; color: #8f8074; font-family: var(--loja-texto); font-size: 12.5px; padding: 3px 10px; cursor: pointer; }
 .cff-soltar:hover { border-color: #ff7a1e; color: #ffd27a; box-shadow: 0 0 10px rgba(255,120,30,.55); }
+/* F13-T51: a faixa fica presa no topo da loja enquanto há build aberta */
+.catalog-forja-faixa { position: sticky; top: 8px; z-index: 30; }
+.cff-texto b { margin-right: 2px; }
+#cff-build { display: inline-block; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+.catalog-forja-faixa .cff-dica { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cff-caixa { color: #d8cbb6; font-size: 13.5px; white-space: nowrap; }
+.cff-caixa b { color: #ffd27a; font-weight: 500; }
+.cff-sujo { color: #ffb257; font-style: italic; font-size: 13px; white-space: nowrap; }
+/* F13-T51: a plaqueta da bigorna, pendurada por duas correntes sob a aba Builds.
+   O ferro, o filete de brasa e as letras são os da faixa "Forjando em". Sob a aba
+   sobram 47 px na loja (medido em 2560, 1920, 1600 e 1440): ela cabe sem mexer
+   no cabeçalho. */
+.tabs { position: relative; }
+.bigorna {
+  position: absolute; top: calc(100% + 7px); left: 0; z-index: 40;
+  display: inline-flex; align-items: center; gap: 10px; max-width: 640px; white-space: nowrap;
+  padding: 4px 16px 4px 0; border-radius: 3px;
+  background: linear-gradient(180deg, #2a2420, #1a1512); border: 1px solid #443a32;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), inset 0 0 22px rgba(0,0,0,.45), 0 3px 8px rgba(0,0,0,.5);
+  font-family: var(--loja-texto); text-transform: none; letter-spacing: 0;
+}
+.bigorna::before, .bigorna::after { content: ""; position: absolute; right: 5px; width: 5px; height: 5px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e6c27a, #7a5a26); box-shadow: 0 1px 1px rgba(0,0,0,.6); }
+.bigorna::before { top: 5px; } .bigorna::after { bottom: 5px; }
+.bg-corrente { position: absolute; top: -8px; left: 14px; width: 3px; height: 8px; border-radius: 2px;
+  background: repeating-linear-gradient(180deg, #8a7a66 0 2px, #3a2f28 2px 3px); }
+.bg-corrente.dir { left: auto; right: 18px; }
+.bg-brasa { align-self: stretch; width: 5px; border-radius: 3px 0 0 3px; background: #ff7a1e; box-shadow: 0 0 8px 2px rgba(255,120,30,.5); }
+.bigorna[data-estado="vazia"] .bg-brasa { background: #3a2f28; box-shadow: none; }
+.bigorna[data-estado="sujo"] .bg-brasa { animation: cff-pulsa 1.8s ease-in-out infinite; }
+.bigorna[data-estado="erro"] .bg-brasa { background: #c8503c; box-shadow: 0 0 8px 2px rgba(200,80,60,.5); }
+.bg-rot { font-family: var(--loja-gravado); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #ffd27a; }
+.bigorna[data-estado="vazia"] .bg-rot { color: #8f8074; }
+.bg-nome { background: none; border: 0; padding: 0; cursor: pointer; font-family: 'IM Fell English', Georgia, serif;
+  font-size: 15px; color: #fff4e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; min-width: 60px; flex-shrink: 1; }
+.bg-nome:hover { color: #ffd27a; text-decoration: underline; text-underline-offset: 3px; }
+.bg-estado { font-style: italic; font-size: 12.5px; color: #c9973f; }
+.bg-estado:empty { display: none; }
+.bg-sujo { color: #ffb257; }
+.bg-erro { color: #ff8a73; }
+.bg-btn { background: transparent; border: 1px solid #3a3029; border-radius: 3px; color: #b8a890; cursor: pointer;
+  font-family: var(--loja-texto); font-size: 12px; padding: 2px 8px; }
+.bg-btn:hover { border-color: #ff7a1e; color: #ffd27a; }
+.bg-abrir { color: #ffd27a; border-color: #5a4630; }
+body.ac-brilho .bg-brasa, body.ac-brilho .cff-brasa { box-shadow: none !important; }
+@media (prefers-reduced-motion: reduce) { .catalog-forja-faixa, .cff-brasa, .bigorna .bg-brasa { animation: none !important; } }
+body.ac-brilho .catalog-forja-faixa { box-shadow: inset 0 1px 0 rgba(255,255,255,.05), inset 0 0 30px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.5) !important; }
 body.cat-selected .cat-target select { border-color: #ff7a1e; box-shadow: inset 0 1px 3px rgba(0,0,0,.2), 0 0 10px rgba(255,120,30,.55); }
 /* ---- Modo de exibição: cards ou só ícones (Leo, 13/09/2026) ---- */
 .grid-tools { display: inline-flex; align-items: center; gap: 16px; }
@@ -4894,6 +4941,18 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
       <button class="tab-btn" data-tab="build">Builds<span class="tab-count" id="build-tab-count"></span></button>
       <button class="tab-btn" data-tab="runas">Runas<span class="tab-count" id="runas-tab-count"></span></button>
       <button class="tab-btn" data-tab="calc">Calculadora</button>
+      <!-- F13-T51 (Leo, 18/10/2026): a plaqueta da bigorna, pendurada sob a aba
+           Builds — diz de qualquer tela qual build está aberta e em que estado.
+           Fica fora do fluxo (absoluta): o cabeçalho não muda de altura. -->
+      <div id="bigorna" class="bigorna" role="group" aria-label="Build aberta" hidden>
+        <i class="bg-corrente" aria-hidden="true"></i><i class="bg-corrente dir" aria-hidden="true"></i>
+        <span class="bg-brasa" aria-hidden="true"></span>
+        <span class="bg-rot" id="bg-rot">Na bigorna</span>
+        <button type="button" class="bg-nome" id="bg-nome"></button>
+        <span class="bg-estado" id="bg-estado"></span>
+        <button type="button" class="bg-btn" id="bg-parar" title="Desliga o Editar; a build continua na bigorna" hidden>parar de editar</button>
+        <button type="button" class="bg-btn bg-abrir" id="bg-abrir" title="Abrir uma das suas builds" hidden>abrir uma build</button>
+      </div>
     </nav>
     <div class="counts-wrap">
       <div class="counts"><b id="total-count">0</b> itens catalogados</div>
@@ -4984,11 +5043,15 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
     <nav id="class-tabs" class="class-tabs" aria-label="Classe do item"></nav>
     <div id="catalog-mode-hint" class="catalog-mode-hint" role="status"></div>
     <!-- F10-T3 (Leo, 16/09/2026): a forja entra na loja — faixa de ferro dizendo para qual caixa vão os cliques -->
-    <div id="catalog-forja-faixa" class="catalog-forja-faixa" role="status" hidden>
+    <div id="catalog-forja-faixa" class="catalog-forja-faixa" hidden>
       <span class="cff-brasa" aria-hidden="true"></span>
-      <span class="cff-texto">Forjando em <b id="cff-nome"></b><span id="cff-qtd" class="cff-qtd"></span></span>
-      <span class="cff-dica">os itens clicados vão para esta caixa</span>
-      <button type="button" id="cff-soltar" class="cff-soltar" title="Parar de marcar nesta caixa (Esc)">soltar</button>
+      <!-- F13-T51: a faixa diz a build aberta o tempo todo (antes, só com uma caixa
+           escolhida) e fica presa no topo ao rolar a loja -->
+      <span class="cff-texto" id="cff-rot">Na bigorna <b id="cff-build"></b></span>
+      <span class="cff-caixa" id="cff-caixa">· caixa <b id="cff-nome"></b><span id="cff-qtd" class="cff-qtd"></span></span>
+      <span class="cff-dica" id="cff-dica">os itens clicados vão para esta caixa</span>
+      <span class="cff-sujo" id="cff-sujo" title="Alterações não salvas — Ctrl+S salva de qualquer tela" hidden><span aria-hidden="true">●</span> não salva</span>
+      <button type="button" id="cff-soltar" class="cff-soltar" title="Parar de marcar nesta caixa (Esc)">soltar a caixa</button>
     </div>
     <!-- F11-T5 (Leo, 18/09/2026): a página do catálogo vira a oficina do núcleo,
          com o estandarte da guilda descendo pela lateral. Em "Todos" nada disso
@@ -6095,6 +6158,7 @@ function gravarBiblioteca() {
   } catch (e) {
     // sem persistência: segue funcionando, só não lembra — e avisa
     if (!bibliotecaNaoGravada) { bibliotecaNaoGravada = true; marcarDona(); mostrarPub("Não deu para gravar", NAO_GRAVOU, "erro"); }
+    refletirSalvar();   // F13-T51 (revisão): sem isto, a plaqueta só dizia "gravação recusada" na próxima gravação
     return false;
   }
 }
@@ -6295,7 +6359,56 @@ function atualizarVeu(motivo) {
     }, () => {});
   }
 }
+// F13-T51 (Leo, 18/10/2026: "tecnicamente eu sempre estou em uma build ativa…
+// precisa ter alguma forma de demonstrar que tem uma build ativa ou se é para
+// sair da edição da build atual"): a plaqueta pendurada sob a aba Builds diz, de
+// qualquer tela, qual build está na bigorna e em que estado — editando, não
+// salva (o nº 39: antes isso só aparecia dentro da forja), gravação recusada,
+// vendo uma pública. "parar de editar" desliga o Editar pelo mesmo caminho do
+// interruptor da forja, que pergunta antes quando há rascunho.
+function refletirBigorna() {
+  const p = document.getElementById("bigorna");
+  if (!p) return;
+  const aberta = !!build.id;
+  const erro = erroGravacao || bibliotecaNaoGravada;
+  const estado = !aberta ? "vazia" : build.temp ? "vendo" : erro ? "erro" : rascunho.sujo ? "sujo" : build.editing ? "editando" : "aberta";
+  p.hidden = false;
+  p.dataset.estado = estado;
+  document.getElementById("bg-rot").textContent = { vazia: "Bigorna vazia", vendo: "Vendo" }[estado] || "Na bigorna";
+  const nomeBuild = build.name || "Build sem nome";
+  const nome = document.getElementById("bg-nome");
+  nome.hidden = !aberta;
+  nome.textContent = nomeBuild;
+  nome.title = `Ir para a forja de “${nomeBuild}”`;
+  const st = document.getElementById("bg-estado");
+  st.innerHTML = {
+    editando: "· editando",
+    sujo: '· editando · <span class="bg-sujo"><span aria-hidden="true">●</span> não salva</span>',
+    erro: `· <span class="bg-erro">${erroGravacao ? "não deu para salvar" : "gravação recusada"}</span>`,
+    vendo: "· só visualização",
+  }[estado] || "";
+  st.title = estado === "sujo" ? "Alterações não salvas — Ctrl+S salva de qualquer tela"
+    : estado === "erro" ? (erroGravacao ? NAO_SALVOU : NAO_GRAVOU) : "";
+  document.getElementById("bg-parar").hidden = !(aberta && !build.temp && build.editing);
+  document.getElementById("bg-abrir").hidden = aberta;
+  // a faixa da loja diz o mesmo: o nome e o "não salva" (antes o nome só mudava
+  // ao redesenhar a loja, e renomear deixava o velho ali)
+  const fb = document.getElementById("cff-build");
+  if (fb) {
+    fb.textContent = nomeBuild;
+    fb.title = nomeBuild;
+    document.getElementById("cff-rot").firstChild.textContent = build.temp ? "Vendo " : "Na bigorna ";
+    document.getElementById("cff-sujo").hidden = !rascunho.sujo;
+  }
+  posicionarBigorna();
+}
+// a plaqueta fica sob a aba Builds; a posição da aba depende da fonte carregada
+function posicionarBigorna() {
+  const p = document.getElementById("bigorna"), aba = document.querySelector('.tab-btn[data-tab="build"]');
+  if (p && aba) p.style.left = (aba.offsetLeft + 4) + "px";
+}
 function refletirSalvar(msg) {
+  refletirBigorna();
   // "não deu para salvar": há rascunho que um Salvar tentou gravar e não
   // conseguiu. "gravação recusada": o navegador está recusando gravar (a
   // memória pode estar à frente do disco), mesmo sem rascunho. Uma gravação
@@ -6372,6 +6485,16 @@ function confirmarSaida(depois) {
 }
 function initSalvar() {
   document.getElementById("save-btn").addEventListener("click", salvarAgora);
+  // F13-T51: a plaqueta — o nome leva à forja; "parar de editar" é o interruptor
+  // Editar da forja, de qualquer tela; "abrir uma build" leva à lista
+  document.getElementById("bg-nome").addEventListener("click", () => { switchTab("build"); showBuildScreen("forja"); });
+  document.getElementById("bg-parar").addEventListener("click", () => confirmarSaida(() => {
+    window.ligarEdicao(false);
+    document.getElementById("bg-nome").focus();   // o botão some: o foco não fica no vazio
+  }));
+  document.getElementById("bg-abrir").addEventListener("click", () => { switchTab("build"); showBuildScreen("lista"); });
+  window.addEventListener("resize", posicionarBigorna);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(posicionarBigorna);
   document.getElementById("discard-btn").addEventListener("click", () => confirmarSaida(() => {}));
   const dlg = document.getElementById("save-dialog");
   dlg.addEventListener("click", (e) => {
@@ -6386,7 +6509,9 @@ function initSalvar() {
     else if (b.dataset.sd === "descartar") { descartarAlteracoes(); if (depois) depois(); }
   });
   document.addEventListener("keydown", (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s" && document.body.classList.contains("forja") && build.editing) { e.preventDefault(); salvarAgora(); }
+    // F13-T51: o Ctrl+S vale de qualquer tela — a plaqueta mostra o "não salva"
+    // na loja, nas Runas e na Calculadora, e lá o atalho abria o "Salvar como"
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s" && build.id && build.editing && !build.temp) { e.preventDefault(); salvarAgora(); }
     if (e.key === "Escape" && !dlg.hidden) { dlg.hidden = true; saidaPendente = null; }
     if (e.key === "Tab" && !dlg.hidden) {   // o Tab gira entre os três botões, sem voltar para trás da camada
       const bs = [...dlg.querySelectorAll("button")];
@@ -6523,6 +6648,14 @@ function activateBuild(id, skipSave) {
   build.patch = b.patch || CATALOG.meta.patch;
   build.revisao = b.revisao || null;
   build.temp = !!b.temp;
+  // F13-T51 (revisão): uma pública aberta para ver não herda o Editar ligado da
+  // build de antes — com ele, editava-se o que não se grava e o Ctrl+S dizia "salvo"
+  if (build.temp && build.editing) {
+    build.editing = false;
+    document.body.classList.remove("editando");
+    const t = document.getElementById("edit-toggle");
+    if (t) t.checked = false;
+  }
   build.pubOrigem = b.pubOrigem || null;
   build.layout = layoutValido(b.layout);
   build.selectedCatId = null;
@@ -10705,6 +10838,9 @@ function initBuildBuilder() {
   // F12-T2: a pergunta "em qual caixa" precisa poder ligar a edição para criar
   // uma caixa nova; sem isto ela chamaria addCategory() com o Editar desligado.
   const applyEditing = (on) => {
+    // F13-T51 (revisão): ninguém liga o Editar numa pública aberta para ver — nem
+    // o "Ligar Editar" da faixa Modo leitura, nem o "criar uma caixa" da loja
+    if (on && build.temp) { editToggle.checked = false; chamarEditarTemp(); return; }
     build.editing = !!on;
     editToggle.checked = build.editing;
     document.body.classList.toggle("editando", build.editing);
@@ -12337,17 +12473,23 @@ function refreshCatalogCatSelect() {
     sel.appendChild(o);
   });
   sel.value = getCat(build.selectedCatId) ? build.selectedCatId : "";
-  // F10-T3: a faixa da forja acompanha a caixa escolhida
+  // F10-T3: a faixa da forja acompanha a caixa escolhida. F13-T51: e diz a build
+  // aberta o tempo todo — sem caixa, avisa que o clique no item pergunta a caixa.
   const faixa = document.getElementById("catalog-forja-faixa");
   const cat = getCat(build.selectedCatId);
   if (faixa) {
-    faixa.hidden = !cat;
+    faixa.hidden = !build.id;
+    document.getElementById("cff-caixa").hidden = !cat;
+    document.getElementById("cff-soltar").hidden = !cat;
+    document.getElementById("cff-dica").textContent = cat ? "os itens clicados vão para esta caixa"
+      : build.temp ? "só visualização" : "o clique no item pergunta a caixa";
     if (cat) {
       document.getElementById("cff-nome").textContent = cat.name || "(sem nome)";
       const n = cat.items.length;
       document.getElementById("cff-qtd").textContent = `· ${n} ${n === 1 ? "item" : "itens"}`;
     }
   }
+  refletirBigorna();
 }
 
 // Sincroniza o Catálogo com a build ativa: classe in-build nos cards, a

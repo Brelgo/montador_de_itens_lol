@@ -361,6 +361,8 @@ Na forja, trocar de build, "Nova build" e "Duplicar" passam por `confirmarSaida`
 
 ### 39. Fora da forja nada avisa que há alterações não salvas — e "criar uma caixa nova" no Catálogo liga o Editar calado
 
+**CONSERTADO na F13-T51 (18/10/2026), pela opção B do Leo.** A plaqueta pendurada sob a aba Builds diz, de qualquer tela, qual build está na bigorna e se ela está "· editando" ou "· editando · ● não salva" (e "gravação recusada", e "Vendo · só visualização"); a faixa da loja diz o mesmo e fica presa no topo ao rolar. O "criar uma caixa" continua ligando o Editar, mas agora a plaqueta mostra na hora. "parar de editar" na plaqueta desliga o Editar de qualquer tela (pergunta antes, com rascunho), e o Ctrl+S salva de qualquer tela. A lista continua sem marca de não salvo — fica com a T52/T53, que mexem na lista.
+
 `index.html` (`refletirSalvar`, faixa "Forjando em", `buildResumo`, `#escolher-caixa`) · **média** · achado na F13-T24 · **REPRODUZIDO**
 
 O único aviso é o "alterações não salvas" de dentro da forja. No Catálogo, "Em qual caixa?" → "criar uma e colocar aqui" liga o Editar (de propósito, F12-T2a), e dali em diante todo item clicado vira rascunho — inclusive escolher uma caixa existente, que antes gravava na hora. Nada no Catálogo, nas Runas ou na lista diz isso: a lista mostra o item novo no resumo, com "salvas neste navegador" no rodapé e a "Última atualização" antiga. Reproduzido: 3 itens pelo Catálogo, `#save-status` com o texto mas invisível, a lista sem marca de não salvo, e recarregar (aceitando o aviso genérico do navegador) apaga a build inteira num perfil novo. Precisa de decisão visual do Leo: onde e como mostrar o rascunho fora da forja.
@@ -368,6 +370,8 @@ O único aviso é o "alterações não salvas" de dentro da forja. No Catálogo,
 Da revisão da F13-T25: na lista, "Continuar editando" deixa a pessoa na lista — sem a forja e sem sinal do rascunho. É a mesma falta de aviso.
 
 ### 40. A visualização de uma build pública abre editável quando o Editar já estava ligado
+
+**CONSERTADO na F13-T51 (18/10/2026), achado de novo pela revisão.** Abrir uma pública desliga o Editar (`activateBuild`), e nada liga o Editar numa pública: nem o interruptor, nem o "Ligar Editar" da faixa Modo leitura, nem o "criar uma caixa" da loja (`applyEditing` recusa e chama `chamarEditarTemp`). O Ctrl+S também não age numa pública. O nº 29 (as runas de uma pública editáveis pela aba Runas) continua aberto.
 
 `index.html` (`abrirPublicaTemporaria`, `activateBuild`, `#edit-toggle`) · **média** · achado na F13-T24 · passou pela varredura, não reproduzido
 
