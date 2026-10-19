@@ -3753,6 +3753,16 @@ body:not(.cat-selected) #grid .card { cursor: zoom-in; }
 .btn-entrar:hover { filter: brightness(1.08); }
 .btn-entrar:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--loja-cera-sombra), 0 3px 6px rgba(0,0,0,.5); }
 .entrada-nota { margin: 18px 0 0; font-family: var(--loja-texto); font-style: italic; font-size: 12px; color: var(--loja-tinta-suave); }
+/* F13-T54: a assinatura do autor, no pé da placa, separada por um filete de tinta */
+.entrada-autor { margin: 16px auto 0; padding-top: 12px; max-width: 460px; border-top: 1px dashed rgba(60,40,20,.35); }
+.entrada-hobby { margin: 0 0 6px; font-family: var(--loja-texto); font-style: italic; font-size: 13px; color: var(--loja-tinta); }
+.entrada-contato { margin: 0; font-family: var(--loja-gravado); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--loja-tinta-suave); line-height: 1.9; }
+.entrada-contato .ea-rot { display: block; font-size: 9px; letter-spacing: .2em; opacity: .8; }
+.entrada-contato .ea-canal { white-space: nowrap; }
+.entrada-contato .ea-sep { margin: 0 4px; }
+/* o ID é o que se copia: um clique seleciona ele inteiro, com o # */
+.entrada-contato .ea-id { font-family: var(--loja-texto); font-size: 13px; font-weight: 600; letter-spacing: .02em; text-transform: none;
+  color: var(--loja-tinta); user-select: all; -webkit-user-select: all; cursor: text; margin-left: 3px; }
 body.na-loja .entrada { display: none; }
 @media (prefers-reduced-motion: reduce) { .entrada-placa { animation: none; } .entrada, .entrada-placa-wrap { transition: none; } }
 
@@ -4930,6 +4940,15 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
       <p class="entrada-frase">A loja está aberta. O lojista o aguarda.</p>
       <button id="entrar" class="btn-entrar" type="button">Entrar na loja</button>
       <p class="entrada-nota">League of Legends · Catálogo do Capítulo 1 · patch <span data-patch></span></p>
+      <!-- F13-T54 (Leo, 19/10/2026): quem fez, e como falar com ele -->
+      <div class="entrada-autor">
+        <p class="entrada-hobby">Este é um projeto feito por hobby sem fins lucrativos.</p>
+        <p class="entrada-contato"><span class="ea-rot">Contato do autor</span>
+          <span class="ea-canal">League of Legends <b class="ea-id" title="Riot ID — clique para selecionar">Brelgo#RPG</b></span>
+          <span class="ea-sep" aria-hidden="true">·</span>
+          <span class="ea-canal">Discord <b class="ea-id" title="Clique para selecionar">brelgo</b></span>
+        </p>
+      </div>
     </div>
   </div>
 </div>

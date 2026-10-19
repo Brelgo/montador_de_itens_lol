@@ -46,7 +46,9 @@ quebrados.
 
 **Fundação** — 225 itens; as runas contadas pela estrutura batem com o número
 que o gerador anotou (foi um leitor calado que escondeu 4 runas em 18/09);
-entrar na loja sem exceção.
+a placa de entrada diz "Este é um projeto feito por hobby sem fins lucrativos." e o contato do autor
+(League of Legends Brelgo#RPG, Discord brelgo; F13-T54), com os dois canais numa linha, um clique selecionando
+o ID inteiro e a placa cabendo na tela nas quatro resoluções; entrar na loja sem exceção.
 
 **Catálogo** — 225 cards desenhados; a busca filtra; a aba de núcleo vira
 oficina com o estandarte de 46 px; a aba Todos volta a ser uma grade só.

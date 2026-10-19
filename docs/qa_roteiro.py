@@ -372,6 +372,27 @@ def checar_fundacao(s, p):
             % (r["contadas"], r["meta"], r["frag"], r["metaFrag"]))
     patch = s.js("CATALOG.meta && CATALOG.meta.patch")
     p.conta("fundação", "o catálogo diz de que patch é", bool(patch), "patch %s" % patch)
+    # F13-T54 (Leo, 19/10/2026): a placa de entrada diz que é hobby e como falar
+    # com o autor — escrito, à vista, e a placa inteira cabe na tela
+    le = """(() => { const pl = document.querySelector('.entrada-placa'), t = pl ? pl.innerText.replace(/\\s+/g, ' ') : '';
+      const ids = [...document.querySelectorAll('.entrada-contato .ea-id')].map(b => b.textContent + ':' + getComputedStyle(b).userSelect);
+      const r = pl ? pl.getBoundingClientRect() : null;
+      // offsetTop, não o retângulo: a placa entra balançando (girada), e o giro desalinha os topos
+      const topos = [...document.querySelectorAll('.entrada-contato .ea-canal')].map(e => e.offsetTop);
+      return { linha: topos.length === 2 && topos[0] === topos[1], hobby: t.includes('Este é um projeto feito por hobby sem fins lucrativos.'),
+               lol: /League of Legends Brelgo#RPG/i.test(t), discord: /Discord brelgo/i.test(t), ids,
+               cabe: !!r && r.top >= 0 && r.bottom <= innerHeight && r.right <= innerWidth,
+               estouro: pl ? pl.scrollWidth - pl.clientWidth : null }; })()"""
+    ruins = []
+    for w, h in RESOLUCOES:
+        s.tela(w, h)
+        r = s.js(le)
+        if not (r["hobby"] and r["lol"] and r["discord"] and r["cabe"] and r["estouro"] <= 1 and r["linha"]
+                and r["ids"] == ["Brelgo#RPG:all", "brelgo:all"]):
+            ruins.append("%dx%d %s" % (w, h, r))
+    s.tela_normal()
+    p.conta("fundação", "a placa de entrada diz o hobby e o contato do autor", not ruins,
+            "; ".join(ruins) or "hobby, Brelgo#RPG e brelgo à vista em %d resoluções; um clique seleciona o ID inteiro" % len(RESOLUCOES))
     s.entrar()
     p.conta("fundação", "entrar na loja não gera erro", not s.erros, "; ".join(s.erros[:2]))
 
