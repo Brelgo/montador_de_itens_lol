@@ -6642,9 +6642,11 @@ function loadBuild() {
           layout: layoutValido(b.layout),
           cats,
         }); });
-        library.activeId = d.activeId && library.builds.some(b => b.id === d.activeId)
-          ? d.activeId : library.builds[0].id;
-        activateBuild(library.activeId, true);
+        // F13-T53 (Leo, 19/10/2026: "ao recarregar mantenha a build que já estava
+        // aberta"): volta a que estava na bigorna; se estava vazia, fica vazia —
+        // antes a primeira da lista abria sozinha
+        library.activeId = d.activeId && library.builds.some(b => b.id === d.activeId) ? d.activeId : null;
+        if (library.activeId) activateBuild(library.activeId, true);
         return;
       }
     }
@@ -6806,17 +6808,17 @@ function deleteBuild(id) {
     if (!build.id && buildScreen === "forja") showBuildScreen("lista");   // o Fechar da forja também
     return;
   }
-  // F13-T32 (bug nº 15): com uma pública aberta, a visualização contava como
-  // build — excluir a última própria gravava a biblioteca vazia (a visualização
-  // não vai ao disco). Sem build própria, nasce uma nova, como sem nenhuma.
-  if (!buildsProprias().length) {
-    build.id = null;
-    createNewBuild("Build sem nome");
-    return;
-  }
+  // F13-T53 (Leo, 19/10/2026): nada abre sozinho. Excluir a build aberta deixa
+  // a bigorna vazia — antes a primeira da lista entrava no lugar, e sem build
+  // própria nascia uma "Build sem nome" (F13-T32). A biblioteca vazia é válida
+  // no disco (loadBuild) e a lista diz "Nenhuma build ainda".
   // F13-T25: excluir OUTRA build (lista, lote, fechar visualização) gravava
   // junto o rascunho da que está aberta.
-  if (eraAtiva) { activateBuild((buildsProprias()[0] || library.builds[0]).id, true); gravarBuild(); } else gravarBiblioteca();
+  if (eraAtiva) {
+    zerarBuild();
+    gravarBiblioteca();
+    if (buildScreen === "forja") showBuildScreen("lista");
+  } else gravarBiblioteca();
   renderBuildAll();
 }
 
@@ -10898,14 +10900,10 @@ function initBuildBuilder() {
     if (!e.persisted) { try { sessionStorage.setItem(ASSUMIR_KEY, String(Date.now())); } catch (er) { /* sem sessionStorage: a fila decide */ } }
   });
   window.addEventListener("pageshow", (e) => { if (e.persisted && souDona && (lerDona() || {}).fora) marcarDona(); });
+  // F13-T53 (Leo, 19/10/2026: "o primeiro acesso fica completamente vazio por
+  // conta do tour ter uma etapa que vai ensinar"): sem build guardada, a bigorna
+  // começa vazia — antes nascia aqui uma "Build sem nome" para sempre haver uma.
   loadBuild();
-  // Sempre existe uma build ativa para editar, mesmo no primeiro acesso.
-  if (!build.id) {
-    build.id = newBuildId();
-    build.updatedAt = Date.now();   // F13-T33: nasce agora (a comparação nova não a carimba mais ao só abrir)
-    library.builds.push(snapshotActive());
-    library.activeId = build.id;
-  }
 
   document.querySelectorAll(".tab-btn").forEach(btn => {
     // F10-T2 (Leo, 16/09/2026): ir ao Catálogo não pergunta se salva — o rascunho continua na forja.
@@ -13032,7 +13030,7 @@ function init() {
   if (/^#build(-animacoes|-observacao|-apice)?$/.test(location.hash)) switchTab("build");
   if (location.hash === "#calc") switchTab("calc");
   // #build-exportar: forja com o painel exportar/importar aberto e o texto da build (só captura).
-  if (location.hash === "#build-exportar") {
+  if (location.hash === "#build-exportar" && build.id) {   // F13-T53: sem build, não há o que exportar
     switchTab("build");
     document.getElementById("io-panel").classList.add("show");
     document.getElementById("toggle-io").classList.add("active");
@@ -13044,7 +13042,7 @@ function init() {
     renderBuildAll();
   }
   // #build-observacao abre o editor de observação no primeiro molde (só captura).
-  if (location.hash === "#build-observacao") {
+  if (location.hash === "#build-observacao" && build.id) {   // F13-T53: sem build, o Editar não liga
     const t = document.getElementById("edit-toggle");
     if (t && !t.checked) { t.checked = true; t.dispatchEvent(new Event("change")); }
     const tile = document.querySelector("#build-canvas .item-tile");

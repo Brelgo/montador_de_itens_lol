@@ -175,10 +175,11 @@ formato antigo tem data.
 
 **Última build** (F13-T32, bug nº 15) — com uma pública aberta, a última build
 própria não se exclui (o Excluir desligado) e o "Fechar visualização" ainda
-fecha; a exclusão da última própria não deixa cópia fantasma; com uma
-visualização aberta, a ativa gravada é a sua; o Excluir da forja numa
-visualização fecha sem perguntar; a biblioteca gravada vazia não traz de volta a
-build do formato antigo.
+fecha; a exclusão da última própria não deixa cópia fantasma (e, desde a
+F13-T53, nem uma "Build sem nome" no lugar); com uma visualização aberta, a
+ativa gravada é a sua; o Excluir da forja numa visualização fecha sem
+perguntar; a biblioteca gravada vazia não traz de volta a build do formato
+antigo nem cria uma.
 
 **Publicar** (F13-T30, bugs nºs 11, 12 e 26; servidor simulado) — o hidden
 esconde sempre (Descartar sem rascunho, ⟳ em Minhas); o "+ Nova categoria" não
@@ -219,6 +220,12 @@ o foco vai para a aba Builds); com rascunho, o × (o da plaqueta e o da faixa) p
 fechada sobra na memória; sem build, o clique num item só abre a ficha (nenhuma pergunta, nada gravado); fechar
 uma pública volta para a build de antes (ou para a bigorna vazia); e sem build as Runas só leem, a calculadora
 não puxa, a forja não abre e o "Marcar em" fica parado.
+
+**Entrada sem build** (F13-T53; Leo, 19/10/2026: "ao recarregar mantenha a build que já estava aberta, e o
+primeiro acesso fica completamente vazio por conta do tour") — o primeiro acesso começa sem build nenhuma (nada
+no disco; a lista diz "Nenhuma build ainda"); o F5 volta a build que estava aberta, e com a bigorna vazia fica
+vazio; excluir a build aberta deixa a bigorna vazia, sem outra no lugar; e o #build-observacao sem build não
+liga o Editar.
 
 **Builds publicadas** — a lista vem do servidor e não traz "permission denied".
 

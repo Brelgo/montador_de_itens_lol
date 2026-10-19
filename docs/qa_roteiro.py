@@ -1722,6 +1722,9 @@ def checar_ultima(s, p):
     anterior (lol-build-v2). A pública aqui é montada por JS, sem servidor."""
     print(chr(10) + "%sÚLTIMA BUILD%s" % (AMARELO, FIM))
     s.limpar_memoria(); s.entrar()
+    # F13-T53: o primeiro acesso não cria build — a única build própria daqui é feita à mão
+    s.js("createNewBuild('Única'); 'ok'")
+    time.sleep(0.3)
     s.js("""(() => { localStorage.setItem('lol-build-v2', JSON.stringify({ name: 'Build velha do HTML anterior', cats: [{ name: 'Caixa antiga', items: [] }] }));
       switchTab('build'); showBuildScreen('lista');
       abrirPublicaTemporaria(publicaResumo({ id: 'qa0015', nome: 'Pública de teste', caixas: [], marcadores: [] }));
@@ -1747,10 +1750,11 @@ def checar_ultima(s, p):
       deleteBuild(p1); deleteBuild(p2);
       const disco = JSON.parse(localStorage.getItem('lol-builds-v3')).builds;
       return { nulos: library.builds.filter(b => !b.id).length, disco: disco.map(b => b.name), pub: disco.some(b => b.pubId === 'qa9P1') }; })()""")
-    p.conta("última build", "excluir a última própria não deixa cópia fantasma", g["nulos"] == 0 and g["disco"] == ["Build sem nome"] and not g["pub"],
+    # F13-T53: e nem uma "Build sem nome" no lugar (antes nascia uma; agora nada nasce sozinho)
+    p.conta("última build", "excluir a última própria não deixa cópia fantasma nem build nova", g["nulos"] == 0 and g["disco"] == [] and not g["pub"],
             "sem id na memória: %d; no disco: %s" % (g["nulos"], g["disco"]))
     # com uma visualização ativa, o disco guarda a última build própria como a ativa
-    a_ = s.js("""(() => { const propria = build.id; abrirPublicaTemporaria(publicaResumo({ id: 'qa0017', nome: 'Mais uma', caixas: [], marcadores: [] }));
+    a_ = s.js("""(() => { createNewBuild('Minha'); const propria = build.id; abrirPublicaTemporaria(publicaResumo({ id: 'qa0017', nome: 'Mais uma', caixas: [], marcadores: [] }));
       gravarBiblioteca(); return { propria, disco: JSON.parse(localStorage.getItem('lol-builds-v3')).activeId }; })()""")
     p.conta("última build", "com uma visualização aberta, a ativa gravada é a sua", a_["disco"] == a_["propria"],
             "activeId no disco: %s" % a_["disco"])
@@ -1766,7 +1770,7 @@ def checar_ultima(s, p):
     s.js("localStorage.setItem('lol-builds-v3', JSON.stringify({ builds: [], activeId: null })); 'ok'")
     s.abrir(); time.sleep(0.8)
     velha = s.js("library.builds.map(b => b.name)")
-    p.conta("última build", "biblioteca vazia na recarga não traz a build do formato antigo", "Build velha do HTML anterior" not in velha and len(velha) == 1,
+    p.conta("última build", "biblioteca vazia na recarga não traz a build do formato antigo (nem cria uma)", "Build velha do HTML anterior" not in velha and len(velha) == 0,
             "builds: %s" % velha)
     s.js("localStorage.removeItem('lol-build-v2'); 'ok'")
     s.entrar()
@@ -2990,6 +2994,64 @@ def checar_fechar(s, p):
     time.sleep(1.0)
     s.entrar()
 
+def checar_entrada(s, p):
+    """F13-T53 (Leo, 19/10/2026: "ao recarregar mantenha a build que já estava
+    aberta, e o primeiro acesso fica completamente vazio por conta do tour ter
+    uma etapa que vai ensinar"): nada abre nem nasce sozinho."""
+    print("\n%sENTRADA SEM BUILD%s" % (AMARELO, FIM))
+    le = """(() => { const p = document.getElementById('bigorna'); let disco = null;
+      try { disco = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch (e) { disco = 'ilegivel'; }
+      const vazio = document.querySelector('#build-index .bi-empty');
+      return { id: build.id, nome: build.name, builds: library.builds.map(b => b.name), plaqueta: !p.hidden,
+               disco: disco && disco.builds ? { n: disco.builds.length, ativa: disco.activeId } : disco,
+               vazio: vazio ? vazio.textContent : null, editando: !!build.editing,
+               lista: !document.getElementById('build-index').hidden, forja: !document.getElementById('build-editor').hidden }; })()"""
+    # 1. o primeiro acesso: nenhuma build, nada no disco, a lista convida a criar
+    s.limpar_memoria(); s.entrar()
+    s.js("switchTab('build'); 'ok'")
+    time.sleep(0.5)
+    r = s.js(le)
+    p.conta("entrada", "o primeiro acesso começa sem build nenhuma",
+            r["id"] is None and r["builds"] == [] and not r["plaqueta"] and (r["disco"] is None or r["disco"]["n"] == 0)
+            and r["lista"] and not r["forja"] and r["vazio"] and "Nenhuma build ainda" in r["vazio"],
+            "%s" % r)
+    # 2. o F5 volta a build que estava aberta — a segunda da lista, não a primeira
+    s.nova_build()
+    s.js("build.name = 'Entrada A'; gravarBuild(); 'ok'")
+    s.nova_build()
+    s.js("build.name = 'Entrada B'; gravarBuild(); 'ok'")
+    a, b = s.js("[library.builds[0].id, library.builds[1].id]")
+    s.abrir(); time.sleep(0.8); s.entrar()
+    r1 = s.js(le)
+    # 3. com a bigorna vazia, o F5 continua vazio
+    s.js("switchTab('catalog'); window.scrollTo(0, 0); 'ok'")
+    time.sleep(0.4)
+    s.clicar("#bg-fechar", 0.6)
+    s.abrir(); time.sleep(0.8); s.entrar()
+    r2 = s.js(le)
+    p.conta("entrada", "o F5 mantém a build que estava aberta (e a bigorna vazia, se estava vazia)",
+            r1["id"] == b and r1["nome"] == "Entrada B" and r1["plaqueta"] and r2["id"] is None and not r2["plaqueta"]
+            and r2["builds"] == ["Entrada A", "Entrada B"],
+            "com a B aberta voltou %s; fechada voltou %s (%s)" % (r1["nome"] if r1["id"] else None, r2["id"], r2["builds"]))
+    # 4. excluir a build aberta deixa a bigorna vazia — nenhuma outra entra no lugar
+    s.js("activateBuild(%s); switchTab('build'); showBuildScreen('forja'); 'ok'" % json.dumps(b))
+    time.sleep(0.5)
+    s.clicar("#del-build", 0.8)   # o confirm nativo é aceito pelo roteiro
+    r = s.js(le)
+    p.conta("entrada", "excluir a build aberta deixa a bigorna vazia",
+            r["id"] is None and not r["plaqueta"] and r["builds"] == ["Entrada A"] and r["lista"] and not r["forja"]
+            and r["disco"] and r["disco"]["ativa"] is None,
+            "%s" % {k: r[k] for k in ("id", "plaqueta", "builds", "lista", "forja", "disco")})
+    # 5. os links de captura da forja não ligam o Editar sem build
+    s.js("localStorage.setItem(STORAGE_KEY, JSON.stringify({ builds: JSON.parse(localStorage.getItem(STORAGE_KEY)).builds, activeId: null })); 'ok'")
+    s.abrir("?r=1#build-observacao"); time.sleep(1.0)   # o ?r=1 força a carga (só o # não recarrega)
+    r = s.js(le)
+    editor = s.js("(() => { const e = document.getElementById('note-editor'); return !!e && e.classList.contains('show'); })()")
+    p.conta("entrada", "#build-observacao sem build não liga o Editar",
+            r["id"] is None and not r["editando"] and not editor and not r["forja"],
+            "%s; editor de observação aberto: %s" % ({k: r[k] for k in ("id", "editando", "forja")}, editor))
+    s.abrir(); time.sleep(0.8); s.entrar()
+
 def checar_acessibilidade(s, p):
     print("\n%sACESSIBILIDADE%s" % (AMARELO, FIM))
     s.js("switchTab('catalog')")
@@ -3216,6 +3278,7 @@ GRUPOS = [
     ("falta publicar", checar_falta_publicar),
     ("bigorna", checar_bigorna),
     ("fechar", checar_fechar),
+    ("entrada", checar_entrada),
     ("acessibilidade", checar_acessibilidade),
     ("resoluções", checar_resolucoes),
     ("calculadora", checar_calculadora),
