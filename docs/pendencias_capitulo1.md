@@ -8,7 +8,7 @@ Fica fora daqui o que já foi decidido no Capítulo 1 (`docs/decisoes_capitulo1.
 
 ## Resumo
 
-**23/09/2026: o Leo entregou o Capítulo 1 corrigido** (seção "Ajustes — sessão de correção de 23/09/2026" no fim do catálogo), e o app passou a usar tudo nas F13-T19 a T23. **Não há pendência aberta do Capítulo 1**; C1 e C2 esperam o catálogo subir de patch.
+**23/09/2026: o Leo entregou o Capítulo 1 corrigido** (seção "Ajustes — sessão de correção de 23/09/2026" no fim do catálogo), e o app passou a usar tudo nas F13-T19 a T23. **Não há pendência aberta do Capítulo 1.** C1 e C2, as últimas, entraram com a entrega de 18/10/2026 (o 16.19.1 de 03/10 incluído), e o app passou ao 16.20.1 na F13-T49.
 
 | # | Pendência | No Capítulo 1 | No app |
 |---|---|---|---|
@@ -84,13 +84,13 @@ O `efficiencyBase` do catálogo segue o **artigo** em todos os itens conferidos.
 
 ## C. Atualização de patch (não é erro)
 
-O catálogo está no 16.18.1, e a wiki já traz o **V26.19**. A conta do catálogo está certa para o patch dele. As duas entradas abaixo ficam registradas para quando o Capítulo 1 subir de patch.
+✔ **Resolvidas:** o Capítulo 1 aplicou o 16.19.1 (03/10/2026) e entregou o 16.20.1 em 18/10/2026; o app está nele desde a F13-T49. O texto abaixo é o de quando foram abertas: o catálogo estava no 16.18.1, e a wiki já trazia o **V26.19**.
 
-### C1. Atlas Mundial
+### C1. ✔ Atlas Mundial
 - V26.19: Vida de 30 para **0**; Regeneração de Vida base de 25% para **50%**.
 - A wiki fica com 150 + 100 = 250g, ou **62,5%**. O catálogo tem 255g, ou 63,75%.
 
-### C2. Bússola Rúnica
+### C2. ✔ Bússola Rúnica
 - V26.19: Vida de 100 para **60**; Regeneração de Vida base de 50% para **75%**.
 - A wiki fica com 160 + 225 + 200 = 585g, ou **146,25%**. O catálogo tem 616,67g, ou 154,17%.
 
@@ -175,3 +175,4 @@ A wiki diz 2s e o tooltip do cliente diz 3s. O catálogo marca "[A CONFIRMAR]" e
 - 22/09/2026: B2 achada na caçada de bugs (nº 34). O app passou a quebrar o texto (F13-T11). O caso do Atma no D1 veio da F13-T9.
 - 23/09/2026: A1, A2, B1, C1 e C2 saíram da conferência com a wiki (tabela e 28 artigos). Arquivo único criado a pedido do Leo.
 - 23/09/2026 (tarde): o Leo entregou o Capítulo 1 corrigido. A1, A2, B2 e E1 resolvidos no dado; B1, D1, D2 e D3 entregues como campos novos, que o app passa a usar nas F13-T20 a T23. C1 e C2 ficam para quando o catálogo subir de patch.
+- 18/10/2026: C1 e C2 resolvidos — entrega do Capítulo 1 no 16.20.1, aplicada no app na F13-T49.

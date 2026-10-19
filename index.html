@@ -2724,6 +2724,7 @@ body.nucleo .group-head::before {
   font-family: var(--loja-gravado); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase;
 }
 .runas-modo:hover { color: var(--loja-titulo); }
+.runas-modo:disabled { opacity: .45; cursor: not-allowed; }   /* F13-T52: sem build na bigorna */
 .runas-modo.ativo { background: linear-gradient(180deg, #6b5535, #3d2f1c); color: #f0dcae; border-color: var(--loja-latao); }
 .runas-dona { margin-left: 10px; font-family: var(--loja-texto); font-style: italic; font-size: 13px; color: var(--loja-legenda); }
 .runas-dona b { font-style: normal; color: var(--loja-titulo); }
@@ -3535,11 +3536,9 @@ body.nucleo .grid::before {
   background: repeating-linear-gradient(180deg, #8a7a66 0 2px, #3a2f28 2px 3px); }
 .bg-corrente.dir { left: auto; right: 18px; }
 .bg-brasa { align-self: stretch; width: 5px; border-radius: 3px 0 0 3px; background: #ff7a1e; box-shadow: 0 0 8px 2px rgba(255,120,30,.5); }
-.bigorna[data-estado="vazia"] .bg-brasa { background: #3a2f28; box-shadow: none; }
 .bigorna[data-estado="sujo"] .bg-brasa { animation: cff-pulsa 1.8s ease-in-out infinite; }
 .bigorna[data-estado="erro"] .bg-brasa { background: #c8503c; box-shadow: 0 0 8px 2px rgba(200,80,60,.5); }
 .bg-rot { font-family: var(--loja-gravado); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #ffd27a; }
-.bigorna[data-estado="vazia"] .bg-rot { color: #8f8074; }
 .bg-nome { background: none; border: 0; padding: 0; cursor: pointer; font-family: 'IM Fell English', Georgia, serif;
   font-size: 15px; color: #fff4e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; min-width: 60px; flex-shrink: 1; }
 .bg-nome:hover { color: #ffd27a; text-decoration: underline; text-underline-offset: 3px; }
@@ -3550,7 +3549,9 @@ body.nucleo .grid::before {
 .bg-btn { background: transparent; border: 1px solid #3a3029; border-radius: 3px; color: #b8a890; cursor: pointer;
   font-family: var(--loja-texto); font-size: 12px; padding: 2px 8px; }
 .bg-btn:hover { border-color: #ff7a1e; color: #ffd27a; }
-.bg-abrir { color: #ffd27a; border-color: #5a4630; }
+/* F13-T52: o × que fecha a build — na plaqueta e na ponta da faixa da loja */
+.bg-x { font-size: 15px; line-height: 1; padding: 1px 7px 3px; }
+.cff-x { font-size: 16px; line-height: 1; padding: 2px 9px 4px; margin-left: -6px; }
 body.ac-brilho .bg-brasa, body.ac-brilho .cff-brasa { box-shadow: none !important; }
 @media (prefers-reduced-motion: reduce) { .catalog-forja-faixa, .cff-brasa, .bigorna .bg-brasa { animation: none !important; } }
 body.ac-brilho .catalog-forja-faixa { box-shadow: inset 0 1px 0 rgba(255,255,255,.05), inset 0 0 30px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.5) !important; }
@@ -4951,7 +4952,9 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
         <button type="button" class="bg-nome" id="bg-nome"></button>
         <span class="bg-estado" id="bg-estado"></span>
         <button type="button" class="bg-btn" id="bg-parar" title="Desliga o Editar; a build continua na bigorna" hidden>parar de editar</button>
-        <button type="button" class="bg-btn bg-abrir" id="bg-abrir" title="Abrir uma das suas builds" hidden>abrir uma build</button>
+        <!-- F13-T52 (Leo, 19/10/2026: "deveria ter uma opção de fechar"): tira a
+             build da bigorna; ela continua salva na lista -->
+        <button type="button" class="bg-btn bg-x" id="bg-fechar" title="Fechar a build — ela continua salva na lista" aria-label="Fechar a build">×</button>
       </div>
     </nav>
     <div class="counts-wrap">
@@ -5052,6 +5055,7 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
       <span class="cff-dica" id="cff-dica">os itens clicados vão para esta caixa</span>
       <span class="cff-sujo" id="cff-sujo" title="Alterações não salvas — Ctrl+S salva de qualquer tela" hidden><span aria-hidden="true">●</span> não salva</span>
       <button type="button" id="cff-soltar" class="cff-soltar" title="Parar de marcar nesta caixa (Esc)">soltar a caixa</button>
+      <button type="button" id="cff-fechar" class="cff-soltar cff-x" title="Fechar a build — ela continua salva na lista" aria-label="Fechar a build">×</button>
     </div>
     <!-- F11-T5 (Leo, 18/09/2026): a página do catálogo vira a oficina do núcleo,
          com o estandarte da guilda descendo pela lateral. Em "Todos" nada disso
@@ -6371,13 +6375,14 @@ function refletirBigorna() {
   if (!p) return;
   const aberta = !!build.id;
   const erro = erroGravacao || bibliotecaNaoGravada;
-  const estado = !aberta ? "vazia" : build.temp ? "vendo" : erro ? "erro" : rascunho.sujo ? "sujo" : build.editing ? "editando" : "aberta";
-  p.hidden = false;
+  const estado = build.temp ? "vendo" : erro ? "erro" : rascunho.sujo ? "sujo" : build.editing ? "editando" : "aberta";
+  // F13-T52 (Leo, 19/10/2026: "se a forja está vazia, então não mostra nada"):
+  // a plaqueta só existe com uma build na bigorna
+  p.hidden = !aberta;
   p.dataset.estado = estado;
-  document.getElementById("bg-rot").textContent = { vazia: "Bigorna vazia", vendo: "Vendo" }[estado] || "Na bigorna";
+  document.getElementById("bg-rot").textContent = build.temp ? "Vendo" : "Na bigorna";
   const nomeBuild = build.name || "Build sem nome";
   const nome = document.getElementById("bg-nome");
-  nome.hidden = !aberta;
   nome.textContent = nomeBuild;
   nome.title = `Ir para a forja de “${nomeBuild}”`;
   const st = document.getElementById("bg-estado");
@@ -6390,7 +6395,14 @@ function refletirBigorna() {
   st.title = estado === "sujo" ? "Alterações não salvas — Ctrl+S salva de qualquer tela"
     : estado === "erro" ? (erroGravacao ? NAO_SALVOU : NAO_GRAVOU) : "";
   document.getElementById("bg-parar").hidden = !(aberta && !build.temp && build.editing);
-  document.getElementById("bg-abrir").hidden = aberta;
+  // F13-T52: o × fecha a build; numa pública aberta para ver, fecha a visualização
+  const fechaTitulo = build.temp ? "Fechar a visualização — volta para a build de antes" : "Fechar a build — ela continua salva na lista";
+  ["bg-fechar", "cff-fechar"].forEach(id => {
+    const x = document.getElementById(id);
+    if (!x) return;
+    x.title = fechaTitulo;
+    x.setAttribute("aria-label", build.temp ? "Fechar a visualização" : "Fechar a build");
+  });
   // a faixa da loja diz o mesmo: o nome e o "não salva" (antes o nome só mudava
   // ao redesenhar a loja, e renomear deixava o velho ali)
   const fb = document.getElementById("cff-build");
@@ -6483,16 +6495,35 @@ function confirmarSaida(depois) {
   // linha por trás da camada e o teclado acionava a lista, não o diálogo.
   dlg.querySelector('[data-sd="voltar"]').focus();
 }
+// F13-T52 (Leo, 19/10/2026: "só acho que deveria ter uma opção de fechar!!!"):
+// o × tira a build da bigorna e ela continua salva na lista. Chega aqui depois
+// do confirmarSaida — com rascunho, o "Salvar e sair / Descartar" vem antes.
+// Numa pública aberta para ver, fecha a visualização (deleteBuild volta para a
+// build que estava na bigorna antes dela). Sem build, a forja não tem o que
+// mostrar: a aba Builds fica na lista.
+function fecharBuild() {
+  if (!build.id) return;
+  if (build.temp) deleteBuild(build.id);
+  else { zerarBuild(); gravarBiblioteca(); renderBuildAll(); }
+  if (!build.id && buildScreen === "forja") showBuildScreen("lista");
+  if (!document.getElementById("view-runas").classList.contains("hidden")) renderRunas();
+  if (!document.getElementById("view-calc").classList.contains("hidden")) renderCalc();
+  // o × some com a plaqueta: o foco vai para a aba Builds, de onde ela pendia
+  // (sem rolar a loja até o topo), e não fica no vazio
+  const foco = build.id ? document.getElementById("bg-nome") : document.querySelector('.tab-btn[data-tab="build"]');
+  if (foco) foco.focus({ preventScroll: true });
+}
 function initSalvar() {
   document.getElementById("save-btn").addEventListener("click", salvarAgora);
   // F13-T51: a plaqueta — o nome leva à forja; "parar de editar" é o interruptor
-  // Editar da forja, de qualquer tela; "abrir uma build" leva à lista
+  // Editar da forja, de qualquer tela
   document.getElementById("bg-nome").addEventListener("click", () => { switchTab("build"); showBuildScreen("forja"); });
   document.getElementById("bg-parar").addEventListener("click", () => confirmarSaida(() => {
     window.ligarEdicao(false);
     document.getElementById("bg-nome").focus();   // o botão some: o foco não fica no vazio
   }));
-  document.getElementById("bg-abrir").addEventListener("click", () => { switchTab("build"); showBuildScreen("lista"); });
+  // F13-T52: o × da plaqueta e o da faixa da loja — o rascunho pergunta antes
+  ["bg-fechar", "cff-fechar"].forEach(id => document.getElementById(id).addEventListener("click", () => confirmarSaida(fecharBuild)));
   window.addEventListener("resize", posicionarBigorna);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(posicionarBigorna);
   document.getElementById("discard-btn").addEventListener("click", () => confirmarSaida(() => {}));
@@ -6664,6 +6695,28 @@ function activateBuild(id, skipSave) {
   if (!skipSave) { gravarBuild(); renderBuildAll(); }
 }
 
+// F13-T52: a bigorna vazia. Todos os campos que o activateBuild escreve voltam
+// ao começo — a loja, as Runas e a calculadora leem a build daqui, e um resto da
+// fechada viraria build fantasma. A biblioteca não muda: a build continua salva.
+function zerarBuild() {
+  Object.assign(build, {
+    id: null, name: "", cats: [], seq: 1, mode: "", masterwork: false, champion: null,
+    markers: normMarkers(null), desc: "", runas: normRunas(null), habilidades: normHabilidades(null),
+    fav: false, updatedAt: 0, pubId: null, pubVersao: 0, pubEm: 0, pubPatch: "", pubAssinatura: "",
+    patch: CATALOG.meta.patch, revisao: null, temp: false, pubOrigem: null, layout: "tabuleiro", selectedCatId: null,
+  });
+  library.activeId = null;
+  library.ultimaPropria = null;   // uma pública aberta agora, ao fechar, volta à bigorna vazia
+  rascunho.sujo = false;
+  erroGravacao = false;
+  if (build.editing) {   // sem build, não há o que editar
+    build.editing = false;
+    document.body.classList.remove("editando");
+    const t = document.getElementById("edit-toggle");
+    if (t) t.checked = false;
+  }
+}
+
 // F12-T3 (Leo, 18/09/2026): a build nova nasce com o esqueleto de uma build de
 // LoL — nomes e ordem dele, sem item dentro. Largura e casas seguem o que cada
 // caixa costuma guardar: o Core leva três itens, as compras avulsas levam uma.
@@ -6720,8 +6773,20 @@ function buildsProprias() { return library.builds.filter(b => !b.temp); }
 // ao servidor ANTES e só apaga aqui quando ele confirma (ou a pessoa decide).
 function deleteBuild(id) {
   const eraAtiva = id === build.id;
+  const eraVisualizacao = eraAtiva && build.temp;
   if (eraAtiva) rascunho.sujo = false;
   library.builds = library.builds.filter(b => b.id !== id);
+  // F13-T52: fechar a pública aberta para ver volta para a build que estava na
+  // bigorna antes dela — ou para a bigorna vazia, se estava vazia. Antes ia para
+  // a primeira da lista, que nem sempre era a de antes.
+  if (eraVisualizacao) {
+    const antes = buildsProprias().find(b => b.id === library.ultimaPropria);
+    if (antes) activateBuild(antes.id, true); else zerarBuild();
+    gravarBuild();
+    renderBuildAll();
+    if (!build.id && buildScreen === "forja") showBuildScreen("lista");   // o Fechar da forja também
+    return;
+  }
   // F13-T32 (bug nº 15): com uma pública aberta, a visualização contava como
   // build — excluir a última própria gravava a biblioteca vazia (a visualização
   // não vai ao disco). Sem build própria, nasce uma nova, como sem nenhuma.
@@ -8903,6 +8968,14 @@ function renderRunas() {
   if (!runasOk()) return;
   const nav = document.getElementById("runas-trilhas");
   const dona = document.getElementById("runas-dona");
+  // F13-T52: a página montada é da build aberta — sem build, só Ler (antes o
+  // Montar escrevia numa build que não existe, e nada ficava guardado)
+  if (!build.id && runasEstado.modo === "montar") runasEstado.modo = "ler";
+  const btMontar = document.querySelector('.runas-modo[data-modo="montar"]');
+  if (btMontar) {
+    btMontar.disabled = !build.id;
+    btMontar.title = build.id ? "" : "Sem build na bigorna: abra uma build para montar a página de runas dela";
+  }
   const montando = runasEstado.modo === "montar";
   const tela = document.getElementById("view-runas");
   ["icones", "resumido", "completo"].forEach(v => tela.classList.toggle("v-" + v, v === runasEstado.vista));
@@ -9796,6 +9869,7 @@ function champIconHtml(champ, cls) {
 }
 
 function showBuildScreen(tela) {
+  if (tela === "forja" && !build.id) tela = "lista";   // F13-T52: bigorna vazia, a forja não tem o que mostrar
   buildScreen = tela;
   const index = document.getElementById("build-index");
   const editor = document.getElementById("build-editor");
@@ -11128,7 +11202,7 @@ function renderCalc() {
         <label for="calc-hp">Vida total</label>
         <input id="calc-hp" type="number" step="10" value="${calc.hp}" data-calc="hp">
       </div>
-      <button id="calc-from-build" class="btn">Puxar da build ativa</button>
+      <button id="calc-from-build" class="btn"${build.id ? "" : ' disabled title="Sem build na bigorna: abra uma build para puxar os itens dela"'}>Puxar da build ativa</button>
       <p class="calc-costs">Referência de preço tirada do catálogo:
         ${fmt(c.hp, 2)}g por vida · ${fmt(c.armor, 2)}g por armadura · ${fmt(c.mr, 2)}g por resistência mágica.</p>
     </div>
@@ -11183,7 +11257,7 @@ function initCalc() {
   });
 
   root.addEventListener("click", (e) => {
-    if (!e.target.closest("#calc-from-build")) return;
+    if (!e.target.closest("#calc-from-build") || !build.id) return;
     const { totals, count } = statsFromBuild();
     if (!count) {
       alert("A build ativa ainda não tem itens fora das caixas Opcionais.");
@@ -12224,6 +12298,9 @@ function renderCard(item, attrSorting) {
     // No modo Ícones o card inteiro é o ícone (F10-T1, Leo, 16/09/2026): o clique marca; pergaminho só com Shift.
     const noIcone = e.target.closest(".card-icon") && !document.body.classList.contains("icons-only");
     if (noIcone || e.shiftKey) { Som.play("catalog:click", { item }); openModal(item.slug); return; }
+    // F13-T52 (Leo, 19/10/2026): sem build na bigorna, o clique só abre a ficha
+    // do item — não pergunta em qual build pôr, nem cria uma
+    if (!build.id) { Som.play("catalog:click", { item }); openModal(item.slug); return; }
     // F12-T2: sem caixa escolhida o clique PERGUNTA em qual caixa, em vez de
     // abrir a ficha — abrir a ficha parecia "o clique não funcionou".
     // Item já na build continua saindo com um clique, sem pergunta.
@@ -12465,8 +12542,9 @@ function refreshCatalogCatSelect() {
   if (!sel) return;
   sel.innerHTML = "";
   const none = document.createElement("option");
-  none.value = ""; none.textContent = build.cats.length ? "— escolha uma categoria —" : "— sem categorias na build —";
+  none.value = ""; none.textContent = !build.id ? "— nenhuma build aberta —" : build.cats.length ? "— escolha uma categoria —" : "— sem categorias na build —";
   sel.appendChild(none);
+  sel.disabled = !build.id;   // F13-T52: sem build, o clique no item pergunta a build
   build.cats.forEach(c => {
     const o = document.createElement("option");
     o.value = c.id; o.textContent = `${c.name} (${c.items.length})`;

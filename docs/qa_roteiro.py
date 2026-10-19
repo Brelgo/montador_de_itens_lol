@@ -2821,6 +2821,154 @@ def checar_bigorna(s, p):
     time.sleep(1.0)
     s.entrar()
 
+def checar_fechar(s, p):
+    """F13-T52 (Leo, 19/10/2026: "só acho que deveria ter uma opção de fechar!!!"):
+    o × da plaqueta e da faixa tira a build da bigorna e ela continua na lista;
+    sem build, a plaqueta some, o item da loja só abre a ficha (Leo, 19/10/2026),
+    e nada grava numa build que não existe."""
+    print("\n%sFECHAR A BUILD%s" % (AMARELO, FIM))
+    estado = r"""(() => { const v = id => { const e = document.getElementById(id); return !!e && !e.hidden && e.getBoundingClientRect().width > 0; };
+      let disco = 'ilegivel'; try { disco = JSON.parse(localStorage.getItem(STORAGE_KEY)).activeId; } catch (e) { }
+      const ec = document.getElementById('escolher-caixa');
+      return { id: build.id, nome: build.name, estado: document.getElementById('bigorna').dataset.estado,
+               plaqueta: v('bigorna'), fechar: v('bg-fechar'),
+               ativa: library.activeId, disco, editando: !!build.editing || document.body.classList.contains('editando'),
+               lista: !document.getElementById('build-index').hidden, forja: !document.getElementById('build-editor').hidden,
+               foco: document.activeElement && (document.activeElement.id || (document.activeElement.dataset.tab ? 'aba:' + document.activeElement.dataset.tab : '')),
+               faixa: v('catalog-forja-faixa'), ficha: document.getElementById('overlay').classList.contains('show'),
+               dialogo: ec.hidden ? null : ec.querySelector('.md-title').textContent, sujo: rascunho.sujo,
+               proprias: buildsProprias().map(b => b.id) }; })()"""
+    so = lambda r, *ks: {k: r[k] for k in ks}
+    # 1. o × da plaqueta, numa build limpa, de dentro da forja
+    s.nova_build()
+    s.js("""(() => { if (build.editing) document.getElementById('edit-switch').click();
+      build.name = 'Fechar A'; build.cats[1].items.push({ itemId: 'long-sword', note: '' }); gravarBuild(); renderBuildAll(); return 'ok'; })()""")
+    time.sleep(0.3)
+    a = s.js("build.id")
+    s.clicar("#bg-fechar", 0.6)
+    r = s.js(estado)
+    # (Leo, 19/10/2026: "se a forja está vazia, então não mostra nada": sem
+    # build, a plaqueta some, e o foco vai para a aba Builds, de onde ela pendia)
+    p.conta("fechar", "o × da plaqueta fecha a build, a plaqueta some e a build continua na lista",
+            r["id"] is None and not r["plaqueta"] and not r["fechar"] and r["ativa"] is None and r["disco"] is None
+            and a in r["proprias"] and r["lista"] and not r["forja"] and r["foco"] == "aba:build" and not r["editando"],
+            "%s" % so(r, "id", "plaqueta", "fechar", "ativa", "disco", "lista", "forja", "foco", "editando"))
+
+    # 2. com rascunho, o × pergunta antes: Voltar fica; Salvar e sair grava e fecha
+    s.js("activateBuild(%s); switchTab('build'); showBuildScreen('forja'); 'ok'" % json.dumps(a))
+    time.sleep(0.4)
+    s.clicar("#edit-switch", 0.6)
+    s.js("build.cats[1].items.push({ itemId: 'dagger', note: '' }); saveBuild(); renderBuildAll(); switchTab('catalog'); window.scrollTo(0, 0); 'ok'")
+    time.sleep(0.4)
+    s.clicar("#bg-fechar", 0.4)
+    perguntou = s.js("!document.getElementById('save-dialog').hidden")
+    voltou = None
+    if perguntou:
+        s.clicar('#save-dialog [data-sd="voltar"]', 0.4)
+        voltou = s.js(estado)
+        s.clicar("#cff-fechar", 0.4)   # a faixa da loja tem o mesmo ×
+        if s.js("!document.getElementById('save-dialog').hidden"):
+            s.clicar('#save-dialog [data-sd="salvar"]', 0.6)
+    r = s.js(estado)
+    gravou = s.js("(() => { const b = library.builds.find(x => x.id === %s); return !!b && b.cats[1].items.some(e => e.itemId === 'dagger'); })()" % json.dumps(a))
+    p.conta("fechar", "com rascunho o × pergunta antes (Voltar fica; Salvar e sair grava e fecha)",
+            bool(perguntou and voltou and voltou["id"] == a and voltou["sujo"] and r["id"] is None and gravou
+                 and not r["sujo"] and not r["faixa"] and not r["editando"]),
+            "perguntou %s; depois do Voltar %s; no fim %s; gravou %s" % (perguntou, voltou and so(voltou, "id", "sujo"), so(r, "id", "sujo", "faixa", "editando"), gravou))
+
+    # 3. a bigorna fica vazia de verdade: nada da build fechada sobra
+    s.js(r"""(() => { activateBuild(%s); build.mode = ALL_MODES[0]; build.masterwork = true; build.desc = 'resto';
+      build.champion = { key: '1', id: 'Annie', name: 'Annie' };
+      if (typeof RUNAS !== 'undefined' && RUNAS.trilhas) build.runas = normRunas({ primaria: RUNAS.trilhas[0].id });
+      build.habilidades = normHabilidades(['Q', 'W', 'E', 'Q']); build.layout = 'trilha';
+      gravarBuild(); build.selectedCatId = build.cats[0].id; renderBuildAll();
+      const zero = { name: '', cats: [], mode: '', masterwork: false, desc: '', champion: null, markers: normMarkers(null),
+        runas: normRunas(null), habilidades: normHabilidades(null), selectedCatId: null, layout: 'tabuleiro', temp: false,
+        revisao: null, pubId: null, pubOrigem: null, fav: false };
+      window.__qaSobra = () => Object.keys(zero).filter(k => JSON.stringify(build[k]) !== JSON.stringify(zero[k]));
+      return 'ok'; })()""" % json.dumps(a))
+    time.sleep(0.3)
+    antes = s.js("__qaSobra()")
+    s.clicar("#bg-fechar", 0.6)
+    sobra = s.js("__qaSobra()")
+    preparados = ["name", "cats", "mode", "masterwork", "desc", "champion", "runas", "habilidades", "selectedCatId", "layout"]
+    vazios_antes = [k for k in preparados if k not in antes]
+    p.conta("fechar", "fechada, nada da build sobra na bigorna",
+            not sobra and not vazios_antes and s.js("build.id") is None,
+            "sobrou: %s; campos que não estavam preenchidos antes: %s" % (sobra, vazios_antes))
+
+    # 4. sem build, o clique no item só abre a ficha (Leo, 19/10/2026: "ele
+    #    simplesmente abre as informações dos itens e não pergunta se eu quero
+    #    inserir em alguma build") — nada entra em build nenhuma, nada nasce
+    s.nova_build()
+    s.js("""(() => { if (build.editing) document.getElementById('edit-switch').click();
+      build.name = 'Fechar B'; build.cats[0].items.push({ itemId: 'dagger', note: '' }); gravarBuild(); renderBuildAll(); return 'ok'; })()""")
+    time.sleep(0.3)
+    b = s.js("build.id")
+    s.js("switchTab('catalog'); window.scrollTo(0, 0); 'ok'")
+    time.sleep(0.3)
+    s.clicar("#bg-fechar", 0.6)
+    antes = s.js("JSON.stringify(library.builds.map(x => [x.id, x.cats]))")
+    resultados = []
+    for slug in ("long-sword", "dagger"):   # um que nenhuma das duas tem pela caixa escolhida, e um que a B tem
+        s.js("window.scrollTo(0, 0); 'ok'")
+        s.clicar('#grid .card[data-slug="%s"] .card-name' % slug, 0.6)
+        r = s.js(estado)
+        r["nome_ficha"] = s.js("(() => { const m = document.getElementById('modal'); return !!m && m.textContent.includes(byId[%s].namePt); })()" % json.dumps(slug))
+        s.js("closeModal(); 'ok'")
+        time.sleep(0.3)
+        resultados.append((slug, r))
+    depois = s.js("JSON.stringify(library.builds.map(x => [x.id, x.cats]))")
+    ruins = [(slug, so(r, "ficha", "nome_ficha", "dialogo", "id", "plaqueta")) for slug, r in resultados
+             if not (r["ficha"] and r["nome_ficha"] and r["dialogo"] is None and r["id"] is None and not r["plaqueta"])]
+    p.conta("fechar", "sem build, o clique no item só abre a ficha",
+            not ruins and antes == depois,
+            "ruins: %s; a biblioteca mudou: %s" % (ruins, antes != depois) if ruins or antes != depois else "Espada Longa e Adaga: ficha aberta, nenhuma pergunta, nada gravado")
+
+    # 5. fechar uma pública aberta para ver volta para a build de antes — que
+    #    não é a primeira da lista — ou para a bigorna vazia, se estava vazia
+    publica = """(() => { abrirPublicaTemporaria({ pubId: 'qa-fechar', name: 'Pública do fechar', cats: [], mode: '', champ: null,
+      markers: [], desc: '', runas: null, habilidades: null, layout: null, pubPatch: CATALOG.meta.patch }); return build.temp; })()"""
+    primeira = s.js("buildsProprias()[0].id")
+    s.js("activateBuild(%s); 'ok'" % json.dumps(b))
+    time.sleep(0.3)
+    vendo1 = s.js(publica)
+    time.sleep(0.4)
+    s.js("switchTab('catalog'); window.scrollTo(0, 0); 'ok'")
+    s.clicar("#bg-fechar", 0.6)
+    volta1 = s.js("build.id")
+    s.clicar("#bg-fechar", 0.6)   # agora a B: a bigorna fica vazia
+    vendo2 = s.js(publica)
+    time.sleep(0.4)
+    s.js("switchTab('catalog'); window.scrollTo(0, 0); 'ok'")
+    s.clicar("#bg-fechar", 0.6)
+    r = s.js(estado)
+    p.conta("fechar", "fechar uma pública volta para a build de antes (ou para a bigorna vazia)",
+            vendo1 and volta1 == b and b != primeira and vendo2 and r["id"] is None and not r["plaqueta"] and r["disco"] is None,
+            "com a B: voltou para a B %s (a primeira da lista é outra: %s); com a bigorna vazia: %s" % (volta1 == b, b != primeira, so(r, "id", "plaqueta", "disco")))
+
+    # 6. sem build, nada grava numa build que não existe: Runas só Ler, a
+    #    calculadora não puxa, a forja não abre, o "Marcar em" fica parado
+    n0 = s.js("library.builds.length")
+    s.js("switchTab('runas'); runasEstado.modo = 'montar'; renderRunas(); 'ok'")
+    time.sleep(0.4)
+    runas = s.js("""(() => { const m = document.querySelector('.runas-modo[data-modo="montar"]');
+      return { modo: runasEstado.modo, montar: !!m && m.disabled }; })()""")
+    s.js("switchTab('calc'); 'ok'")
+    time.sleep(0.4)
+    calc = s.js("(() => { const b = document.getElementById('calc-from-build'); return !!b && b.disabled; })()")
+    s.js("switchTab('build'); showBuildScreen('forja'); 'ok'")
+    time.sleep(0.4)
+    r = s.js(estado)
+    marcar = s.js("document.getElementById('catalog-cat-select').disabled")
+    p.conta("fechar", "sem build: Runas só Ler, calculadora sem puxar, forja fechada",
+            runas["modo"] == "ler" and runas["montar"] and calc and r["lista"] and not r["forja"] and marcar
+            and s.js("library.builds.length") == n0 and r["id"] is None,
+            "runas %s; calculadora parada %s; %s; Marcar em parado %s" % (runas, calc, so(r, "lista", "forja", "id"), marcar))
+    s.abrir()
+    time.sleep(1.0)
+    s.entrar()
+
 def checar_acessibilidade(s, p):
     print("\n%sACESSIBILIDADE%s" % (AMARELO, FIM))
     s.js("switchTab('catalog')")
@@ -3046,6 +3194,7 @@ GRUPOS = [
     ("troca", checar_troca),
     ("falta publicar", checar_falta_publicar),
     ("bigorna", checar_bigorna),
+    ("fechar", checar_fechar),
     ("acessibilidade", checar_acessibilidade),
     ("resoluções", checar_resolucoes),
     ("calculadora", checar_calculadora),

@@ -211,6 +211,13 @@ altura em nenhuma resolução; o Ctrl+S salva da loja; "parar de editar" pergunt
 o nome leva à forja; renomear pelo campo muda a plaqueta e a faixa na hora; a faixa fica presa no topo ao rolar;
 a gravação recusada aparece na hora; e uma pública aberta para ver não fica com o Editar ligado (o nº 40).
 
+**Fechar a build** (F13-T52; Leo, 19/10/2026: "deveria ter uma opção de fechar") — o × da plaqueta fecha a
+build (a plaqueta some, a build continua na lista, o disco não guarda build aberta, a aba Builds fica na lista,
+o foco vai para a aba Builds); com rascunho, o × (o da plaqueta e o da faixa) pergunta antes; nada da build
+fechada sobra na memória; sem build, o clique num item só abre a ficha (nenhuma pergunta, nada gravado); fechar
+uma pública volta para a build de antes (ou para a bigorna vazia); e sem build as Runas só leem, a calculadora
+não puxa, a forja não abre e o "Marcar em" fica parado.
+
 **Builds publicadas** — a lista vem do servidor e não traz "permission denied".
 
 **Resoluções** — 2560×1440, 1920×1080 e 1600×900, a ordem do Leo, mais
