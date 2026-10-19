@@ -2361,12 +2361,48 @@ def checar_troca(s, p):
 
 
 # F13-T50: o daltonismo medido como a pessoa vê. Simulação de Machado, Oliveira
-# e Fernandes (2009) na severidade plena; a parcial é o meio do caminho até a
-# visão normal, em RGB linear. A distância é a ΔE2000 entre as cores (CIELAB D65).
-DALT_M = {
-    "protan": [[0.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]],
-    "deutan": [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.011820, 0.042940, 0.968881]],
-    "tritan": [[1.255528, -0.076749, -0.178779], [-0.078411, 0.930809, 0.147602], [0.004733, 0.691367, 0.303900]],
+# e Fernandes (2009), com a tabela publicada (severidade 0,1 a 1,0; conferida com
+# o colorspacious, cvd.py). F13-T50b: antes era só a plena e uma "parcial" feita
+# a meio caminho da identidade, que não é a de Machado e escondia o pior caso
+# (a menor distância não cresce junto com a severidade). A distância é a ΔE2000
+# entre as cores (CIELAB D65).
+DALT_T = {
+    "protan": {
+        1: [[0.856167, 0.182038, -0.038205], [0.029342, 0.955115, 0.015544], [-0.00288, -0.001563, 1.004443]],
+        2: [[0.734766, 0.334872, -0.069637], [0.05184, 0.919198, 0.028963], [-0.004928, -0.004209, 1.009137]],
+        3: [[0.630323, 0.465641, -0.095964], [0.069181, 0.890046, 0.040773], [-0.006308, -0.007724, 1.014032]],
+        4: [[0.539009, 0.579343, -0.118352], [0.082546, 0.866121, 0.051332], [-0.007136, -0.011959, 1.019095]],
+        5: [[0.458064, 0.679578, -0.137642], [0.092785, 0.846313, 0.060902], [-0.007494, -0.016807, 1.024301]],
+        6: [[0.38545, 0.769005, -0.154455], [0.100526, 0.829802, 0.069673], [-0.007442, -0.02219, 1.029632]],
+        7: [[0.319627, 0.849633, -0.169261], [0.106241, 0.815969, 0.07779], [-0.007025, -0.028051, 1.035076]],
+        8: [[0.259411, 0.923008, -0.18242], [0.110296, 0.80434, 0.085364], [-0.006276, -0.034346, 1.040622]],
+        9: [[0.203876, 0.990338, -0.194214], [0.112975, 0.794542, 0.092483], [-0.005222, -0.041043, 1.046265]],
+        10: [[0.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]],
+    },
+    "deutan": {
+        1: [[0.866435, 0.177704, -0.044139], [0.049567, 0.939063, 0.01137], [-0.003453, 0.007233, 0.99622]],
+        2: [[0.760729, 0.319078, -0.079807], [0.090568, 0.889315, 0.020117], [-0.006027, 0.013325, 0.992702]],
+        3: [[0.675425, 0.43385, -0.109275], [0.125303, 0.847755, 0.026942], [-0.00795, 0.018572, 0.989378]],
+        4: [[0.605511, 0.52856, -0.134071], [0.155318, 0.812366, 0.032316], [-0.009376, 0.023176, 0.9862]],
+        5: [[0.547494, 0.607765, -0.155259], [0.181692, 0.781742, 0.036566], [-0.01041, 0.027275, 0.983136]],
+        6: [[0.498864, 0.674741, -0.173604], [0.205199, 0.754872, 0.039929], [-0.011131, 0.030969, 0.980162]],
+        7: [[0.457771, 0.731899, -0.18967], [0.226409, 0.731012, 0.042579], [-0.011595, 0.034333, 0.977261]],
+        8: [[0.422823, 0.781057, -0.203881], [0.245752, 0.709602, 0.044646], [-0.011843, 0.037423, 0.974421]],
+        9: [[0.392952, 0.82361, -0.216562], [0.263559, 0.69021, 0.046232], [-0.01191, 0.040281, 0.97163]],
+        10: [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.01182, 0.04294, 0.968881]],
+    },
+    "tritan": {
+        1: [[0.92667, 0.092514, -0.019184], [0.021191, 0.964503, 0.014306], [0.008437, 0.054813, 0.93675]],
+        2: [[0.89572, 0.13333, -0.02905], [0.029997, 0.9454, 0.024603], [0.013027, 0.104707, 0.882266]],
+        3: [[0.905871, 0.127791, -0.033662], [0.026856, 0.941251, 0.031893], [0.01341, 0.148296, 0.838294]],
+        4: [[0.948035, 0.08949, -0.037526], [0.014364, 0.946792, 0.038844], [0.010853, 0.193991, 0.795156]],
+        5: [[1.017277, 0.027029, -0.044306], [-0.006113, 0.958479, 0.047634], [0.006379, 0.248708, 0.744913]],
+        6: [[1.104996, -0.046633, -0.058363], [-0.032137, 0.971635, 0.060503], [0.001336, 0.317922, 0.680742]],
+        7: [[1.193214, -0.109812, -0.083402], [-0.058496, 0.97941, 0.079086], [-0.002346, 0.403492, 0.598854]],
+        8: [[1.257728, -0.139648, -0.118081], [-0.078003, 0.975409, 0.102594], [-0.003316, 0.501214, 0.502102]],
+        9: [[1.278864, -0.125333, -0.153531], [-0.084748, 0.957674, 0.127074], [-0.000989, 0.601151, 0.399838]],
+        10: [[1.255528, -0.076749, -0.178779], [-0.078411, 0.930809, 0.147602], [0.004733, 0.691367, 0.3039]],
+    },
 }
 
 
@@ -2379,14 +2415,19 @@ def _delin(c):
 
 
 def _rgb_css(txt):
+    """rgb()/rgba() e também color(srgb r g b / a), que é como o Chrome devolve um color-mix"""
     m = re.match(r"rgba?\((\d+),\s*(\d+),\s*(\d+)", txt or "")
-    return [int(m.group(i)) / 255 for i in (1, 2, 3)] if m else None
+    if m:
+        return [int(m.group(i)) / 255 for i in (1, 2, 3)]
+    m = re.match(r"color\(srgb\s+([\d.e-]+)\s+([\d.e-]+)\s+([\d.e-]+)", txt or "")
+    return [round(float(m.group(i)) * 255) / 255 for i in (1, 2, 3)] if m else None
 
 
 def _simula(rgb, tipo, sev):
+    """sev: 1 a 10 (décimos da severidade de Machado)."""
     if tipo == "normal":
         return rgb
-    mm = [[(1 - sev) * (1 if i == j else 0) + sev * DALT_M[tipo][i][j] for j in range(3)] for i in range(3)]
+    mm = DALT_T[tipo][sev]
     l = [_lin(c) for c in rgb]
     return [_delin(min(1, max(0, sum(mm[i][j] * l[j] for j in range(3))))) for i in range(3)]
 
@@ -2444,12 +2485,26 @@ def separacao(cores, tipos):
         return 0.0
     pior = 999.0
     for tipo in tipos:
-        for sev in ((1.0,) if tipo == "normal" else (1.0, 0.5)):
+        for sev in ((0,) if tipo == "normal" else range(1, 11)):
             labs = [_lab(_simula(c, tipo, sev)) for c in rgbs]
             for i in range(len(labs)):
                 for j in range(i + 1, len(labs)):
                     pior = min(pior, _de2000(labs[i], labs[j]))
     return pior
+
+
+def contraste(txt_css, fundo):
+    """razão de contraste da WCAG entre a cor CSS e um fundo [r, g, b] em 0..1"""
+    c = _rgb_css(txt_css)
+    if not c:
+        return 0.0
+    lum = lambda x: 0.2126 * _lin(x[0]) + 0.7152 * _lin(x[1]) + 0.0722 * _lin(x[2])
+    a, b = sorted((lum(c), lum(fundo)), reverse=True)
+    return (a + 0.05) / (b + 0.05)
+
+
+# o papel da calculadora: --loja-papel com o véu branco de 22% do .calc-card
+PAPEL_CALC = [0.78 * c + 0.22 for c in (0xe5 / 255, 0xd3 / 255, 0xad / 255)]
 
 
 DALT_LE = r"""(() => {
@@ -2467,8 +2522,24 @@ DALT_LE = r"""(() => {
   document.body.appendChild(t);
   const qwer = [...t.children].map(i => getComputedStyle(i).color); t.remove();
   const calc = document.querySelector('.calc-card.phys');
+  const magia = document.querySelector('.calc-card.magic');
   const todos = document.querySelector('.class-tab[data-classe=""]');
-  return { nuc: [cor.AD, cor.AP, cor.Vitalidade], pinta, qwer,
+  // F13-T50b: as leituras alternativas da build (.lc) e o veredito da
+  // calculadora, montados de propósito para ler o CSS que vale na tela
+  const prova = document.createElement('div');
+  prova.innerHTML = ['ad', 'ap', 'vit'].map(k => `<div class="lc ${k}"><img class="item-art" alt=""></div>`).join('')
+    + '<section class="calc-card phys"><div class="calc-verdict ok"></div><div class="calc-verdict warn-res"></div><div class="calc-verdict warn-hp"></div></section>';
+  document.body.appendChild(prova);
+  const lc = [...prova.querySelectorAll('.lc .item-art')].map(e => getComputedStyle(e).borderTopColor);
+  const veredito = [...prova.querySelectorAll('.calc-verdict')].map(e => getComputedStyle(e).borderTopColor);
+  prova.remove();
+  const h3 = (c) => c ? getComputedStyle(c.querySelector('.calc-card-head h3')).color : null;
+  const abs = calc ? calc.querySelector('.calc-absorb .absorbed b') : null;
+  return { nuc: [cor.AD, cor.AP, cor.Vitalidade], pinta, qwer, lc, veredito,
+           texto_calc: [h3(calc), h3(magia), abs ? getComputedStyle(abs).color : null],
+           magia: magia ? getComputedStyle(magia).getPropertyValue('--accent').trim() : null,
+           ap: getComputedStyle(document.body).getPropertyValue('--loja-ap').trim(),
+           brasa: getComputedStyle(document.body).getPropertyValue('--forja-brasa').trim(),
            todos: todos ? getComputedStyle(todos).backgroundImage + ' | ' + getComputedStyle(todos).color : null,
            marcado: r ? r.value : null,
            classes: [...document.body.classList].filter(c => c.startsWith('dalt-')),
@@ -2512,9 +2583,21 @@ def checar_daltonismo(s, p):
         det.append("%s %.1f×%.1f" % (t, prop, dela))
         bom = bom and prop >= 25 and prop >= dela + 4
     p.conta("acessibilidade", "a ordem das habilidades também separa", bom, "; ".join(det))
+    # F13-T50b: a visão normal também — o Q W E R da Tritanopia ficava em 23,7
+    qn = {k: separacao(m[k]["qwer"], ("normal",)) for k in m}
+    p.conta("acessibilidade", "a ordem das habilidades separa na visão normal", all(v >= 24 for v in qn.values()),
+            "; ".join("%s %.1f" % (k, v) for k, v in qn.items()))
+    rgb = lambda c: (_rgb_css(c) or [None])[:3]
+    vered_ok = all([rgb(x) for x in m[k]["veredito"]] == [rgb(m[k]["nuc"][2]), rgb(m[k]["nuc"][0]), rgb(m[k]["nuc"][1])] for k in m)
     p.conta("acessibilidade", "a calculadora segue a cor do núcleo",
-            all(m[k]["calc"] and m[k]["calc"] == m[k]["ad"] for k in m),
-            "; ".join("%s %s/%s" % (k, m[k]["calc"], m[k]["ad"]) for k in m if m[k]["calc"] != m[k]["ad"]))
+            all(m[k]["calc"] and m[k]["calc"] == m[k]["ad"] and m[k]["magia"] and m[k]["magia"] == m[k]["ap"] for k in m) and vered_ok,
+            "; ".join("%s %s/%s %s/%s" % (k, m[k]["calc"], m[k]["ad"], m[k]["magia"], m[k]["ap"]) for k in m
+                      if m[k]["calc"] != m[k]["ad"] or m[k]["magia"] != m[k]["ap"]) + ("" if vered_ok else " · bordas do veredito"))
+    cr = {k: min(contraste(c, PAPEL_CALC) for c in m[k]["texto_calc"]) for k in m}
+    p.conta("acessibilidade", "o texto da calculadora se lê no papel", all(v >= 4.5 for v in cr.values()),
+            "; ".join("%s %.1f:1" % (k, v) for k, v in cr.items()))
+    p.conta("acessibilidade", "as leituras alternativas seguem o núcleo",
+            all(m[k]["lc"] == m[k]["nuc"] for k in m), "; ".join(k for k in m if m[k]["lc"] != m[k]["nuc"]))
     s.clicar("#ac-dalt-off", 0.35)
     d = s.js(DALT_LE)
     padrao = [_rgb_css(c) for c in d["nuc"]]
@@ -2525,7 +2608,44 @@ def checar_daltonismo(s, p):
     p.conta("acessibilidade", "a aba Todos fica no latão em todo modo",
             d["todos"] is not None and all(m[k]["todos"] == d["todos"] for k in m),
             "; ".join(k for k in m if m[k]["todos"] != d["todos"]))
+    p.conta("acessibilidade", "a brasa da forja não muda com o modo",
+            bool(d["brasa"]) and all(m[k]["brasa"] == d["brasa"] for k in m),
+            "; ".join("%s %s" % (k, m[k]["brasa"]) for k in m if m[k]["brasa"] != d["brasa"]))
+    p.conta("acessibilidade", "o Desligado das leituras alternativas é o do jogo", d["lc"] == d["nuc"], ",".join(d["lc"] or []))
     s.clicar("#acess-btn")
+    # F13-T50b: o menu pelo teclado — o Esc devolve o foco ao botão, o Tab para
+    # fora fecha, e a explicação do tipo é anunciada
+    s.clicar("#acess-btn")
+    s.clicar("#ac-dalt-geral", 0.3)
+    tecla = lambda k, c, v: [s.envia("Input.dispatchKeyEvent", {"type": t, "key": k, "code": c, "windowsVirtualKeyCode": v, "nativeVirtualKeyCode": v}) for t in ("keyDown", "keyUp")]
+    tecla("Escape", "Escape", 27)
+    time.sleep(0.3)
+    esc = s.js("({ fechou: document.getElementById('acess-menu').hidden, foco: document.activeElement && document.activeElement.id })")
+    s.clicar("#acess-btn")
+    s.js("document.getElementById('ac-dalt-geral').focus(); 'ok'")
+    tecla("Tab", "Tab", 9)
+    time.sleep(0.3)
+    tab = s.js("({ fechou: document.getElementById('acess-menu').hidden, foco: document.activeElement && (document.activeElement.id || document.activeElement.tagName) })")
+    viva = s.js("document.getElementById('dalt-diz').getAttribute('aria-live')")
+    p.conta("acessibilidade", "o menu de acessibilidade se usa pelo teclado",
+            esc["fechou"] and esc["foco"] == "acess-btn" and tab["fechou"] and viva == "polite",
+            "Esc: %s; Tab: %s; aria-live=%s" % (esc, tab, viva))
+    if not s.js("document.getElementById('acess-menu').hidden"):
+        s.clicar("#acess-btn")
+    # F13-T50b: cada tipo sobrevive ao recarregar (antes só a Geral era provada)
+    volta = {}
+    for t in tipos:
+        s.clicar("#acess-btn")
+        s.clicar("#ac-dalt-" + t, 0.3)
+        s.clicar("#acess-btn")
+        s.abrir()
+        time.sleep(1.0)
+        s.entrar()
+        volta[t] = s.js("document.body.classList.contains('dalt-%s') && document.getElementById('ac-dalt-%s').checked" % (t, t))
+        s.js("switchTab('catalog')")
+        time.sleep(0.4)
+    p.conta("acessibilidade", "cada tipo sobrevive ao recarregar", all(volta.values()),
+            "; ".join("%s %s" % (k, "ok" if v else "perdeu") for k, v in volta.items()))
     # o "ligado" de antes (true) não pode virar desligado nem tipo nenhum
     s.js("localStorage.setItem('acessibilidade', JSON.stringify({ daltonismo: true }))")
     s.abrir()
