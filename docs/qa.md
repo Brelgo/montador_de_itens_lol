@@ -227,7 +227,18 @@ no disco; a lista diz "Nenhuma build ainda"); o F5 volta a build que estava aber
 vazio; excluir a build aberta deixa a bigorna vazia, sem outra no lugar; e o #build-observacao sem build não
 liga o Editar.
 
-**Builds publicadas** — a lista vem do servidor e não traz "permission denied".
+**Builds publicadas** — a lista vem do servidor e não traz "permission denied"; nenhuma desatualizada aparece
+(a nota no pé diz quantas ficaram de fora); e o roteiro não registra evento no servidor de verdade.
+
+**A barreira dos eventos** (F13-T56) — toda sessão do roteiro (e toda aba que ele abre) carrega, antes do app,
+um `fetch` que responde "ok" ao `registrar_evento` sem sair da página. Antes, cada rodada (perfil novo, memória
+limpa) registrava no Supabase do Leo uma "impressão" por build da aba Públicas — e a impressão alimenta a
+popularidade. O contador `window.__eventosBarrados` mostra o que foi segurado.
+
+**Públicas desatualizadas** (F13-T56; Leo, 19/10/2026: "builds marcadas como desatualizada não devem aparecer
+nas públicas") — com uma lista montada no roteiro (sem servidor): a aba mostra só o catálogo de agora, nem na
+popularidade; a nota diz quantas ficaram de fora; pelo ID exato a desatualizada ainda se acha, com a etiqueta;
+e as impressões da lista ficam na página.
 
 **Resoluções** — 2560×1440, 1920×1080 e 1600×900, a ordem do Leo, mais
 1280×800 como piso de notebook: sem rolagem horizontal e nada fora da tela.

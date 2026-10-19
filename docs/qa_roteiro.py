@@ -146,7 +146,21 @@ class Sessao:
         self.rede = []
         self.dialogos = []
         self.envia("Page.enable"); self.envia("Runtime.enable"); self.envia("Log.enable")
+        self._barra_eventos()
         self.url = url
+
+    # F13-T56: o roteiro não conta impressão, visualização nem cópia no servidor de
+    # verdade. Antes, cada rodada (perfil novo, memória limpa) registrava uma
+    # "impressao" por build da aba Públicas no Supabase do Leo. O registrar_evento
+    # responde "ok" sem sair da página, em toda carga e em toda aba.
+    BARREIRA = r"""(() => { const f = window.fetch; window.__eventosBarrados = 0;
+      window.fetch = function (u, ...a) {
+        if (String(u && u.url || u).includes('/rpc/registrar_evento')) { window.__eventosBarrados++;
+          return Promise.resolve(new Response('null', { status: 200, headers: { 'Content-Type': 'application/json' } })); }
+        return f.call(this, u, ...a); }; })();"""
+
+    def _barra_eventos(self):
+        self.envia("Page.addScriptToEvaluateOnNewDocument", {"source": Sessao.BARREIRA})
 
     def fechar(self):
         try: self.proc.kill()
@@ -164,6 +178,7 @@ class Sessao:
         outra.ws.settimeout(90)
         outra._id = 0; outra.erros = []; outra.rede = []; outra.dialogos = []
         outra.envia("Page.enable"); outra.envia("Runtime.enable"); outra.envia("Log.enable")
+        outra._barra_eventos()
         outra.url = self.url
         outra.alvo_id = alvo["id"]
         return outra
@@ -3052,6 +3067,50 @@ def checar_entrada(s, p):
             "%s; editor de observação aberto: %s" % ({k: r[k] for k in ("id", "editando", "forja")}, editor))
     s.abrir(); time.sleep(0.8); s.entrar()
 
+def checar_desatualizadas(s, p):
+    """F13-T56 (Leo, 19/10/2026: "builds marcadas como desatualizada não devem
+    aparecer nas públicas por ser desatualizado"): a aba Públicas mostra só o
+    catálogo de agora — fora da lista e da popularidade —, diz quantas ficaram de
+    fora, e pelo ID a desatualizada ainda se acha. Lista montada aqui, sem servidor."""
+    print("\n%sPÚBLICAS DESATUALIZADAS%s" % (AMARELO, FIM))
+    s.js("""(() => { const agora = CATALOG.meta.patch, velho = '16.18.1' === agora ? '16.0.1' : '16.18.1';
+      const linha = (id, nome, patch, extra) => Object.assign({ id, nome, descricao: '', campeao: null, modo: '', marcadores: [],
+        caixas: [{ name: 'Core', items: [{ itemId: 'long-sword' }] }], versao: 1, atualizado_em: new Date().toISOString(),
+        patch, autor: '', engajamentos: 0, pop_dia: 0, popular_semana: false, dias_no_top: 0, layout: null, runas: null, habilidades: null }, extra || {});
+      publicas.lista = [linha('aa0001', 'Atual Um', agora), linha('aa0002', 'Atual Dois', agora, { pop_dia: 3 }),
+        linha('aa0003', 'Sem patch', null), linha('bb0001', 'Velha Popular', velho, { pop_dia: 99, popular_semana: true }),
+        linha('bb0002', 'Velha Comum', velho)];
+      publicas.favs = []; publicas.erro = null; publicas.carregadoEm = Date.now();
+      switchTab('build'); showBuildScreen('lista'); document.getElementById('bi-search').value = '';
+      document.querySelector('.bi-tab[data-view="publicas"]').click(); return 'ok'; })()""")
+    time.sleep(0.6)
+    le = """(() => { const r = document.getElementById('bi-rows'), f = r.querySelector('.bi-fora');
+      return { nomes: [...r.querySelectorAll('.bi-row')].map(x => x.querySelector('.bi-name, .bi-nome, b') ? (x.querySelector('.bi-name, .bi-nome, b').textContent || '').trim() : x.textContent.trim().slice(0, 30)),
+               texto: r.innerText.replace(/\\s+/g, ' '), fora: f ? f.textContent : null,
+               desat: r.querySelectorAll('.bi-etiqueta.desatualizada').length, hoje: r.querySelectorAll('.bi-etiqueta.hoje').length }; })()"""
+    r = s.js(le)
+    some = "Velha Popular" not in r["texto"] and "Velha Comum" not in r["texto"]
+    p.conta("desatualizadas", "a aba Públicas mostra só o catálogo de agora (nem na popularidade)",
+            some and all(n in r["texto"] for n in ("Atual Um", "Atual Dois", "Sem patch")) and r["desat"] == 0 and r["hoje"] == 1,
+            "%s" % {k: r[k] for k in ("texto", "desat", "hoje")})
+    p.conta("desatualizadas", "a lista diz quantas ficaram de fora",
+            bool(r["fora"]) and r["fora"].startswith("2 builds publicadas em catálogo antigo"),
+            "nota: %r" % r["fora"])
+    # a lista registra uma impressão por linha: a barreira da sessão segura todas na página
+    barrados = s.js("window.__eventosBarrados || 0")
+    p.conta("desatualizadas", "as impressões da lista não saem da página (barreira do roteiro)", barrados >= 3,
+            "%d eventos segurados" % barrados)
+    # pelo ID exato, a desatualizada aparece, com a etiqueta
+    s.js("(() => { const b = document.getElementById('bi-search'); b.value = 'bb0002'; b.dispatchEvent(new Event('input', { bubbles: true })); return 'ok'; })()")
+    time.sleep(0.6)
+    r2 = s.js(le)
+    p.conta("desatualizadas", "pelo ID, a desatualizada ainda se acha (com a etiqueta)",
+            "Velha Comum" in r2["texto"] and r2["desat"] == 1 and "Atual Um" not in r2["texto"],
+            "%s" % {k: r2[k] for k in ("texto", "desat")})
+    s.js("""(() => { const b = document.getElementById('bi-search'); b.value = ''; b.dispatchEvent(new Event('input', { bubbles: true }));
+      publicas.lista = []; publicas.carregadoEm = 0; document.querySelector('.bi-tab[data-view="minhas"]').click(); return 'ok'; })()""")
+    s.abrir(); time.sleep(0.8); s.entrar()
+
 def checar_acessibilidade(s, p):
     print("\n%sACESSIBILIDADE%s" % (AMARELO, FIM))
     s.js("switchTab('catalog')")
@@ -3133,6 +3192,17 @@ def checar_publicas(s, p, online):
     p.conta("públicas", "a lista vem do servidor", estado["linhas"] > 0,
             "%d builds — %s" % (estado["linhas"], estado["texto"]))
     p.conta("públicas", "nenhum 'permission denied'", "permission denied" not in estado["texto"].lower())
+    # F13-T56: a lista quis contar as impressões, e a barreira da sessão segurou todas
+    time.sleep(0.5)
+    barrados = s.js("window.__eventosBarrados || 0")
+    p.conta("públicas", "o roteiro não registra evento no servidor de verdade", barrados > 0,
+            "%d eventos segurados na página (impressões da lista)" % barrados)
+    # e a lista de verdade não traz desatualizada
+    real = s.js("""(() => ({ desat: document.querySelectorAll('#bi-rows .bi-etiqueta.desatualizada').length,
+      fora: publicas.lista.filter(p => !publicaNoCatalogoAtual(p)).length,
+      nota: !!document.querySelector('#bi-rows .bi-fora') }))()""")
+    p.conta("públicas", "a lista do servidor não mostra desatualizada", real["desat"] == 0 and real["nota"] == (real["fora"] > 0),
+            "%d de catálogo antigo no servidor, ficaram de fora; nota no pé: %s" % (real["fora"], real["nota"]))
 
     time.sleep(3)
     try:
@@ -3279,6 +3349,7 @@ GRUPOS = [
     ("bigorna", checar_bigorna),
     ("fechar", checar_fechar),
     ("entrada", checar_entrada),
+    ("desatualizadas", checar_desatualizadas),
     ("acessibilidade", checar_acessibilidade),
     ("resoluções", checar_resolucoes),
     ("calculadora", checar_calculadora),

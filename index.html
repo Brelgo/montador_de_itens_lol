@@ -4568,6 +4568,8 @@ body.forja #som-volume { accent-color: #ff7a1e; }
 .bi-champ .bp-todos { display: inline-flex; align-items: center; justify-content: center; font-family: var(--loja-gravado); font-size: 11px; color: #c9973f; background: rgba(0,0,0,.4); }
 .btn.mini { padding: 3px 9px; font-size: 13px; line-height: 1.2; min-width: 0; }
 .bi-empty { padding: 34px 18px; text-align: center; font-family: var(--loja-texto); font-style: italic; color: var(--forja-texto-suave); }
+/* F13-T56: a nota das públicas de catálogo antigo, no pé da lista */
+.bi-fora { padding: 12px 18px 6px; text-align: center; font-family: var(--loja-texto); font-style: italic; font-size: 13px; color: var(--forja-texto-suave); border-top: 1px dashed rgba(143,128,116,.35); margin-top: 6px; }
 .bi-note { margin: 10px 0 0; font-family: var(--loja-texto); font-style: italic; font-size: 12px; color: var(--forja-texto-suave); text-align: right; }
 /* forja: voltar à lista e trocar de build pelo nome */
 /* F9-T8: o "‹ Builds" sumia no ferro (Leo, 15/09/2026) — vira uma placa de latão
@@ -9940,6 +9942,11 @@ function caixasDoServidor(caixas, removidos) {
     items: (Array.isArray(c.items) ? c.items : []).map(e => ({ itemId: e.itemId, nome: e.nome, note: String(e.note || ""), ...(e.mf ? { mf: true } : {}), ...(e.frag ? { frag: String(e.frag) } : {}) })),
   })), removidos);
 }
+// F13-T56 (Leo, 19/10/2026: "builds marcadas como desatualizada não devem
+// aparecer nas públicas por ser desatualizado"): publicada num catálogo que não
+// é o de agora. Sem patch gravado (as primeiras publicações) conta como atual,
+// como a etiqueta sempre contou.
+function publicaNoCatalogoAtual(p) { return !p.patch || p.patch === CATALOG.meta.patch; }
 // Resumo de uma build pública no mesmo formato de buildResumo (id prefixado com "pub:").
 function publicaResumo(p) {
   const cats = caixasDoServidor(p.caixas);
@@ -9951,7 +9958,7 @@ function publicaResumo(p) {
     // F10-T15: só o engajamento aparece; o resto alimenta a popularidade e fica oculto.
     engajamentos: p.engajamentos || 0, popDia: p.pop_dia || 0,
     popularSemana: !!p.popular_semana, diasNoTop: p.dias_no_top || 0,
-    fav: favoritosIds().includes(p.id), desatualizada: !!p.patch && p.patch !== CATALOG.meta.patch,
+    fav: favoritosIds().includes(p.id), desatualizada: !publicaNoCatalogoAtual(p),
     layout: layoutValido(p.layout),
     runas: p.runas || null, habilidades: p.habilidades || null,
   };
@@ -9994,7 +10001,8 @@ async function carregarFavoritas() {
 function publicaPorId(id) { return publicas.lista.find(p => p.id === id) || publicas.favs.find(p => p.id === id) || null; }
 // Ordem da aba: top 10 hoje, top 10 semana (fora do top do dia), recentes.
 function publicasOrdenadas() {
-  const todas = publicas.lista.map(publicaResumo);
+  // F13-T56: a desatualizada fica fora da lista e da popularidade (achada pelo ID, ainda aparece)
+  const todas = publicas.lista.filter(publicaNoCatalogoAtual).map(publicaResumo);
   // Popular hoje: os dez com mais pontos no dia corrente (zera à meia-noite, no servidor).
   const hoje = todas.filter(d => d.popDia > 0).sort((a, b) => b.popDia - a.popDia).slice(0, 10);
   const idsHoje = new Set(hoje.map(d => d.id));
@@ -10051,9 +10059,18 @@ function renderPublicasIndex(rows) {
       .catch(() => { publicas.naoExistem.add(q); })
       .finally(() => { publicas.buscandoId = null; renderBuildIndex(); });
   }
-  if (q && !dados.length) { const f = publicas.favs.map(publicaResumo).filter(d => passaFiltro(d, q)); dados = f; }
+  // F13-T56: pelo ID exato a desatualizada ainda aparece, com a etiqueta — quem tem o ID pediu por ela
+  if (q && !dados.length) {
+    const porId = /^[0-9a-f]{6}$/.test(q);
+    dados = (porId ? publicas.lista.concat(publicas.favs) : publicas.favs).map(publicaResumo)
+      .filter(d => porId ? d.pubId === q : passaFiltro(d, q));
+  }
   if (!dados.some(d => d.id === biSelected)) biSelected = dados[0] ? dados[0].id : null;
-  rows.innerHTML = dados.length ? dados.map(linhaHtml).join("") : `<div class="bi-empty">${q || biFilter.marker || biFilter.champ ? "Nenhuma build publicada combina com a busca ou o filtro." : "Ainda não há builds publicadas."}</div>`;
+  // F13-T56: o que ficou de fora por ser de catálogo antigo é dito, não some calado
+  const fora = publicas.lista.filter(p => !publicaNoCatalogoAtual(p)).length;
+  const nota = fora && !(dados.length && dados.every(d => d.desatualizada))
+    ? `<div class="bi-fora">${fora === 1 ? "1 build publicada em catálogo antigo fica" : fora + " builds publicadas em catálogo antigo ficam"} de fora até ${fora === 1 ? "ser republicada" : "serem republicadas"} no ${esc(CATALOG.meta.patch)}. Pelo ID, ainda dá para achar.</div>` : "";
+  rows.innerHTML = (dados.length ? dados.map(linhaHtml).join("") : `<div class="bi-empty">${q || biFilter.marker || biFilter.champ ? "Nenhuma build publicada combina com a busca ou o filtro." : fora ? `Ainda não há builds publicadas no catálogo ${esc(CATALOG.meta.patch)}.` : "Ainda não há builds publicadas."}</div>`) + nota;
   dados.forEach(d => registrarEvento(d.pubId, "impressao"));   // F10-T15: apareceu na lista
   atualizarBarraLote();
   renderBuildDetail();
@@ -10349,7 +10366,7 @@ function renderBuildDetail() {
 // ---- filtro por marcador (+ campeão): habilidades só com campeão no filtro (Leo, 14/09/2026)
 function renderFilterMenu() {
   const champs = new Map();
-  const fonte = biView === "publicas" ? publicas.lista.map(p => p.campeao) : library.builds.map(b => b.champion);
+  const fonte = biView === "publicas" ? publicas.lista.filter(publicaNoCatalogoAtual).map(p => p.campeao) : library.builds.map(b => b.champion);
   fonte.forEach(c => { if (c && c.key) champs.set(String(c.key), c); });
   document.getElementById("bf-champs").innerHTML = `<button type="button" class="bf-champ${biFilter.champ ? "" : " ativo"}" data-key=""><span class="bp-todos">∞</span>Todos</button>` +
     [...champs.values()].sort((a, b) => a.name.localeCompare(b.name, "pt-BR")).map(c =>
@@ -10628,7 +10645,7 @@ function initBuildIndex() {
   fmenu.addEventListener("click", (e) => {
     const c = e.target.closest(".bf-champ");
     if (c) {
-      const fonte = biView === "publicas" ? publicas.lista.map(p => p.campeao) : library.builds.map(b => b.champion);
+      const fonte = biView === "publicas" ? publicas.lista.filter(publicaNoCatalogoAtual).map(p => p.campeao) : library.builds.map(b => b.champion);
       biFilter.champ = c.dataset.key ? (fonte.find(x => x && String(x.key) === c.dataset.key) || null) : null;
       if (!biFilter.champ && biFilter.marker && biFilter.marker.t === "hab") biFilter.marker = null;
       renderFilterMenu(); refletirFiltro(); renderBuildIndex(); return;
