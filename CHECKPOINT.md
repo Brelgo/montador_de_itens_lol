@@ -176,7 +176,7 @@ Montado pelas regras dele — consertar antes de criar; terminar e afinar o que 
 3. **Cadeado por rota** — a build ganha a rota (top, selva, meio, atirador, suporte) e os itens que ela não usa ficam trancados; junto, o cadeado por grupo de item e o aviso de efeito que não acumula. O primeiro recurso novo.
 4. **Robô de atualização por patch** (andar 1; ~15–20% de uma semana; pôr no GitHub pede o OK do Leo).
 5. **Pequenos pendentes:** a limpeza dos eventos do roteiro (decisão do Leo) · a limpeza automática dos eventos · limite por IP na popularidade · autor opcional na publicação · runas F9b (escolha do Leo) · os cinco pontos de `docs/ux_forja.md` · a fonte para dislexia.
-6. **Notas de atualização** — o ícone dos patch notes, com o número `ATUALIZACAO` (13.xx).
+6. **Notas de atualização** — o ícone dos patch notes, com o número `ATUALIZACAO` (13.xx); e, a pedido do Leo (20/10/2026: "adicionar no Notas de atualização o roadmap atual de atualizações, para interessar os usuários"), uma parte **"O que vem por aí"** com este roteiro — na língua de quem usa (o recurso e para que serve, sem número de bug nem nome de tarefa), sem prometer data, e atualizada quando a fila mudar.
 7. **Catálogo e Builds em duas abas** (depois dos bugs, antes do tour).
 8. **O tour guiado** — o último antes dos recursos novos.
 
