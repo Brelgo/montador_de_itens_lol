@@ -167,6 +167,28 @@ Dúvidas do Leo em 14/09/2026, respondidas como avaliação (sem implementar):
 
 ## 4. Próximos passos
 
+### O roteiro oficial (Leo, 20/10/2026: "ta ótimo esse roadmap") — é esta a ordem a seguir
+Montado pelas regras dele — consertar antes de criar; terminar e afinar o que existe; o tour antes das coisas novas — com o cadeado por rota cedo ("vem cedo por ser um recurso que já está no catálogo"). Os detalhes de cada item estão nos andares e em "Pedidos registrados", abaixo.
+
+**Primeiro — terminar e afinar o que já existe**
+1. **T55 — as fichas dos itens:** a receita em árvore (com a troca para a conta de somar), o "Vira componente de" por ícone e o "Exibir detalhes" (escolhas do Leo no andar 2).
+2. **Correções do andar 2:** T39 (resta o nº 29: as runas pela aba Runas numa pública aberta para ver; o nº 40 saiu na T51) · T40 (nº 22) · T41 (nºs 43 e 44) · T44 (nºs 18 e 30) · nºs 51, 52, 54, 55, 56 e 58 · Compartilhar (link curto / tirar o arquivo do Arsenal — decisão do Leo).
+3. **Cadeado por rota** — a build ganha a rota (top, selva, meio, atirador, suporte) e os itens que ela não usa ficam trancados; junto, o cadeado por grupo de item e o aviso de efeito que não acumula. O primeiro recurso novo.
+4. **Robô de atualização por patch** (andar 1; ~15–20% de uma semana; pôr no GitHub pede o OK do Leo).
+5. **Pequenos pendentes:** a limpeza dos eventos do roteiro (decisão do Leo) · a limpeza automática dos eventos · limite por IP na popularidade · autor opcional na publicação · runas F9b (escolha do Leo) · os cinco pontos de `docs/ux_forja.md` · a fonte para dislexia.
+6. **Notas de atualização** — o ícone dos patch notes, com o número `ATUALIZACAO` (13.xx).
+7. **Catálogo e Builds em duas abas** (depois dos bugs, antes do tour).
+8. **O tour guiado** — o último antes dos recursos novos.
+
+**Depois — os recursos novos**
+9. **Mapa interativo:** visão (ward e pink), a rota inicial da selva e as rotas de farm.
+10. **Calculadora de armadura para tanques**, na forja.
+11. **Comparar duas builds.**
+12. **O conhecimento do Gerador de builds** dentro do app.
+13. **Capítulo 1.1** — os dados de campeão coletados pelo Gerador (outro capítulo; entra no app aqui).
+14. **Bestiário.**
+15. **Calculadora de monstros épicos** (depende do Bestiário e do Capítulo 1.1).
+
 ### Fila pela pirâmide de prioridade (aprovada pelo Leo em 17/10/2026)
 A ordem segue `docs/piramide_de_prioridade.md`: a base primeiro; dentro do andar, consertar antes de criar; um andar só recebe trabalho com os de baixo sólidos, a não ser que o Leo puxe algo. Os detalhes de cada pedido estão em "Pedidos registrados" logo abaixo.
 
