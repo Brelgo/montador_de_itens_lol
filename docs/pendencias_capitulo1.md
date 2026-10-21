@@ -115,6 +115,12 @@ Estes dados existem hoje só como texto. O Forjador não os digita. Até o Capí
 - **Hoje:** os fragmentos estão em texto no `mechanics` da habilidade.
 - **O que o Capítulo 1 faz:** `fragments[] = {tier: "Prata" | "Ouro" | "Prismático", stat, value, unit, gold}`. Com isso a build pode escolher qual fragmento o item dá.
 
+### D4. (aberta, 21/10/2026) Em que patch cada item mudou no jogo
+- **Pedido do Leo (21/10/2026):** "marcar como desatualizada builds que contêm (opcional não conta) os itens que foram atualizados… builds que não têm nenhum item que foi modificado na atualização se mantêm". Hoje o app marca desatualizada toda build de patch anterior (na aba Públicas, 51 de 65 ficaram de fora no 16.20.1, a maioria sem nenhum item mudado).
+- **Hoje:** o que mudou em cada patch está no fim do catálogo, em texto ("Ajustes — reconciliação do patch 16.19.1" e "16.20.1"), misturando mudança de jogo (Bússola Rúnica: Vida 100 → 60 no V26.19), correção do próprio catálogo (Diadema de Canções passando a Evolução) e nome (Concretizador). Só a mudança de jogo deve desatualizar uma build — e quem sabe separar é o Capítulo 1.
+- **O que o Capítulo 1 faz:** em cada item, uma linha com os patches em que o **jogo** mudou o item (atributo, preço, receita, efeito, modos), por exemplo `Mudou no jogo em[]: 16.19.1, 16.20.1` — o rótulo final é do Capítulo 1; correção de dado do catálogo e troca só de nome não entram. Preencher pelo menos o 16.19.1 e o 16.20.1 a partir das tabelas de reconciliação que já existem.
+- **No Capítulo 2:** o gerador lê a linha (muda o esquema: aprovação do Leo) para `item.changedIn = ["16.19.1", "16.20.1"]`. A build feita no patch P fica desatualizada só se alguma caixa que não é Opcional tiver um item com mudança num patch depois de P (até o atual), ou um item que saiu do catálogo. Vale para a etiqueta e a revisão das suas builds e para a aba Públicas (F13-T56). O robô de atualização por patch passa a precisar desse dado também.
+
 ## E. Dúvida de fonte aberta
 
 ### E1. ✔ Filhote de Garrabrasa (Scorchclaw Pup): lentidão de 2s ou 3s — 3s, pelo cliente
