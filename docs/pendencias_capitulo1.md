@@ -115,7 +115,8 @@ Estes dados existem hoje só como texto. O Forjador não os digita. Até o Capí
 - **Hoje:** os fragmentos estão em texto no `mechanics` da habilidade.
 - **O que o Capítulo 1 faz:** `fragments[] = {tier: "Prata" | "Ouro" | "Prismático", stat, value, unit, gold}`. Com isso a build pode escolher qual fragmento o item dá.
 
-### D4. (aberta, 21/10/2026) Em que patch cada item mudou no jogo
+### D4. ✖ Dispensada (21/10/2026) — Em que patch cada item mudou no jogo
+- **Dispensada no mesmo dia:** o Leo escolheu o caminho automático — o Capítulo 2 compara as versões do catálogo ao regerar (`data/mudancas.js`) e não precisa deste campo. O registro abaixo fica como estava.
 - **Pedido do Leo (21/10/2026):** "marcar como desatualizada builds que contêm (opcional não conta) os itens que foram atualizados… builds que não têm nenhum item que foi modificado na atualização se mantêm". Hoje o app marca desatualizada toda build de patch anterior (na aba Públicas, 51 de 65 ficaram de fora no 16.20.1, a maioria sem nenhum item mudado).
 - **Hoje:** o que mudou em cada patch está no fim do catálogo, em texto ("Ajustes — reconciliação do patch 16.19.1" e "16.20.1"), misturando mudança de jogo (Bússola Rúnica: Vida 100 → 60 no V26.19), correção do próprio catálogo (Diadema de Canções passando a Evolução) e nome (Concretizador). Só a mudança de jogo deve desatualizar uma build — e quem sabe separar é o Capítulo 1.
 - **O que o Capítulo 1 faz:** em cada item, uma linha com os patches em que o **jogo** mudou o item (atributo, preço, receita, efeito, modos), por exemplo `Mudou no jogo em[]: 16.19.1, 16.20.1` — o rótulo final é do Capítulo 1; correção de dado do catálogo e troca só de nome não entram. Preencher pelo menos o 16.19.1 e o 16.20.1 a partir das tabelas de reconciliação que já existem.
