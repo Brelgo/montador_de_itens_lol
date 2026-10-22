@@ -188,9 +188,11 @@ Montado pelas regras dele — consertar antes de criar; terminar e afinar o que 
 9. **Mapa interativo:** visão (ward e pink), a rota inicial da selva e as rotas de farm.
 10. **Calculadora de armadura para tanques**, na forja.
 11. **Comparar duas builds.**
-12. **O conhecimento do Gerador de builds** dentro do app.
-13. **Capítulo 1.1** — os dados de campeão coletados pelo Gerador (outro capítulo; entra no app aqui).
-14. **Bestiário.**
+12. **O conhecimento do Gerador de builds** dentro do app — **Capítulo 1.3**.
+13. **Os campeões** — **Capítulo 1.1** (as regras de distribuição de pontos, a primeira coisa de todas; formas, classes, kit em números) e **Capítulo 1.4** (as fichas de campeão do Gerador como conteúdo).
+14. **Bestiário** — **Capítulo 1.2**.
+
+**Os capítulos de dado (Leo, 22/10/2026), cada um com a sua pasta e as pendências** em `C:\Users\user\3D Objects\Claude Projects\`: `Capitulo 1.1\PENDENCIAS.md` (dado de campeão para as mecânicas — **primeiro de tudo, as regras de distribuição de pontos de habilidade**: as de nível, como a do Lv8, e as exceções Udyr, Aphelios, Jayce e outras) · `Capitulo 1.2\PENDENCIAS.md` (Bestiário) · `Capitulo 1.3\PENDENCIAS.md` (o conhecimento do Gerador) · `Capitulo 1.4\PENDENCIAS.md` (os campeões do Gerador). O pedido antigo `docs/proposta_capitulo_1_1.md` virou a seção 1 e 2 do 1.1.
 15. **Calculadora de monstros épicos** (depende do Bestiário e do Capítulo 1.1).
 
 ### Fila pela pirâmide de prioridade (aprovada pelo Leo em 17/10/2026)
