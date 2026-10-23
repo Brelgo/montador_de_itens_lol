@@ -647,6 +647,112 @@ def checar_catalogo(s, p):
             "preços %s (catálogo: %s e %s) · caixa %s · soma %s" % (n43["precos"], n43["netArco"], n43["netForca"], n43["caixa"], n43["soma"]))
 
 
+def checar_ficha(s, p):
+    """F13-T55 (Leo, 19/10/2026: "os jogadores lembram dos itens pela imagem e não
+    pelo nome"): a receita em árvore com a troca para a conta de somar, o "Vira
+    componente de" por ícone e o "Exibir detalhes". As peças são contadas por fora,
+    direto do catalog.js (components × qty), e a tela tem de bater com a conta."""
+    print("\n%sFICHA DO ITEM%s" % (AMARELO, FIM))
+    s.js("localStorage.removeItem('ficha.vista'); 'ok'")
+    s.abrir(); time.sleep(0.8); s.entrar()
+    conta_fora = """const porEn = {}; CATALOG.items.forEach(i => porEn[i.nameEn] = i);
+      const filhos = (it) => (it.components || []).flatMap(c => Array(c.qty || 1).fill(porEn[c.nameEn] || null));
+      const conta = (it, n) => { const f = n < 5 ? filhos(it) : []; if (!f.length) return { nos: 1, folhas: 1, juntar: 0, compostos: 0 };
+        return f.reduce((a, k) => { if (!k) return { nos: a.nos + 1, folhas: a.folhas + 1, juntar: a.juntar, compostos: a.compostos };
+          const b = conta(k, n + 1); return { nos: a.nos + b.nos, folhas: a.folhas + b.folhas, juntar: a.juntar + b.juntar, compostos: a.compostos + b.compostos }; },
+          { nos: 1, folhas: 0, juntar: it.combineCost ? 1 : 0, compostos: 1 }); };"""
+    # a de mais peças do catálogo (Dança da Morte no 16.21.1), com duas peças iguais na receita
+    r = s.js("""(() => { %s
+      const alvo = CATALOG.items.filter(i => (i.components || []).length).map(i => ({ i, c: conta(i, 0) })).sort((a, b) => b.c.folhas - a.c.folhas)[0];
+      openModal(alvo.i.slug); const m = document.getElementById('modal');
+      return { nome: alvo.i.namePt, quer: alvo.c, tela: { nos: m.querySelectorAll('.rt .rt-no').length, folhas: m.querySelectorAll('.rt .rt-no.folha, .rt .rt-no.fora').length,
+               juntar: m.querySelectorAll('.rt .rt-juntar').length, raiz: (m.querySelector('.rt .rt-no.raiz b') || {}).textContent,
+               conta: (m.querySelector('.rt-conta') || {}).textContent || '', preco: fmtG(alvo.i.priceGold), arvore: getComputedStyle(m.querySelector('.rt')).display !== 'none' } }; })()""" % conta_fora)
+    t, quer = r["tela"], r["quer"]
+    p.conta("ficha", "a receita em árvore: as peças da tela batem com o catálogo",
+            t["arvore"] and t["raiz"] == r["nome"] and t["nos"] == quer["nos"] and t["folhas"] == quer["folhas"] and t["juntar"] == quer["juntar"]
+            and t["conta"].endswith(" para juntar = %s · o clique numa peça abre a ficha dela." % t["preco"]),
+            "%s: %d nós, %d na ponta, %d galhos com ouro de juntar; conta: %s" % (r["nome"], t["nos"], t["folhas"], t["juntar"], t["conta"][:70]))
+    # o clique numa peça abre a ficha dela (clique de verdade, depois do pergaminho desenrolar:
+    # no meio da animação a peça ainda está mudando de lugar)
+    time.sleep(0.8)
+    s.clicar("#modal .rt .rt-no.folha", 1.0)
+    aberta = s.js("(document.querySelector('#modal h2') || {}).textContent")
+    p.conta("ficha", "o clique numa peça abre a ficha dela", aberta and aberta != r["nome"], "abriu: %s" % aberta)
+
+    # a troca para a conta de somar, lembrada depois de recarregar
+    s.js("openModal(%s); 'ok'" % json.dumps(s.js("(CATALOG.items.find(i => i.namePt === %s) || {}).slug" % json.dumps(r["nome"]))))
+    time.sleep(0.8)
+    s.clicar('#modal [data-receita="soma"]', 0.5)
+    soma = s.js("""(() => { const m = document.getElementById('modal'), linhas = [...m.querySelectorAll('.rs .rs-linha')];
+      return { rt: getComputedStyle(m.querySelector('.rt')).display, rs: getComputedStyle(m.querySelector('.rs')).display, n: linhas.length,
+               raizUltima: linhas.length > 0 && linhas[linhas.length - 1].classList.contains('raiz') }; })()""")
+    s.js("closeModal(); 'ok'")
+    s.abrir(); time.sleep(0.8); s.entrar()
+    lembrou = s.js("""(() => { openModal(CATALOG.items.find(i => (i.components || []).length > 1).slug); const m = document.getElementById('modal');
+      return getComputedStyle(m.querySelector('.rs')).display !== 'none' && m.querySelector('[data-receita="soma"]').classList.contains('ativo'); })()""")
+    p.conta("ficha", "a troca para a conta de somar (e o app lembra)",
+            soma["rt"] == "none" and soma["rs"] != "none" and soma["n"] >= 2 and soma["raizUltima"] and lembrou,
+            "%s; lembrou depois de recarregar: %s" % (soma, lembrou))
+    s.js("document.querySelector('#modal [data-receita=\"arvore\"]').click(); closeModal(); 'ok'")
+
+    # "Vira componente de" por ícone, por etapa, do mais barato ao mais caro; o nome no hover
+    vira = s.js("""(() => { const it = CATALOG.items.slice().sort((a, b) => (b.buildsIntoIds || []).length - (a.buildsIntoIds || []).length)[0];
+      openModal(it.slug); const m = document.getElementById('modal');
+      const grupos = [...m.querySelectorAll('.vira-grupo')].map(g => [...g.querySelectorAll('.vira-item')].map(b => byId[b.dataset.goto]));
+      const ordem = grupos.every(g => g.every((x, i) => !i || (g[i - 1].priceGold || 0) <= (x.priceGold || 0)) && g.every(x => x.tier === g[0].tier));
+      const etapas = grupos.map(g => TIER_ORDER.indexOf(g[0].tier)); const etapasOk = etapas.every((x, i) => !i || etapas[i - 1] < x);
+      const nomes = [...m.querySelectorAll('.vira-item')].every(b => b.title === byId[b.dataset.goto].namePt && b.querySelector('img'));
+      return { nome: it.namePt, quer: it.buildsIntoIds.length, tela: m.querySelectorAll('.vira-item').length, ordem, etapasOk, nomes,
+               chips: m.querySelectorAll('.vira .recipe-chip:not(.unlinked)').length }; })()""")
+    time.sleep(0.8)
+    s.clicar("#modal .vira-item", 1.0)
+    vira_abre = s.js("(document.querySelector('#modal h2') || {}).textContent")
+    p.conta("ficha", "o “Vira componente de” por ícone, por etapa",
+            vira["tela"] == vira["quer"] and vira["ordem"] and vira["etapasOk"] and vira["nomes"] and vira["chips"] == 0 and vira_abre != vira["nome"],
+            "%s: %d de %d ícones; o clique abriu %s" % (vira["nome"], vira["tela"], vira["quer"], vira_abre))
+
+    # Exibir detalhes: fechado no padrão (com memória limpa), abre no clique, e o app lembra
+    s.js("closeModal(); localStorage.removeItem('ficha.vista'); 'ok'")
+    s.abrir(); time.sleep(0.8); s.entrar()
+    vis = """(() => { const m = document.getElementById('modal');
+      const sec = (t) => [...m.querySelectorAll('.modal-section-title')].find(e => e.textContent.trim().startsWith(t));
+      const ve = (t) => { const e = sec(t); return !!e && e.getClientRects().length > 0; };
+      const algum = (sel) => [...m.querySelectorAll(sel)].some(e => e.getClientRects().length > 0);
+      return { atributos: ve('Atributos'), receita: ve('Do que é feito'), custo: ve('Análise de custo'), tags: ve('Categoria de Atributo'), ornn: ve('Passiva do Ornn'),
+               habilidade: algum('.ability-desc'), mecanica: algum('.ability-mech'), nota: algum('.modal-note'),
+               botao: (m.querySelector('.ficha-detalhes-btn') || {}).textContent }; })()"""
+    # Leo, 23/10/2026: no Resumido a habilidade fica no texto curto; o "Exibir detalhes" expande
+    # para a versão completa (a Mecânica) e as notas do item — o alvo tem as duas
+    alvo = s.js("""CATALOG.items.find(i => i.tier === 'Lendário' && i.costAnalysis && (i.components || []).length && i.masterwork && i.attributeCategory && i.attributeCategory.length
+      && (i.abilities || []).some(a => a.mechanics) && i.notes).slug""")
+    s.js("openModal(%s); 'ok'" % json.dumps(alvo)); time.sleep(0.8)
+    antes = s.js(vis)
+    s.clicar("#modal .ficha-detalhes-btn", 0.5)
+    depois = s.js(vis)
+    s.js("closeModal(); 'ok'")
+    s.abrir(); time.sleep(0.8); s.entrar()
+    s.js("openModal(%s); 'ok'" % json.dumps(alvo)); time.sleep(0.8)
+    lembra = s.js(vis)
+    p.conta("ficha", "o Exibir detalhes: resumido no padrão (habilidade no texto curto), o resto no clique (e o app lembra)",
+            antes["atributos"] and antes["receita"] and antes["habilidade"] and not antes["custo"] and not antes["tags"] and not antes["ornn"]
+            and not antes["mecanica"] and not antes["nota"] and antes["botao"] == "Exibir detalhes"
+            and depois["custo"] and depois["tags"] and depois["ornn"] and depois["mecanica"] and depois["nota"] and depois["habilidade"] and depois["botao"] == "Ocultar detalhes"
+            and lembra["custo"] and lembra["mecanica"] and lembra["botao"] == "Ocultar detalhes",
+            "antes %s · depois %s · recarregado %s" % (antes, depois, lembra))
+    s.js("document.querySelector('#modal .ficha-detalhes-btn').click(); closeModal(); 'ok'")
+
+    # nas 225 fichas: item sem receita não mostra a seção; a árvore nunca passa da largura da ficha
+    todas = s.js("""(() => { %s const ruins = [], semSecao = [];
+      CATALOG.items.forEach(i => { openModal(i.slug); const m = document.getElementById('modal'), rt = m.querySelector('.rt');
+        const tem = !!m.querySelector('.receita');
+        if (tem !== filhos(i).length > 0) semSecao.push(i.namePt);
+        if (rt && rt.scrollWidth > rt.clientWidth + 1) ruins.push(i.namePt + ' (' + rt.scrollWidth + '/' + rt.clientWidth + ')'); });
+      closeModal(); return { ruins, semSecao, n: CATALOG.items.length }; })()""" % conta_fora)
+    p.conta("ficha", "nas 225 fichas a árvore cabe, e só quem tem receita mostra a seção",
+            not todas["ruins"] and not todas["semSecao"], "%d fichas; estouram: %s; seção errada: %s" % (todas["n"], todas["ruins"][:3] or "nenhuma", todas["semSecao"][:3] or "nenhuma"))
+
+
 def checar_calculadora(s, p):
     """F13-T42 (bugs nºs 23 e 31): o "Puxar da build ativa" usa os itens que a
     build de fato compra — sem as caixas Opcionais e, na Escolha 1, só o padrão —
@@ -1046,10 +1152,11 @@ def checar_passiva_do_ornn(s, p):
     s.hover('.build-cat[data-cat-id="%s"] .item-tile' % s.js("build.cats[3].id"))
     forja = s.js(varre)
     placa = s.js("(document.querySelector('.item-tile.mf .mf-badge') || {}).textContent || ''")
-    s.js("switchTab('catalog'); openModal(%s); 'ok'" % json.dumps(slug))
+    # F13-T55: a seção da Passiva do Ornn fica atrás do "Exibir detalhes" — a ficha é olhada com ele aberto
+    s.js("switchTab('catalog'); fichaEstado.detalhes = true; openModal(%s); 'ok'" % json.dumps(slug))
     time.sleep(0.8)
     ficha = s.js(varre)
-    s.js("closeModal(); 'ok'")
+    s.js("fichaEstado.detalhes = false; closeModal(); 'ok'")
     texto = s.js("buildToText()")
     s.js("descartarAlteracoes(); 'ok'")
     time.sleep(0.4)
@@ -3715,6 +3822,7 @@ def checar_console(s, p):
 # ---------------------------------------------------------------- principal
 GRUPOS = [
     ("catálogo", checar_catalogo),
+    ("ficha", checar_ficha),
     ("forja", checar_forja),
     ("marcadores", checar_marcadores),
     ("visualização", checar_visualizacao),

@@ -76,6 +76,18 @@ forja, publicar pergunta antes de abrir a janela; o campo do nome fica na tela
 carimbam a "Última atualização"; tirar do site duas vezes faz o segundo
 esperar, sem erro falso.
 
+**Ficha do item** (F13-T55; Leo, 19/10/2026: "os jogadores lembram dos itens pela imagem e não pelo nome") — a
+receita em árvore da ficha com mais peças do catálogo (a Dança da Morte no 16.21.1) bate com a conta feita por fora,
+direto do `catalog.js` (`components` × `qty`): nós, peças na ponta, galhos com ouro de juntar e a conta embaixo
+fechando no preço; o clique de verdade numa peça abre a ficha dela (depois do pergaminho desenrolar); a troca para
+a conta de somar mostra uma linha por receita com a do item por último, e o app lembra depois de recarregar; o
+"Vira componente de" do item que mais vira (a Espada Longa, 21) tem um ícone por item, por etapa e do mais barato
+ao mais caro, o nome no `title`, e o clique abre; o "Exibir detalhes" começa fechado (Atributos, a receita e a
+habilidade no texto curto à vista; Análise de custo, Passiva do Ornn, as etiquetas, a Mecânica das habilidades e as
+notas do item não — Leo, 23/10/2026: "ao clicar em ver detalhes estes campos de habilidades se expandem para a
+versão detalhada"), abre no clique e o app lembra; e nas 225 fichas a
+árvore cabe na largura e só quem tem receita mostra a seção.
+
 **Forja** — a build nova nasce com as 8 caixas; item entra na caixa; o modo
 leitura esconde os atributos.
 

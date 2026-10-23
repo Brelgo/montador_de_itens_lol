@@ -3398,6 +3398,72 @@ body.nucleo .grid::before {
 .recipe-chip .cost { color: var(--loja-tinta-suave); margin-left: 4px; }
 /* Referência a item que não está no catálogo do Capítulo 1: nome sem link. */
 .recipe-chip.unlinked { border-style: dashed; border-color: var(--loja-tinta-suave); color: var(--loja-tinta-suave); cursor: default; }
+
+/* ---- F13-T55: a ficha do item — a árvore, a conta de somar, no que vira, os detalhes ---- */
+.modal .ficha-titulo { display: flex; align-items: center; justify-content: space-between; }
+.ficha-vistas { display: inline-flex; border: 1px solid rgba(90,70,48,.45); border-radius: 2px; overflow: hidden; }
+.ficha-vistas button { background: transparent; border: 0; padding: 2px 10px; cursor: pointer; font-family: var(--loja-gravado); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--loja-tinta-suave); }
+.ficha-vistas button + button { border-left: 1px solid rgba(90,70,48,.45); }
+.ficha-vistas button.ativo { background: var(--loja-cera); color: var(--loja-cera-texto); }
+.receita.v-arvore .rs, .receita.v-soma .rt { display: none; }
+/* a árvore: o item em cima e, descendo, as peças */
+.rt { display: flex; flex-direction: column; align-items: center; padding: 4px 0 2px; overflow-x: auto; }
+.rt-no { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 8px; border: 1px solid rgba(90,70,48,.45); border-radius: 3px; background: rgba(90,70,48,.08); font-family: var(--loja-texto); color: var(--loja-tinta); text-align: center; }
+button.rt-no { cursor: pointer; }
+button.rt-no:hover { border-color: var(--loja-cera); background: rgba(141,44,34,.08); }
+.rt-no .item-art, .rt-no .abbr { width: 36px; height: 36px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,.45); }
+.rt-no.meio .item-art, .rt-no.meio .abbr { width: 42px; height: 42px; }
+.rt-no.raiz { border: 1.5px solid var(--loja-cera); padding: 8px 16px; }
+.rt-no.raiz .item-art, .rt-no.raiz .abbr { width: 52px; height: 52px; }
+.rt-no b { font-weight: 700; font-size: 13px; line-height: 1.15; max-width: 110px; }
+.rt-no.raiz b { font-size: 15px; max-width: 200px; }
+.rt-preco { font-size: 12px; color: var(--loja-tinta-suave); }
+.rt-no.raiz .rt-preco { color: var(--loja-cera); font-size: 13px; }
+.rt-no.folha { border-style: dashed; padding: 5px 6px; }
+.rt-no.fora { border-style: dashed; color: var(--loja-tinta-suave); font-style: italic; font-size: 12px; max-width: 110px; }
+/* os galhos: um traço desce do pai, corre na horizontal e desce em cada peça */
+.rt-filhos { position: relative; display: flex; justify-content: center; padding-top: 16px; }
+.rt-filhos::before { content: ""; position: absolute; top: 0; left: 50%; height: 16px; border-left: 2px solid #5a4630; margin-left: -1px; }
+.rt-ramo { position: relative; display: flex; flex-direction: column; align-items: center; padding: 16px 4px 0; }
+.rt-ramo::before, .rt-ramo::after { content: ""; position: absolute; top: 0; width: 50%; height: 16px; border-top: 2px solid #5a4630; }
+.rt-ramo::before { right: 50%; }
+.rt-ramo::after { left: 50%; border-left: 2px solid #5a4630; margin-left: -1px; }
+.rt-ramo:first-of-type::before, .rt-ramo:last-of-type::after { border-top: 0; }
+.rt-ramo:only-of-type::before { display: none; }
+.rt-juntar { position: absolute; top: 0; left: calc(50% + 8px); font-style: italic; font-size: 12px; line-height: 16px; color: var(--loja-cera); white-space: nowrap; }
+.rt-conta { margin: 8px 0 0; font-size: 12.5px; font-style: italic; color: var(--loja-tinta-suave); }
+/* a conta de somar: cada linha é uma receita */
+.rs { display: flex; flex-direction: column; gap: 8px; }
+.rs-linha { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; padding: 8px 10px; background: rgba(90,70,48,.08); border: 1.5px solid transparent; border-radius: 3px; }
+.rs-linha.raiz { border-color: var(--loja-cera); }
+.rs-peca, .rs-res { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; background: none; border: 0; padding: 0; cursor: pointer; font-family: var(--loja-texto); font-size: 12px; color: var(--loja-tinta-suave); }
+.rs-peca .item-art, .rs-peca .abbr { width: 36px; height: 36px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,.45); }
+.rs-res { flex-direction: row; gap: 8px; text-align: left; }
+span.rs-res { cursor: default; }
+.rs-res .item-art, .rs-res .abbr { width: 42px; height: 42px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,.45); }
+.rs-nome { display: flex; flex-direction: column; }
+.rs-nome b { font-size: 14px; color: var(--loja-tinta); }
+.rs-linha.raiz .rs-nome { color: var(--loja-cera); }
+.rs-peca:hover, button.rs-res:hover { color: var(--loja-cera); }
+.rs-op { font-size: 18px; color: var(--loja-tinta-suave); }
+.rs-juntar { display: inline-flex; flex-direction: column; align-items: center; }
+.rs-juntar b { background: var(--loja-latao); color: var(--loja-tinta); border-radius: 999px; padding: 1px 8px; font-size: 12px; font-weight: 600; }
+.rs-juntar i { font-size: 11px; color: var(--loja-tinta-suave); }
+/* no que vira: por ícone, por etapa; o nome no hover */
+.vira-grupo + .vira-grupo { margin-top: 8px; }
+.vira-tier { font-family: var(--loja-gravado); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: var(--loja-tinta-suave); margin-bottom: 4px; }
+.vira-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(54px, 1fr)); gap: 6px; }
+.vira-item { display: flex; flex-direction: column; align-items: center; gap: 2px; background: none; border: 1px solid transparent; border-radius: 3px; padding: 3px 0; cursor: pointer; font-family: var(--loja-texto); font-size: 11.5px; color: var(--loja-tinta-suave); }
+.vira-item:hover { border-color: var(--loja-cera); color: var(--loja-cera); }
+.vira-item .item-art, .vira-item .abbr { width: 40px; height: 40px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,.45); }
+.vira .recipe-links { margin-top: 8px; }
+/* Exibir detalhes: o resto da ficha, como o Completo das Runas */
+.ficha-detalhes-btn { display: block; width: 100%; margin: 4px 0 14px; padding: 7px; cursor: pointer; background: transparent; border: 1px dashed rgba(90,70,48,.55); border-radius: 2px; font-family: var(--loja-gravado); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--loja-tinta-suave); }
+.ficha-detalhes-btn:hover { border-color: var(--loja-cera); color: var(--loja-cera); }
+.modal:not(.com-detalhes) .ficha-detalhes { display: none; }
+/* Leo, 23/10/2026: no Resumido a habilidade fica no texto curto; o "Exibir detalhes"
+   expande para a versão completa — a Mecânica — e as notas técnicas do item */
+.modal:not(.com-detalhes) .ability-mech, .modal:not(.com-detalhes) .modal-note { display: none; }
 .recipe-chip.unlinked:hover { border-color: var(--loja-tinta-suave); color: var(--loja-tinta-suave); }
 .modal .tag { font-family: var(--loja-texto); font-size: 12.5px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--loja-tinta-suave); background: transparent; color: var(--loja-tinta); }
 .modal-note { font-size: 13px; color: var(--loja-cera); border: 1px solid rgba(141,44,34,.45); border-left: 4px solid var(--loja-cera); background: rgba(141,44,34,.06); border-radius: 2px; padding: 8px 11px; margin-bottom: 14px; line-height: 1.5; }
@@ -5891,7 +5957,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.61";
+const ATUALIZACAO = "13.62";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -11557,9 +11623,7 @@ function recipeRefs(list) {
 }
 
 CATALOG.items.forEach(it => {
-  it.componentRefs = recipeRefs(it.components);
-  if (it.componentRefs.length && it.combineCost) it.componentRefs[it.componentRefs.length - 1].combineCostGold = it.combineCost;
-  it.buildsIntoIds = recipeRefs(it.buildsInto).map(r => r.id);
+  it.buildsIntoIds = recipeRefs(it.buildsInto).map(r => r.id);   // a receita, peça por peça, é pecasDaReceita (F13-T55)
 });
 
 // ---------------- modos de jogo ----------------
@@ -12907,13 +12971,94 @@ function initCardTilt() {
     card.style.setProperty("--ry", "0deg");
   });
 }
-function refLine(ref) {
-  const it = byId[ref.id];
-  if (!it) return null;
-  const bits = [];
-  if (ref.multiplier > 1) bits.push(`×${ref.multiplier}`);
-  if (ref.combineCostGold) bits.push(`+${ref.combineCostGold}g`);
-  return { id: it.slug, label: it.namePt + (bits.length ? " " : ""), extra: bits.join(" ") };
+// ---------------- F13-T55: a ficha do item ----------------
+// Leo (19/10/2026): "os jogadores lembram dos itens pela imagem e não pelo nome".
+// A receita em árvore (conceito 1) com a troca para a conta de somar (conceito 2),
+// o "Vira componente de" por ícone (conceito 5) e o "Exibir detalhes", como o
+// Resumido/Completo das Runas. As duas escolhas ficam lembradas no navegador.
+const fichaEstado = { receita: "arvore", detalhes: false };
+try {
+  const f = JSON.parse(localStorage.getItem("ficha.vista") || "null");
+  if (f && (f.receita === "arvore" || f.receita === "soma")) fichaEstado.receita = f.receita;
+  if (f) fichaEstado.detalhes = !!f.detalhes;
+} catch (e) { /* sem persistência: fica o padrão */ }
+function gravarFichaEstado() {
+  try { localStorage.setItem("ficha.vista", JSON.stringify(fichaEstado)); } catch (e) { /* idem */ }
+}
+const RECEITA_FUNDO = 5;   // trava contra receita circular; a mais funda do catálogo tem 3 níveis
+
+// As peças de um item, uma por unidade: duas Espadas Longas são dois nós, como na
+// loja do jogo. Peça fora do catálogo do Capítulo 1 vem como { fora: nome }.
+function pecasDaReceita(item) {
+  const out = [];
+  (item.components || []).forEach(c => {
+    const slug = slugByNameEn[c.nameEn];
+    const fora = !c.namePt || c.namePt.startsWith("—") ? `${c.nameEn} ${c.namePt || ""}`.trim() : c.namePt;
+    for (let i = 0; i < (c.qty || 1); i++) out.push(slug && byId[slug] ? { item: byId[slug] } : { fora });
+  });
+  return out;
+}
+function pecaFora(nome) { return `<span class="rt-no fora" title="Fora do catálogo do Capítulo 1">${esc(nome)}</span>`; }
+
+// Conceito 1: o item em cima e, descendo, as peças que ele pede; o ouro de juntar
+// no galho. A raiz é a ficha aberta; o clique numa peça abre a ficha dela.
+function arvoreHtml(item, nivel = 0) {
+  const pecas = nivel < RECEITA_FUNDO ? pecasDaReceita(item) : [];
+  const tipo = nivel === 0 ? "raiz" : pecas.length ? "meio" : "folha";
+  const corpo = `${iconInner(item)}${tipo !== "folha" ? `<b>${esc(item.namePt)}</b>` : ""}<span class="rt-preco">${fmtG(item.priceGold)}</span>`;
+  const no = tipo === "raiz" ? `<div class="rt-no raiz">${corpo}</div>`
+    : `<button type="button" class="rt-no ${tipo}" data-goto="${item.slug}" title="${esc(item.namePt)} · ${fmtG(item.priceGold)}">${corpo}</button>`;
+  if (!pecas.length) return no;
+  const juntar = item.combineCost ? `<span class="rt-juntar">+${fmtG(item.combineCost)}${tipo === "raiz" ? " para juntar" : ""}</span>` : "";
+  return `${no}<div class="rt-filhos">${juntar}${pecas.map(p => `<div class="rt-ramo">${p.item ? arvoreHtml(p.item, nivel + 1) : pecaFora(p.fora)}</div>`).join("")}</div>`;
+}
+
+// Conceito 2: cada linha é uma receita — as peças mais o ouro de juntar dão o item
+// da direita. De baixo para cima; a do item aberto por último, em destaque.
+function somaHtml(item) {
+  const linhas = [], vistos = new Set();
+  const visita = (it, nivel) => {
+    const pecas = nivel < RECEITA_FUNDO ? pecasDaReceita(it) : [];
+    if (!pecas.length) return;
+    pecas.forEach(p => { if (p.item) visita(p.item, nivel + 1); });
+    if (vistos.has(it.slug)) return;
+    vistos.add(it.slug);
+    linhas.push({ it, pecas, raiz: nivel === 0 });
+  };
+  visita(item, 0);
+  const op = (c) => `<span class="rs-op">${c}</span>`;
+  return linhas.map(l => {
+    const pecas = l.pecas.map(p => p.item
+      ? `<button type="button" class="rs-peca" data-goto="${p.item.slug}" title="${esc(p.item.namePt)}">${iconInner(p.item)}<span>${fmtG(p.item.priceGold)}</span></button>`
+      : pecaFora(p.fora)).join(op("+"));
+    const juntar = l.it.combineCost ? op("+") + `<span class="rs-juntar"><b>+${fmtG(l.it.combineCost)}</b><i>para juntar</i></span>` : "";
+    const res = `${iconInner(l.it)}<span class="rs-nome"><b>${esc(l.it.namePt)}</b>${fmtG(l.it.priceGold)}</span>`;
+    return `<div class="rs-linha${l.raiz ? " raiz" : ""}">${pecas}${juntar}${op("=")}${l.raiz ? `<span class="rs-res">${res}</span>` : `<button type="button" class="rs-res" data-goto="${l.it.slug}" title="${esc(l.it.namePt)}">${res}</button>`}</div>`;
+  }).join("");
+}
+
+// A conta embaixo da árvore: as peças básicas mais todo o ouro de juntar. Só
+// aparece quando fecha com o preço (fecha nas 225 receitas do 16.21.1).
+function contaDaReceita(item) {
+  let basicas = 0, juntar = 0, fora = false;
+  const visita = (it, nivel) => {
+    const pecas = nivel < RECEITA_FUNDO ? pecasDaReceita(it) : [];
+    if (!pecas.length) { basicas += it.priceGold || 0; return; }
+    juntar += it.combineCost || 0;
+    pecas.forEach(p => { if (p.item) visita(p.item, nivel + 1); else fora = true; });
+  };
+  visita(item, 0);
+  return { basicas, juntar, fecha: !fora && basicas + juntar === item.priceGold };
+}
+
+// Conceito 5: no que o item vira, por ícone e por etapa; o nome no hover.
+const TIER_PLURAL = { "Starter": "Iniciais", "Consumível": "Consumíveis", "Trinket": "Amuletos", "Distribuído": "Distribuídos",
+  "Bota": "Botas", "Básico": "Básicos", "Épico": "Épicos", "Lendário": "Lendários", "Evolução": "Evoluções",
+  "Lendário (Evolução)": "Lendários (evolução)", "Épico (Evolução)": "Épicos (evolução)" };
+function viraHtml(lista) {
+  const grupos = TIER_ORDER.map(t => [t, lista.filter(it => it.tier === t).sort((a, b) => (a.priceGold || 0) - (b.priceGold || 0))]).filter(g => g[1].length);
+  return grupos.map(([tier, its]) => `<div class="vira-grupo"><div class="vira-tier">${esc(TIER_PLURAL[tier] || tier)}</div>
+    <div class="vira-grade">${its.map(it => `<button type="button" class="vira-item" data-goto="${it.slug}" title="${esc(it.namePt)}">${iconInner(it)}<span>${fmtG(it.priceGold)}</span></button>`).join("")}</div></div>`).join("");
 }
 
 function openModal(id) {
@@ -12950,7 +13095,6 @@ function openModal(id) {
       // namePt que começa com "—" é anotação do catálogo (ex.: "— por transformação"): mostra com o nome.
       .map(r => `<span class="recipe-chip unlinked" title="Fora do catálogo do Capítulo 1">${esc(!r.namePt || r.namePt.startsWith("—") ? `${r.nameEn} ${r.namePt || ""}`.trim() : r.namePt)}</span>`).join("");
   };
-  const componentsUnlinked = unlinked(item.components);
   const buildsIntoUnlinked = unlinked(item.buildsInto);
 
   // Análise de custo: os textos do catálogo; com Reembolso ligado, a eficiência recalculada.
@@ -13000,25 +13144,25 @@ function openModal(id) {
       ${item.mayhemNotes ? `<div class="cost-line"><span class="k">ARAM: Mayhem</span><span class="v">${item.mayhemNotes}</span></div>` : ""}
     </div>` : "";
 
-  const componentsResolved = (item.componentRefs || []).map(refLine).filter(Boolean);
   const buildsIntoResolved = (item.buildsIntoIds || []).map(id2 => byId[id2]).filter(Boolean);
 
-  const recipeHtml = (componentsResolved.length || componentsUnlinked) ? `
-    <div class="modal-section">
-      <div class="modal-section-title">Componentes</div>
-      <div class="recipe-links">
-        ${componentsResolved.map(r => `<span class="recipe-chip" data-goto="${r.id}">${r.label}<span class="cost">${r.extra}</span></span>`).join("")}
-        ${componentsUnlinked}
-      </div>
+  // F13-T55: a receita em árvore, com a troca para a conta de somar (escolha lembrada)
+  const conta = contaDaReceita(item);
+  const recipeHtml = pecasDaReceita(item).length ? `
+    <div class="modal-section receita v-${fichaEstado.receita}">
+      <div class="modal-section-title ficha-titulo">Do que é feito<span class="ficha-vistas" role="group" aria-label="Como mostrar a receita">${[["arvore", "Árvore"], ["soma", "Soma"]].map(([v, n]) =>
+        `<button type="button" data-receita="${v}" class="${fichaEstado.receita === v ? "ativo" : ""}">${n}</button>`).join("")}</span></div>
+      <div class="rt">${arvoreHtml(item)}</div>
+      <div class="rs">${somaHtml(item)}</div>
+      ${conta.fecha ? `<p class="rt-conta">Peças básicas ${fmtG(conta.basicas)} + ${fmtG(conta.juntar)} para juntar = ${fmtG(item.priceGold)} · o clique numa peça abre a ficha dela.</p>` : ""}
     </div>` : "";
 
+  // F13-T55: o "Vira componente de" por ícone, por etapa; o nome no hover
   const buildsIntoHtml = (buildsIntoResolved.length || buildsIntoUnlinked) ? `
-    <div class="modal-section">
-      <div class="modal-section-title">Vira componente de</div>
-      <div class="recipe-links">
-        ${buildsIntoResolved.map(r => `<span class="recipe-chip" data-goto="${r.id}">${r.namePt}</span>`).join("")}
-        ${buildsIntoUnlinked}
-      </div>
+    <div class="modal-section vira">
+      <div class="modal-section-title">Vira componente de${buildsIntoResolved.length ? ` · ${buildsIntoResolved.length} ${buildsIntoResolved.length === 1 ? "item" : "itens"}` : ""}</div>
+      ${viraHtml(buildsIntoResolved)}
+      ${buildsIntoUnlinked ? `<div class="recipe-links">${buildsIntoUnlinked}</div>` : ""}
     </div>` : "";
 
   const tagSection = (titulo, lista) => (lista || []).length ? `
@@ -13048,6 +13192,9 @@ function openModal(id) {
       <div class="condition-note">${item.cashback.raw}</div>
     </div>` : "";
 
+  // F13-T55 (Leo, 19/10/2026): o que fica atrás do "Exibir detalhes", na ordem dele
+  const detalhesHtml = `${costHtml}${apexHtml}${masterworkHtml}${cashbackHtml}${modeNotesHtml}${tagsHtml}`;
+
   const noteHtml = item.notes ? `<div class="modal-note">${item.notes}</div>` : "";
   const conditionHtml = item.condition ? `<div class="modal-section"><div class="modal-section-title">Condição</div><div class="condition-note">${item.condition}</div></div>` : "";
 
@@ -13076,22 +13223,37 @@ function openModal(id) {
     ${abilitiesHtml ? `<div class="modal-section"><div class="modal-section-title">Habilidade</div>${abilitiesHtml}</div>` : ""}
     ${recipeHtml}
     ${buildsIntoHtml}
-    ${costHtml}
-    ${apexHtml}
-    ${modeNotesHtml}
-    ${tagsHtml}
-    ${masterworkHtml}
-    ${cashbackHtml}
+    ${detalhesHtml.trim() || noteHtml || (item.abilities || []).some(a => a.mechanics)
+      ? `<button type="button" class="ficha-detalhes-btn" aria-expanded="${fichaEstado.detalhes}">${fichaEstado.detalhes ? "Ocultar detalhes" : "Exibir detalhes"}</button>
+    <div class="ficha-detalhes">${detalhesHtml}</div>` : ""}
   `;
 
   modal.querySelector(".modal-close").addEventListener("click", closeModal);
   modal.querySelectorAll("[data-goto]").forEach(el => {
     el.addEventListener("click", () => openModal(el.dataset.goto));
   });
+  // F13-T55: as duas escolhas da ficha, trocadas no lugar (sem redesenhar a ficha) e lembradas
+  modal.querySelectorAll("[data-receita]").forEach(b => b.addEventListener("click", () => {
+    fichaEstado.receita = b.dataset.receita;
+    gravarFichaEstado();
+    const sec = modal.querySelector(".receita");
+    ["arvore", "soma"].forEach(v => sec.classList.toggle("v-" + v, v === fichaEstado.receita));
+    modal.querySelectorAll("[data-receita]").forEach(x => x.classList.toggle("ativo", x === b));
+    Som.play("catalog:tag_select");
+  }));
+  const btDetalhes = modal.querySelector(".ficha-detalhes-btn");
+  if (btDetalhes) btDetalhes.addEventListener("click", () => {
+    fichaEstado.detalhes = !fichaEstado.detalhes;
+    gravarFichaEstado();
+    modal.classList.toggle("com-detalhes", fichaEstado.detalhes);
+    btDetalhes.textContent = fichaEstado.detalhes ? "Ocultar detalhes" : "Exibir detalhes";
+    btDetalhes.setAttribute("aria-expanded", String(fichaEstado.detalhes));
+    Som.play("catalog:tag_select");
+  });
 
   Som.play("catalog:pergaminho");
   // Animação de abertura do pergaminho com o toque do tier (Fase 2, T9b).
-  modal.className = "modal";
+  modal.className = "modal" + (fichaEstado.detalhes ? " com-detalhes" : "");
   if (TIER_ANIM[item.tier]) { void modal.offsetWidth; modal.classList.add(TIER_ANIM[item.tier]); }
   if (overlay.classList.contains("show")) {
     // Já aberto (navegação entre receitas): replay do desenrolar.
