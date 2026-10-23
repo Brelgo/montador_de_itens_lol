@@ -5963,7 +5963,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.63";
+const ATUALIZACAO = "13.64";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -10106,7 +10106,8 @@ function buildResumo(b) {
     runas: isActive ? build.runas : (b.runas || null),
     habilidades: isActive ? build.habilidades : (b.habilidades || null),
     masterwork: isActive ? !!build.masterwork : !!b.masterwork,   // F13-T37: o texto do lote escreve o MESTRE FORJADOR
-    fav: isActive ? !!build.fav : !!b.fav,
+    // F13-T64 (nº 44): a visualização de uma pública mostra o favorito da pública, não o da cópia de passagem
+    fav: (isActive ? build.temp : b.temp) ? favoritosIds().includes((isActive ? build.pubOrigem : b.pubOrigem) || "") : (isActive ? !!build.fav : !!b.fav),
     updatedAt: isActive ? (build.updatedAt || 0) : (b.updatedAt || 0),
     pubId: (isActive ? build.pubId : b.pubId) || null,
     pubVersao: (isActive ? build.pubVersao : b.pubVersao) || 0,
@@ -10720,6 +10721,9 @@ function initBuildIndex() {
     if (fav && fav.dataset.fav.startsWith("pub:")) { const id = fav.dataset.fav.slice(4); if (toggleFavorito(id)) registrarEvento(id, "engajamento"); renderBuildIndex(); return; }
     if (fav) {
       const b = library.builds.find(x => x.id === fav.dataset.fav);
+      // F13-T64 (nº 44): o coração da visualização de uma pública favorita a pública
+      // de origem — antes acendia só a cópia de passagem, que some ao recarregar
+      if (b && b.temp && b.pubOrigem) { if (toggleFavorito(b.pubOrigem)) registrarEvento(b.pubOrigem, "engajamento"); renderBuildIndex(); return; }
       // F13-T24: favoritar é gesto da lista, não edição. Com o Editar ligado ele
       // ia para o rascunho da build ativa (mesmo sendo de outra build) e sumia
       // no Descartar ou ao reabrir; agora grava na hora, sem tocar no rascunho.
@@ -10749,7 +10753,8 @@ function initBuildIndex() {
   rows.addEventListener("dblclick", (e) => { if (biLote) return; const row = e.target.closest(".bi-row"); if (row) abrirOuCopiar(row.dataset.id); });
   rows.addEventListener("keydown", (e) => {
     const row = e.target.closest(".bi-row");
-    if (row && e.key === "Enter" && !biLote) { e.preventDefault(); abrirOuCopiar(row.dataset.id); }
+    // F13-T64 (nº 43): o Enter só abre com o foco na própria linha — no coração, ele favorita
+    if (row && e.target === row && e.key === "Enter" && !biLote) { e.preventDefault(); abrirOuCopiar(row.dataset.id); }
   });
   document.getElementById("bi-detail").addEventListener("click", (e) => {
     const act = e.target.closest("[data-act]");
@@ -11301,9 +11306,15 @@ function initBuildBuilder() {
   initNoteEditor();
   initTileModeWatcher();
 
+  // F13-T64 (nº 22): esta escuta roda na captura, antes de todas — o stopPropagation
+  // dos diálogos não a alcança. Então ela pergunta: com um diálogo ou menu aberto,
+  // o Esc é dele (fecha o diálogo) e a caixa escolhida fica.
+  const DIALOGOS_ABERTOS = ["#overlay.show", "#note-editor.show", "#kind-menu.show", "#marker-dialog:not([hidden])",
+    "#escolher-caixa:not([hidden])", "#escolher-fragmento:not([hidden])", "#save-dialog:not([hidden])", "#pub-dialog:not([hidden])",
+    "#pub-falta:not([hidden])", "#champ-menu:not([hidden])", "#build-switch-menu:not([hidden])"].join(", ");
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape" || !build.selectedCatId) return;
-    if (document.getElementById("overlay").classList.contains("show")) return;
+    if (document.querySelector(DIALOGOS_ABERTOS)) return;
     build.selectedCatId = null;
     renderBuild();
   }, true);

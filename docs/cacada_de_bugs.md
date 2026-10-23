@@ -197,6 +197,8 @@ Status de cada um:
 
 ### 22. Esc para fechar um diálogo da forja também larga a caixa escolhida — o stopPropagation dos diálogos não alcança o listener de captura
 
+**CONSERTADO na F13-T64 (23/10/2026).** A escuta da captura pergunta se há diálogo ou menu aberto (observação, marcador, tipo da caixa, "Em qual caixa?", fragmento, Salvar, publicar, "Falta pouco", campeão, troca de build, pergaminho) antes de largar a caixa. Checagem com Esc de verdade em seis diálogos, vista falhando no código de antes.
+
 `index.html:9575` · media · achado por: Eventos e redesenho · **passou pelos céticos**
 
 **Como quebra:** Na forja, com Editar ligado, clique numa caixa para escolhê-la (a faixa "Forjando em X" acende). Dê duplo clique numa placa para abrir o editor de observação e, em vez de salvar, aperte Esc para cancelar. Este listener está na fase de CAPTURA, então roda antes de qualquer outro: o overlay do pergaminho não está aberto e build.selectedCatId está preenchido, então ele zera a escolha e chama renderBuild(). Só depois o keydown do próprio textarea (linha 7681) roda e fecha o editor. A observação é descartada (certo) e a caixa escolhida some junto (errado, e sem aviso). O próximo clique num item da bandeja não adiciona nada: pisca o aviso "Selecione a caixa e clique num item da lista". Acontece igual com o diálogo de marcador (linha 7033), com o menu de tipo da caixa (linha 8379) e com "Em qual caixa?" (linha 8204): os três chamam e.stopPropagation() para isolar o Esc, mas estão registrados no MESMO document deste listener — stopPropagation não segura irmão no mesmo nó (só stopImmediatePropagation seguraria), e contra fase de captura nem isso serviria. O guarda do #overlay mostra que o caso do pergaminho foi previsto; os outros diálogos não.
@@ -401,11 +403,15 @@ As duas guardam o objeto `b` antes do `await` do servidor. Se a build ativa troc
 
 ### 43. Enter no coração da lista abre a build em vez de favoritar
 
+**CONSERTADO na F13-T64 (23/10/2026).** O Enter só abre a build com o foco na própria linha; no coração, o botão recebe o Enter e favorita.
+
 `index.html` (`initBuildIndex`, `keydown` de `#bi-rows`) · **baixa** (teclado) · achado na revisão da F13-T24 · **REPRODUZIDO**
 
 O `keydown` da lista pega o Enter de qualquer coisa dentro da linha, faz `preventDefault` e abre a build. Com o foco no coração (Tab a partir da linha), o Enter abre a build — e, se for outra, grava o rascunho da ativa sem perguntar (nº 38) — em vez de favoritar. O Espaço e o clique favoritam certo. Conserto provável: o Enter só abre quando o alvo é a própria linha, não um botão dentro dela.
 
 ### 44. O coração da visualização de uma pública acende, mas não favorita nada
+
+**CONSERTADO na F13-T64 (23/10/2026).** Na linha da visualização, o coração favorita a pública de origem (o mesmo favorito da aba Públicas) e mostra o estado dela.
 
 `index.html` (coração de `tmp:` na lista Minhas, `toggleFavorito`) · **baixa** · achado na revisão da F13-T24 · **REPRODUZIDO**
 

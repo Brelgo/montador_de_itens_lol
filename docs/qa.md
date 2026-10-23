@@ -107,6 +107,12 @@ listas com rolagem não espremem as linhas (F13-T63, a print de um jogador: retr
 campeões medida como o Firefox mede (pela altura máxima — a altura fica fixa em 380 px) e o menu de troca de
 build com 25 builds a mais, só na memória; nenhuma linha cortada, nenhuma de campeão com menos de 30 px.
 
+**Teclado e o coração** (F13-T64; nºs 22, 43 e 44 da caçada) — com teclas de verdade (CDP): com uma caixa escolhida,
+o Esc fecha o diálogo aberto (observação, marcador, tipo da caixa, fragmento, campeão, troca de build) e a caixa
+continua escolhida; sem diálogo, o Esc ainda larga a caixa. Na lista, o Enter com o foco no coração favorita (e a
+tela fica na lista), com o foco na linha abre a build. O coração da visualização de uma pública favorita a pública
+de origem: o ID entra nos favoritos e o coração acende na linha da visualização e na aba Públicas.
+
 **Passiva do Ornn** (F13-T60; Leo, 23/10/2026) — o "Mestre Forjador" virou "Passiva do Ornn" na tela e a placa
 "MF" do item virou "Ornn": nenhum texto do app diz mais o nome velho — o HTML inteiro (inclusive o que está
 escondido, menos script e style), os `title` e os `placeholder`, com o item forjado na forja, o balão aberto e a

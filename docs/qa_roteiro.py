@@ -1155,6 +1155,97 @@ def checar_visualizacao(s, p):
             % (aperto["champ"]["menor"], aperto["champ"]["cortadas"], aperto["troca"]["n"], aperto["troca"]["cortadas"]))
 
 
+def _tecla(s, nome):
+    """Tecla de verdade (CDP), no elemento com o foco. O Enter leva o "\\r" para o
+    navegador gerar o clique num botão, como acontece com a tecla."""
+    codigos = {"Escape": 27, "Enter": 13}
+    extra = {"text": "\r", "unmodifiedText": "\r"} if nome == "Enter" else {}
+    s.envia("Input.dispatchKeyEvent", dict({"type": "keyDown", "key": nome, "code": nome, "windowsVirtualKeyCode": codigos[nome]}, **extra))
+    s.envia("Input.dispatchKeyEvent", {"type": "keyUp", "key": nome, "code": nome, "windowsVirtualKeyCode": codigos[nome]})
+    time.sleep(0.4)
+
+
+def checar_teclado(s, p):
+    """F13-T64: o Esc de um diálogo da forja largava a caixa escolhida (nº 22); o
+    Enter no coração da lista abria a build (nº 43); o coração da visualização de
+    uma pública acendia só a cópia de passagem (nº 44). Teclas de verdade (CDP)."""
+    print("\n%sTECLADO E O CORAÇÃO%s" % (AMARELO, FIM))
+    garantir_build_editavel(s)
+    s.js("""(() => { if (rascunho.sujo) descartarAlteracoes(); ligarEdicao(true);
+      build.cats[1].items = [{ itemId: 'long-sword', note: '' }]; build.cats[3].items = [{ itemId: 'stat-bonus', note: '' }];
+      switchTab('build'); showBuildScreen('forja'); renderBuildAll(); return 'ok'; })()""")
+    time.sleep(0.6)
+    escolhe = "(() => { build.selectedCatId = build.cats[1].id; renderBuild(); return build.selectedCatId; })()"
+    sel1 = '.build-cat[data-cat-id="%s"]' % s.js("build.cats[1].id")
+    sel3 = '.build-cat[data-cat-id="%s"]' % s.js("build.cats[3].id")
+    # cada diálogo: abre por clique, o Esc fecha ele, e a caixa escolhida fica
+    dialogos = [
+        ("observação", lambda: (s.hover(sel1 + " .item-tile"), s.clicar(sel1 + " .item-tile .ta-nota", 0.6)), "document.getElementById('note-editor').classList.contains('show')"),
+        ("marcador", lambda: s.clicar("#build-marks .mark-slot", 0.6), "!document.getElementById('marker-dialog').hidden"),
+        ("tipo da caixa", lambda: s.clicar(sel1 + " .cat-kind", 0.6), "document.getElementById('kind-menu').classList.contains('show')"),
+        ("fragmento", lambda: s.clicar(sel3 + " .item-tile .item-icon", 0.8), "!document.getElementById('escolher-fragmento').hidden"),
+        ("campeão", lambda: s.clicar("#build-champ-btn", 0.8), "!document.getElementById('champ-menu').hidden"),
+        ("troca de build", lambda: s.clicar("#build-switch-btn", 0.8), "!document.getElementById('build-switch-menu').hidden"),
+    ]
+    ruins = []
+    for nome, abre, aberto in dialogos:
+        s.js("window.scrollTo(0, 0); 'ok'")
+        s.js(escolhe)
+        time.sleep(0.3)
+        abre()
+        abriu = s.js(aberto)
+        # se o clique que abriu o diálogo caiu fora da caixa e a largou, ela volta (sem redesenhar, que fecharia o menu)
+        largou_no_clique = s.js("(() => { const l = !build.selectedCatId; if (l) build.selectedCatId = build.cats[1].id; return l; })()")
+        _tecla(s, "Escape")
+        r = s.js("({ aberto: %s, caixa: build.selectedCatId })" % aberto)
+        if not abriu or r["aberto"] or not r["caixa"]:
+            ruins.append("%s (abriu %s, fechou %s, caixa %s)" % (nome, abriu, not r["aberto"], bool(r["caixa"])))
+    s.js(escolhe)
+    s.js("document.activeElement && document.activeElement.blur(); 'ok'")
+    _tecla(s, "Escape")
+    largou = s.js("build.selectedCatId") is None
+    p.conta("teclado", "o Esc de um diálogo da forja fecha o diálogo e a caixa escolhida fica",
+            not ruins and largou, "; ".join(ruins) if ruins else "observação, marcador, tipo da caixa, fragmento, campeão e troca de build; sem diálogo, o Esc ainda larga a caixa")
+
+    # nº 43: com o foco no coração, o Enter favorita; com o foco na linha, abre
+    s.js("descartarAlteracoes(); ligarEdicao(false); switchTab('build'); showBuildScreen('lista'); document.querySelector('.bi-tab[data-view=\"minhas\"]').click(); 'ok'")
+    time.sleep(0.6)
+    alvo = s.js("build.id")
+    s.js("document.querySelector('#bi-rows .bi-row[data-id=\"%s\"] [data-fav]').focus(); 'ok'" % alvo)
+    antes = s.js("!!(library.builds.find(b => b.id === %s) || {}).fav" % json.dumps(alvo))
+    _tecla(s, "Enter")
+    depois = s.js("({ fav: !!(library.builds.find(b => b.id === %s) || {}).fav, tela: buildScreen })" % json.dumps(alvo))
+    s.js("document.querySelector('#bi-rows .bi-row[data-id=\"%s\"]').focus(); 'ok'" % alvo)
+    _tecla(s, "Enter")
+    abriu = s.js("buildScreen")
+    p.conta("teclado", "Enter no coração favorita; Enter na linha abre a build",
+            depois["fav"] != antes and depois["tela"] == "lista" and abriu == "forja", "coração: %s → %s, ficou na %s; na linha abriu a %s" % (antes, depois["fav"], depois["tela"], abriu))
+    s.js("(() => { const b = library.builds.find(x => x.id === %s); if (b && b.fav) { b.fav = false; if (b.id === build.id) build.fav = false; gravarBiblioteca(); } return 1; })()" % json.dumps(alvo))
+
+    # nº 44: o coração da visualização de uma pública favorita a pública de origem
+    s.js("""(() => { localStorage.removeItem('publicacao.favoritos');
+      publicas.lista = [{ id: 'qf0001', nome: 'Pública para ver', descricao: 'x', campeao: null, modo: '', marcadores: [], versao: 1,
+        atualizado_em: new Date().toISOString(), patch: CATALOG.meta.patch, autor: '', engajamentos: 0, pop_dia: 0, popular_semana: false, dias_no_top: 0,
+        layout: null, runas: null, habilidades: null, caixas: [{ name: 'Core', kind: 'comum', items: [{ itemId: 'long-sword' }] }] }];
+      // recém-carregada: a aba Públicas não vai buscar a lista de verdade por cima desta
+      publicas.favs = []; publicas.erro = null; publicas.carregadoEm = Date.now();
+      abrirPublicaTemporaria(publicaResumo(publicas.lista[0])); return 'ok'; })()""")
+    time.sleep(0.8)
+    s.js("showBuildScreen('lista'); document.querySelector('.bi-tab[data-view=\"minhas\"]').click(); 'ok'")
+    time.sleep(0.6)
+    s.clicar('#bi-rows .bi-row[data-id="tmp:qf0001"] [data-fav]', 0.6)
+    fav = s.js("""(() => { const linha = document.querySelector('#bi-rows .bi-row[data-id="tmp:qf0001"] [data-fav]');
+      return { favs: favoritosIds(), acesa: !!linha && linha.classList.contains('on') }; })()""")
+    s.js("document.querySelector('.bi-tab[data-view=\"publicas\"]').click(); 'ok'")
+    time.sleep(0.6)
+    nas_publicas = s.js("(() => { const c = document.querySelector('#bi-rows .bi-row[data-id=\"pub:qf0001\"] [data-fav]'); return !!c && c.classList.contains('on'); })()")
+    p.conta("teclado", "o coração da visualização de uma pública favorita a pública",
+            fav["favs"] == ["qf0001"] and fav["acesa"] and nas_publicas, "%s; nas Públicas acesa: %s" % (fav, nas_publicas))
+    s.js("""(() => { localStorage.removeItem('publicacao.favoritos'); publicas.lista = []; publicas.carregadoEm = 0;
+      document.querySelector('.bi-tab[data-view="minhas"]').click(); fecharBuild && build.temp && fecharBuild(); return 'ok'; })()""")
+    time.sleep(0.5)
+
+
 def checar_passiva_do_ornn(s, p):
     """F13-T60 (Leo, 23/10/2026): o "Mestre Forjador" virou "Passiva do Ornn" na
     tela, e a placa MF virou "Ornn". O formato de texto continua escrevendo
@@ -3850,6 +3941,7 @@ GRUPOS = [
     ("marcadores", checar_marcadores),
     ("visualização", checar_visualizacao),
     ("passiva do Ornn", checar_passiva_do_ornn),
+    ("teclado", checar_teclado),
     ("runas", checar_runas),
     ("habilidades", checar_habilidades),
     ("texto", checar_texto),
