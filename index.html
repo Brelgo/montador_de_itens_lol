@@ -4590,7 +4590,11 @@ body.forja #som-volume { accent-color: #ff7a1e; }
 /* Leo, 23/10/2026 (a tela de um jogador: retratos e nomes colados): as três
    colunas eram fixas e encolhiam com o menu. Agora cada coluna pede 130 px —
    menu estreito perde coluna em vez de espremer — e o nome longo vira "…". */
-.champ-list { max-height: 380px; overflow: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 3px 8px; padding-right: 4px; }
+/* F13-T63 (a print do jogador, 23/10/2026): a linha tem overflow: hidden, então a
+   altura mínima dela é zero — e o Firefox mede a grade pela altura máxima (380 px)
+   e divide esse espaço entre as 59 linhas: 6 a 10 px cada, retratos e nomes
+   empilhados. A linha mede o que tem dentro, em qualquer navegador. */
+.champ-list { max-height: 380px; overflow: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); grid-auto-rows: max-content; gap: 3px 8px; padding-right: 4px; }
 .champ-list .champ-row > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .champ-row {
   display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 3px; cursor: pointer;
@@ -4696,7 +4700,9 @@ body.forja #som-volume { accent-color: #ff7a1e; }
 .build-switch-btn:hover, .build-switch-btn.aberto { border-color: var(--forja-brasa); box-shadow: 0 0 10px var(--forja-brasa-glow); }
 .build-switch-menu { width: 360px; left: auto; right: 0; }
 .bs-list { display: flex; flex-direction: column; gap: 2px; max-height: 360px; overflow: auto; }
-.bs-list .champ-row { white-space: normal; }
+/* F13-T63: a mesma linha numa coluna flexível com altura máxima encolhia em todo
+   navegador — com 25 builds, 12 px cada. A linha não encolhe; a lista rola. */
+.bs-list .champ-row { white-space: normal; flex: none; }
 .bs-list .champ-row .bs-meta { margin-left: auto; font-size: 11.5px; font-style: italic; color: var(--forja-texto-suave); white-space: nowrap; }
 
 /* ---- Fase 7, T5: marcadores da build (até 3), como os marcadores dos guias do Deadlock ---- */
@@ -5957,7 +5963,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.62";
+const ATUALIZACAO = "13.63";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 

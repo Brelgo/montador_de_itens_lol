@@ -1131,6 +1131,29 @@ def checar_visualizacao(s, p):
             largo["cols"] == 3 and estreito["menor"] >= 130,
             "1920: %d colunas · menu de 380 px: %d colunas, a menor com %d px" % (largo["cols"], estreito["cols"], estreito["menor"]))
 
+    # F13-T63 (a print de um jogador, 23/10/2026: retratos e nomes empilhados): a linha
+    # tem overflow: hidden, então pode encolher a zero. O Firefox mede a lista de
+    # campeões pela altura máxima — aqui a altura fica fixa, que é o que ele faz. E o
+    # menu de troca de build, com 25 builds (só na memória), encolhia em qualquer navegador.
+    aperto = s.js("""(async () => { const espera = (ms) => new Promise(r => setTimeout(r, ms));
+      const linhas = (sel) => [...document.querySelectorAll(sel)].filter(x => !x.hidden && x.getClientRects().length);
+      const cortadas = (sel) => linhas(sel).filter(x => x.scrollHeight > x.clientHeight + 1).length;
+      const st = document.createElement('style'); st.textContent = '.champ-list { height: 380px !important; }'; document.head.appendChild(st);
+      if (document.getElementById('champ-menu').hidden) document.getElementById('build-champ-btn').click();
+      await espera(400);
+      const champ = { cortadas: cortadas('#champ-list .champ-row'), menor: Math.min(...linhas('#champ-list .champ-row').map(x => Math.round(x.getBoundingClientRect().height))) };
+      document.getElementById('champ-menu').hidden = true; st.remove();
+      library.builds.push(...Array.from({ length: 25 }, (_, i) => ({ id: 'qa-lista-' + i, name: 'Lista ' + (i + 1), cats: [], seq: 1, mode: '' })));
+      document.getElementById('build-switch-btn').click(); await espera(400);
+      const troca = { n: linhas('#build-switch-list .champ-row').length, cortadas: cortadas('#build-switch-list .champ-row') };
+      document.getElementById('build-switch-menu').hidden = true;
+      library.builds = library.builds.filter(b => !String(b.id).startsWith('qa-lista-')); renderLibrary();
+      return { champ, troca }; })()""")
+    p.conta("visualização", "as listas com rolagem não espremem as linhas",
+            aperto["champ"]["cortadas"] == 0 and aperto["champ"]["menor"] >= 30 and aperto["troca"]["n"] >= 25 and aperto["troca"]["cortadas"] == 0,
+            "campeões medidos como no Firefox: menor linha %d px, %d cortadas · troca de build com %d: %d cortadas"
+            % (aperto["champ"]["menor"], aperto["champ"]["cortadas"], aperto["troca"]["n"], aperto["troca"]["cortadas"]))
+
 
 def checar_passiva_do_ornn(s, p):
     """F13-T60 (Leo, 23/10/2026): o "Mestre Forjador" virou "Passiva do Ornn" na

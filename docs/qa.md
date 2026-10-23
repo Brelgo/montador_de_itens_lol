@@ -102,7 +102,10 @@ nem pela lista), nem o modo, nem o nome, nem os marcadores (o espaço vazio some
 assinatura da build sai igual. Na aba Runas a faixa leva à página da build ("· ver"), que aparece só para ver:
 escolher runa e trocar trilha não mudam nada (era o nº 29 numa pública); o "Ligar Editar" dali libera a página.
 Com o Editar, campeão e modo trocam como antes. E o seletor de campeão: em 1920 três colunas; com o menu
-apertado (janela estreita, zoom alto) ele perde coluna em vez de espremer — nenhuma com menos de 130 px.
+apertado (janela estreita, zoom alto) ele perde coluna em vez de espremer — nenhuma com menos de 130 px. E as
+listas com rolagem não espremem as linhas (F13-T63, a print de um jogador: retratos e nomes empilhados): a de
+campeões medida como o Firefox mede (pela altura máxima — a altura fica fixa em 380 px) e o menu de troca de
+build com 25 builds a mais, só na memória; nenhuma linha cortada, nenhuma de campeão com menos de 30 px.
 
 **Passiva do Ornn** (F13-T60; Leo, 23/10/2026) — o "Mestre Forjador" virou "Passiva do Ornn" na tela e a placa
 "MF" do item virou "Ornn": nenhum texto do app diz mais o nome velho — o HTML inteiro (inclusive o que está
