@@ -350,6 +350,22 @@ def checar_arquivos(p):
         p.conta("arquivos", "cards de região existem", not sumidos,
                 "%d cards; sumiram: %s" % (len(cards), ", ".join(sumidos[:2]) or "nenhum"))
 
+    # F13-T61: o data/mudancas.js é o que o gerar_mudancas.py gera agora — esquecer
+    # de rodar o gerador depois de trocar o catálogo deixaria a regra de
+    # desatualizada lendo o registro velho (e o app caindo na regra antiga)
+    import subprocess, tempfile
+    tmp = os.path.join(tempfile.gettempdir(), "qa_mudancas_%d.js" % os.getpid())
+    try:
+        subprocess.run([sys.executable, os.path.join(RAIZ, "data", "gerar_mudancas.py"), tmp], capture_output=True, check=True)
+        igual = open(tmp, "rb").read() == open(os.path.join(RAIZ, "data", "mudancas.js"), "rb").read()
+        det = "igual ao que o gerar_mudancas.py gera" if igual else "diferente: rode python data/gerar_mudancas.py"
+    except Exception as e:
+        igual, det = False, "%s: %s" % (type(e).__name__, str(e)[:90])
+    finally:
+        if os.path.exists(tmp):
+            os.remove(tmp)
+    p.conta("arquivos", "o registro de mudanças está em dia com o catálogo", igual, det)
+
 
 def _existe_exato(rel):
     """os.path.exists mente no Windows: 'Assets/X.PNG' passa. Aqui cada pedaço do
@@ -3313,13 +3329,22 @@ def checar_desatualizadas(s, p):
     catálogo de agora — fora da lista e da popularidade —, diz quantas ficaram de
     fora, e pelo ID a desatualizada ainda se acha. Lista montada aqui, sem servidor."""
     print("\n%sPÚBLICAS DESATUALIZADAS%s" % (AMARELO, FIM))
-    s.js("""(() => { const agora = CATALOG.meta.patch, velho = '16.18.1' === agora ? '16.0.1' : '16.18.1';
+    # F13-T61: desatualizada é a de item mudado (fora das Opcionais) desde o patch
+    # dela, não toda a de patch antigo. As "Velha…" levam um item que mudou no
+    # último patch (do data/mudancas.js); as "Antiga…" são de patch antigo sem
+    # item mudado (ou com ele só na Opcional) e continuam na lista.
+    s.js("""(() => { const agora = CATALOG.meta.patch, vs = MUDANCAS.versoes, velho = vs[vs.length - 1].desde;
+      const mud = Object.keys(vs[vs.length - 1].itens)[0];
+      const comMudado = [{ name: 'Core', kind: 'comum', items: [{ itemId: 'long-sword' }, { itemId: mud }] }];
       const linha = (id, nome, patch, extra) => Object.assign({ id, nome, descricao: '', campeao: null, modo: '', marcadores: [],
         caixas: [{ name: 'Core', items: [{ itemId: 'long-sword' }] }], versao: 1, atualizado_em: new Date().toISOString(),
         patch, autor: '', engajamentos: 0, pop_dia: 0, popular_semana: false, dias_no_top: 0, layout: null, runas: null, habilidades: null }, extra || {});
       publicas.lista = [linha('aa0001', 'Atual Um', agora), linha('aa0002', 'Atual Dois', agora, { pop_dia: 3 }),
-        linha('aa0003', 'Sem patch', null), linha('bb0001', 'Velha Popular', velho, { pop_dia: 99, popular_semana: true }),
-        linha('bb0002', 'Velha Comum', velho)];
+        linha('aa0003', 'Sem patch', null), linha('bb0001', 'Velha Popular', velho, { pop_dia: 99, popular_semana: true, caixas: comMudado }),
+        linha('bb0002', 'Velha Comum', velho, { caixas: comMudado }),
+        linha('bb0003', 'Velha Escolha', velho, { caixas: [{ name: 'Bota', kind: 'escolha', items: [{ itemId: 'long-sword' }, { itemId: mud }] }] }),
+        linha('cc0001', 'Antiga Intacta', velho),
+        linha('cc0002', 'Antiga Opcional', velho, { caixas: [{ name: 'Core', kind: 'comum', items: [{ itemId: 'long-sword' }] }, { name: 'Extra', kind: 'opcional', items: [{ itemId: mud }] }] })];
       publicas.favs = []; publicas.erro = null; publicas.carregadoEm = Date.now();
       switchTab('build'); showBuildScreen('lista'); document.getElementById('bi-search').value = '';
       document.querySelector('.bi-tab[data-view="publicas"]').click(); return 'ok'; })()""")
@@ -3329,12 +3354,14 @@ def checar_desatualizadas(s, p):
                texto: r.innerText.replace(/\\s+/g, ' '), fora: f ? f.textContent : null,
                desat: r.querySelectorAll('.bi-etiqueta.desatualizada').length, hoje: r.querySelectorAll('.bi-etiqueta.hoje').length }; })()"""
     r = s.js(le)
-    some = "Velha Popular" not in r["texto"] and "Velha Comum" not in r["texto"]
-    p.conta("desatualizadas", "a aba Públicas mostra só o catálogo de agora (nem na popularidade)",
+    some = not any(n in r["texto"] for n in ("Velha Popular", "Velha Comum", "Velha Escolha"))
+    p.conta("desatualizadas", "a aba Públicas tira a de item mudado (nem na popularidade)",
             some and all(n in r["texto"] for n in ("Atual Um", "Atual Dois", "Sem patch")) and r["desat"] == 0 and r["hoje"] == 1,
             "%s" % {k: r[k] for k in ("texto", "desat", "hoje")})
+    p.conta("desatualizadas", "a de patch antigo sem item mudado continua (Opcional não conta)",
+            "Antiga Intacta" in r["texto"] and "Antiga Opcional" in r["texto"], "%s" % r["texto"][:160])
     p.conta("desatualizadas", "a lista diz quantas ficaram de fora",
-            bool(r["fora"]) and r["fora"] == "2 builds publicadas no catálogo estão desatualizadas estando de fora até serem republicadas para o Patch-%s. Pelo ID, ainda dá para achar." % s.js("CATALOG.meta.patch"),
+            bool(r["fora"]) and r["fora"] == "3 builds publicadas no catálogo estão desatualizadas estando de fora até serem republicadas para o Patch-%s. Pelo ID, ainda dá para achar." % s.js("CATALOG.meta.patch"),
             "nota: %r" % r["fora"])
     # a lista registra uma impressão por linha: a barreira da sessão segura todas na página
     barrados = s.js("window.__eventosBarrados || 0")
@@ -3350,6 +3377,113 @@ def checar_desatualizadas(s, p):
     s.js("""(() => { const b = document.getElementById('bi-search'); b.value = ''; b.dispatchEvent(new Event('input', { bubbles: true }));
       publicas.lista = []; publicas.carregadoEm = 0; document.querySelector('.bi-tab[data-view="minhas"]').click(); return 'ok'; })()""")
     s.abrir(); time.sleep(0.8); s.entrar()
+
+def checar_mudancas(s, p):
+    """F13-T61 (Leo, 21/10/2026: "marcar como desatualizada builds que contêm —
+    opcional não conta — os itens que foram atualizados; builds que não têm nenhum
+    item modificado se mantêm"). O registro (data/mudancas.js), a revisão das
+    builds próprias ao carregar, a borda vermelha na forja e nas leituras, e as
+    cópias de uma pública. As builds são montadas no disco e a página recarrega:
+    é o caminho de quem abre o app depois de um patch."""
+    print("\n%sDESATUALIZADA SÓ COM ITEM MUDADO%s" % (AMARELO, FIM))
+    reg = s.js("""(() => { const vs = (window.MUDANCAS || {}).versoes || [], u = vs[vs.length - 1] || {};
+      return { patch: u.patch, desde: u.desde, atual: CATALOG.meta.patch, n: vs.length,
+               itens: Object.keys(u.itens || {}).map(sl => (byId[sl] || {}).namePt || sl).sort() }; })()""")
+    # a entrega do Capítulo 1 de 22/10/2026 lista os cinco; ícone e fonte mudaram nos 225 e não contam
+    esperado = sorted(["Quebra-Bastião", "Auronúcleo", "Grevas Vorazes", "Caminho Imortal", "Húbris"])
+    p.conta("mudanças", "o registro acompanha o catálogo (e o 16.21.1 tem os 5 itens da entrega)",
+            reg["patch"] == reg["atual"] and (reg["patch"] != "16.21.1" or reg["itens"] == esperado),
+            "%s → %s: %s" % (reg["desde"], reg["patch"], ", ".join(reg["itens"])))
+
+    s.js("""(() => { const agora = CATALOG.meta.patch, vs = MUDANCAS.versoes, u = vs[vs.length - 1], velho = u.desde;
+      const pen = vs.length > 1 ? vs[vs.length - 2] : null;
+      const mud = Object.keys(u.itens)[0];
+      const mudAntigo = pen ? Object.keys(pen.itens).find(sl => !u.itens[sl] && byId[sl]) : mud;
+      const cx = (n, kind, ids) => ({ id: 'qa-c' + n, name: kind, kind, cols: 3, items: ids.map(i => ({ itemId: i, note: '' })) });
+      const b = (id, name, patch, cats, extra) => Object.assign({ id, name, seq: 9, mode: '', cats, patch, updatedAt: 1 }, extra || {});
+      const builds = [
+        b('qa-m1', 'Mudou no núcleo', velho, [cx(1, 'comum', ['long-sword', mud])]),
+        b('qa-m2', 'Mudou só na opcional', velho, [cx(2, 'comum', ['long-sword']), cx(3, 'opcional', [mud])]),
+        b('qa-m3', 'Mudou na alternativa', velho, [cx(4, 'escolha', ['long-sword', mud])]),
+        b('qa-m4', 'Nada mudou', velho, [cx(5, 'comum', ['long-sword'])]),
+        b('qa-m5', 'Dois patches atrás', pen ? pen.desde : velho, [cx(6, 'prioridade', [mudAntigo])]),
+        b('qa-m6', 'Revisão antiga sem mudança', agora, [cx(7, 'comum', ['long-sword'])], { revisao: { de: pen ? pen.desde : velho, para: agora, removidos: [] } }),
+        b('qa-m7', 'Item que saiu', agora, [cx(8, 'comum', ['long-sword', 'item-que-saiu-do-catalogo'])]),
+        // a revisão gravada pelo código de antes (sem "mudados", patch já no atual) é refeita desde o "de" dela
+        b('qa-m8', 'Revisão antiga com mudança', agora, [cx(9, 'comum', [mud])], { revisao: { de: velho, para: agora, removidos: [] } }),
+      ];
+      localStorage.clear();
+      localStorage.setItem('lol-builds-v3', JSON.stringify({ builds, activeId: null }));
+      window.__qaMud = { mud, mudAntigo }; return 'ok'; })()""")
+    alvo = s.js("window.__qaMud")
+    s.abrir(); time.sleep(0.8); s.entrar()
+    rev = s.js("""(() => { const o = {}; library.builds.forEach(b => { o[b.id] = { mud: b.revisao ? (b.revisao.mudados || []) : null,
+      tirados: b.revisao ? (b.revisao.removidos || []).length : 0, patch: b.patch === CATALOG.meta.patch }; }); return o; })()""")
+    mud, ant = alvo["mud"], alvo["mudAntigo"]
+    quer = {"qa-m1": [mud], "qa-m2": None, "qa-m3": [mud], "qa-m4": None, "qa-m5": [ant], "qa-m6": None, "qa-m8": [mud]}
+    erradas = [k for k, v in quer.items() if (rev.get(k) or {}).get("mud") != v]
+    m7 = rev.get("qa-m7") or {}
+    p.conta("mudanças", "ao carregar, só a build com item mudado (fora da Opcional) fica em revisão",
+            not erradas and m7.get("tirados") == 1 and all(v["patch"] for v in rev.values()),
+            "erradas: %s" % ", ".join("%s=%s" % (k, rev.get(k)) for k in erradas) if erradas
+            else "núcleo, alternativa da Escolha 1, dois patches atrás e revisão antiga com item mudado sim; Opcional, nada mudado e revisão antiga sem item mudado não; o item que saiu sim")
+    s.js("switchTab('build'); showBuildScreen('lista'); document.querySelector('.bi-tab[data-view=\"minhas\"]').click(); 'ok'")
+    time.sleep(0.6)
+    etiq = s.js("""(() => [...document.querySelectorAll('#bi-rows .bi-row')].filter(r => r.querySelector('.bi-etiqueta.desatualizada'))
+      .map(r => r.dataset.id).sort())()""")
+    p.conta("mudanças", "a etiqueta desatualizada só nelas", etiq == ["qa-m1", "qa-m3", "qa-m5", "qa-m7", "qa-m8"], "%s" % etiq)
+    resumo = s.js("""(() => { const conta = (id) => { biSelected = id; renderBuildIndex();
+        return [...document.querySelectorAll('#bi-detail .bd-items img')].map(i => i.classList.contains('mudou')); };
+      return { m1: conta('qa-m1'), m4: conta('qa-m4') }; })()""")
+    p.conta("mudanças", "no resumo da lista, a borda vermelha no item que mudou",
+            resumo["m1"] == [False, True] and resumo["m4"] == [False], "%s" % resumo)
+
+    # a forja: borda vermelha no item que mudou, não no resto
+    s.js("activateBuild('qa-m3'); showBuildScreen('forja'); 'ok'")
+    time.sleep(0.8)
+    forja = s.js("""(() => { const t = [...document.querySelectorAll('.build-cat .item-tile')];
+      const mud = %s, cel = (id) => t.find(x => build.cats[0].items[Number(x.dataset.index)].itemId === id);
+      const a = cel(mud), b = cel('long-sword');
+      return { mudou: !!a && a.classList.contains('mudou'), resto: !!b && b.classList.contains('mudou'),
+               borda: a ? getComputedStyle(a.querySelector('.item-icon')).borderTopColor : '',
+               aviso: (document.getElementById('revisao-warning').textContent || '').includes('borda vermelha') }; })()""" % json.dumps(mud))
+    s.hover(".build-cat .item-tile.mudou .item-icon")
+    balao = s.js("(document.getElementById('item-tooltip').textContent || '').includes('Mudou no jogo')")
+    p.conta("mudanças", "na forja, a borda vermelha no item que mudou (na Escolha 1 também)",
+            forja["mudou"] and not forja["resto"] and forja["borda"] == "rgb(224, 80, 60)" and forja["aviso"] and balao,
+            "%s; balão diz: %s" % (forja, balao))
+    leit = s.js("""(async () => { const lay = Object.keys(LAYOUTS).find(k => k !== 'tabuleiro'); build.layout = lay; ligarEdicao(false); renderBuildAll();
+      await new Promise(r => setTimeout(r, 300));
+      const r = { lay, marcados: document.querySelectorAll('#build-canvas .lc.mudou').length, cards: document.querySelectorAll('#build-canvas .lc').length };
+      build.layout = 'tabuleiro'; renderBuildAll(); return r; })()""")
+    p.conta("mudanças", "nas leituras alternativas também", leit["marcados"] == 1 and leit["cards"] >= 2, "%s" % leit)
+    # a Opcional não ganha borda, mesmo com o item que mudou dentro
+    s.js("activateBuild('qa-m2'); showBuildScreen('forja'); 'ok'")
+    time.sleep(0.6)
+    opc = s.js("document.querySelectorAll('.build-cat .item-tile.mudou').length")
+    # salvar fecha a revisão e tira a borda (o caminho de antes: o aviso some ao salvar)
+    s.js("activateBuild('qa-m1'); showBuildScreen('forja'); ligarEdicao(true); build.desc = 'conferida'; saveBuild(); salvarAgora(); ligarEdicao(false); 'ok'")
+    time.sleep(0.6)
+    salvo = s.js("({ rev: build.revisao, bordas: document.querySelectorAll('.build-cat .item-tile.mudou').length })")
+    p.conta("mudanças", "a Opcional não ganha borda; salvar fecha a revisão e tira a borda",
+            opc == 0 and salvo["rev"] is None and salvo["bordas"] == 0, "opcional %s; depois de salvar %s" % (opc, salvo))
+
+    # as cópias de uma pública desatualizada herdam a revisão (Copiar e editar, e o lote)
+    copia = s.js("""(() => { const vs = MUDANCAS.versoes, velho = vs[vs.length - 1].desde, mud = %s;
+      publicas.lista = [{ id: 'qq0001', nome: 'Pública velha', descricao: 'x', campeao: null, modo: '', marcadores: [], versao: 1,
+        atualizado_em: new Date().toISOString(), patch: velho, autor: '', engajamentos: 0, pop_dia: 0, popular_semana: false, dias_no_top: 0,
+        layout: null, runas: null, habilidades: null, caixas: [{ name: 'Core', kind: 'comum', items: [{ itemId: 'long-sword' }, { itemId: mud }] }] }];
+      const d = publicaResumo(publicas.lista[0]);
+      copiarPublica(d); const r1 = build.revisao && build.revisao.mudados;
+      const antes = library.builds.length; guardarPublicaNaBiblioteca(d); const nova = library.builds[library.builds.length - 1];
+      publicas.lista = [];
+      return { copiar: r1, lote: library.builds.length === antes + 1 ? (nova.revisao && nova.revisao.mudados) : 'não guardou',
+               patch: nova.patch === CATALOG.meta.patch }; })()""" % json.dumps(mud))
+    p.conta("mudanças", "a cópia de uma pública desatualizada herda a revisão",
+            copia["copiar"] == [mud] and copia["lote"] == [mud] and copia["patch"], "%s" % copia)
+    s.js("localStorage.clear(); 'ok'")
+    s.abrir(); time.sleep(0.8); s.entrar()
+
 
 def checar_acessibilidade(s, p):
     print("\n%sACESSIBILIDADE%s" % (AMARELO, FIM))
@@ -3442,7 +3576,7 @@ def checar_publicas(s, p, online):
       fora: publicas.lista.filter(p => !publicaNoCatalogoAtual(p)).length,
       nota: !!document.querySelector('#bi-rows .bi-fora') }))()""")
     p.conta("públicas", "a lista do servidor não mostra desatualizada", real["desat"] == 0 and real["nota"] == (real["fora"] > 0),
-            "%d de catálogo antigo no servidor, ficaram de fora; nota no pé: %s" % (real["fora"], real["nota"]))
+            "%d desatualizadas (item mudado desde o patch delas) no servidor, ficaram de fora; nota no pé: %s" % (real["fora"], real["nota"]))
 
     time.sleep(3)
     try:
@@ -3603,6 +3737,7 @@ GRUPOS = [
     ("fechar", checar_fechar),
     ("entrada", checar_entrada),
     ("desatualizadas", checar_desatualizadas),
+    ("mudanças", checar_mudancas),
     ("acessibilidade", checar_acessibilidade),
     ("resoluções", checar_resolucoes),
     ("calculadora", checar_calculadora),

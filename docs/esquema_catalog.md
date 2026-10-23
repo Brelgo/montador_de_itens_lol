@@ -46,3 +46,24 @@ Notas de uso para o HTML:
 - Valor em ouro: `goldValueBase` é o que a eficiência base usa (com a passiva, como o artigo da wiki); `goldValueStats` é só dos atributos (como a tabela da wiki). O antigo `goldValueTotal` fica como estava (em 19 itens ele é só atributos, em 5 inclui o efeito).
 - Filtros: `tier`, `gameModes`, `itemClass.core`, `attributeCategory`, `specialEffects`, `recommendedArchetype`, `region`, `priceGold`, `attributes[].stat/value` (maior/menor atributo).
 - Árvore de build: `components`/`buildsInto` usam `nameEn` como chave; ver Integridade referencial no relatório.
+
+## data/mudancas.js (F13-T61)
+
+Gerado por `data/gerar_mudancas.py` (rodar depois do `gerar_catalog_json.py`) a partir do histórico do
+`data/catalog.js` no git — a última versão de cada patch, comparada com a do patch anterior. Nunca editado à mão.
+
+```
+window.MUDANCAS = { versoes: [ {
+    patch    : "16.21.1"                       — o patch novo
+    desde    : "16.20.1"                       — o patch anterior que o app teve
+    itens    : { "<slug>": ["preço", "custo de combinação", "receita", "atributos", "habilidades",
+                            "modos", "Reembolso", "Passiva do Ornn"] }   — só os campos que mudaram
+    removidos: ["<slug>"]                      — itens que saíram do catálogo
+  } ] }
+```
+
+- Só os campos de jogo contam; ícone, fontes, notas e análise de custo não. Número de patch dentro de texto
+  ("vazia no Data Dragon pt_BR 16.20.1") é ignorado na comparação.
+- O app (`mudadosDesde`, `itensQueDesatualizam`): desatualizada é a build com item que mudou numa caixa que não é
+  Opcional (na Escolha 1, todas as alternativas), num patch depois do dela, ou com item que saiu. Sem o arquivo, ou
+  com ele atrás do catálogo, o app volta à regra antiga (patch diferente, tudo conta).

@@ -260,9 +260,23 @@ limpa) registrava no Supabase do Leo uma "impressão" por build da aba Públicas
 popularidade. O contador `window.__eventosBarrados` mostra o que foi segurado.
 
 **Públicas desatualizadas** (F13-T56; Leo, 19/10/2026: "builds marcadas como desatualizada não devem aparecer
-nas públicas") — com uma lista montada no roteiro (sem servidor): a aba mostra só o catálogo de agora, nem na
+nas públicas") — com uma lista montada no roteiro (sem servidor): a aba tira a desatualizada, nem na
 popularidade; a nota diz quantas ficaram de fora; pelo ID exato a desatualizada ainda se acha, com a etiqueta;
-e as impressões da lista ficam na página.
+e as impressões da lista ficam na página. Desde a F13-T61 desatualizada é a de **item mudado** desde o patch
+dela (núcleo ou alternativa de uma Escolha 1): a de patch antigo sem item mudado, ou com ele só na Opcional,
+continua na lista.
+
+**Desatualizada só com item mudado** (F13-T61; Leo, 21/10/2026: "marcar como desatualizada builds que contêm —
+opcional não conta — os itens que foram atualizados; builds que não têm nenhum item modificado se mantêm") — o
+registro `data/mudancas.js` acompanha o catálogo (no 16.21.1, exatamente os 5 itens da entrega do Capítulo 1 —
+ícone e fonte mudaram nos 225 e não contam); oito builds gravadas no disco e a página recarregada: ficam em
+revisão a de item mudado no núcleo, na alternativa de uma Escolha 1, dois patches atrás, a de item que saiu e a
+revisão gravada pelo código antigo com item mudado; não ficam a de item mudado só na Opcional, a de nada mudado e
+a revisão antiga sem item mudado; a etiqueta só nelas, e no resumo da lista a borda no item que mudou; na forja, a borda vermelha (rgb 224, 80, 60) no item que
+mudou e em nenhum outro, com a linha no balão e o aviso falando da borda; nas leituras alternativas também; a
+Opcional não ganha borda; salvar fecha a revisão e tira a borda; e as cópias de uma pública desatualizada
+("Copiar e editar" e o lote) herdam a revisão. Nos **Arquivos**, o `mudancas.js` tem de ser igual ao que o
+`data/gerar_mudancas.py` gera agora — trocar o catálogo e esquecer o gerador acusa.
 
 **Resoluções** — 2560×1440, 1920×1080 e 1600×900, a ordem do Leo, mais
 1280×800 como piso de notebook: sem rolagem horizontal e nada fora da tela. E a grade de habilidades com casas

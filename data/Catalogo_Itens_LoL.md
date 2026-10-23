@@ -1,5 +1,5 @@
 # Catálogo de Itens LoL — Capítulo 1 (completo)
-Patch: 16.20.1   ·   Modelo: Claude Opus 5   ·   Itens: 225 (Lista_Piloto_v2, 225 itens)   ·   Concluído em 12/09/2026   ·   Ajustes: 23/09/2026 (Claude Opus 5.5)   ·   Reconciliação 16.19.1: 03/10/2026 (Claude Opus 5.5)   ·   Reconciliação 16.20.1: 18/10/2026 (Claude Opus 5.5)
+Patch: 16.21.1   ·   Modelo: Claude Opus 5   ·   Itens: 225 (Lista_Piloto_v2, 225 itens)   ·   Concluído em 12/09/2026   ·   Ajustes: 23/09/2026 (Claude Opus 5.5)   ·   Reconciliação 16.19.1: 03/10/2026 (Claude Opus 5.5)   ·   Reconciliação 16.20.1: 18/10/2026 (Claude Opus 5.5)   ·   Reconciliação 16.21.1: 22/10/2026 (Claude Opus 5.5)
 
 > Consolidação dos 16 arquivos de lote, sem alteração de conteúdo. Fontes: módulo raiz `Module:ItemData/data` e páginas completas da wiki oficial EN, Data Dragon pt_BR 16.18.1, capturas do cliente fornecidas pelo usuário (12/09/2026). Regras: Guia_de_Campos_v2 (listas v5), CLASSES_DE_ITENS_v2, Regras_de_Fonte. Pendência única da consolidação (lentidão do Arranhão do Garrabrasa, wiki 2s vs cliente 3s): resolvida em 23/09/2026 com 3s (ver Ajustes).
 
@@ -46,7 +46,7 @@ Fonte: https://wiki.leagueoflegends.com/en-us/Gold_efficiency (seções "Basic r
 | Roubo de Vida | 1% | 53,55g | Cetro Vampírico (900g; 15 DdA a 35g) |
 | Penetração Mágica | 1 ponto | 46,666667g | Sapatos do Feiticeiro (1.100g; 45 de Movimento a 12g) |
 | Penetração Mágica Percentual | 1% | 46,15g | Joia da Ruína (1.100g; 25 PdH a 20g) |
-| Vampirismo | 1% | 46g | Grevas Vorazes (1.000g; 45 de Movimento a 12g) |
+| Vampirismo | 1% | 46g | Grevas Vorazes (1.100g; 45 de Movimento a 12g) |
 | Efeitos ao Contato | 1 ponto de dano | 21,666666g | Arco Recurvo (700g; 15% de VdA a 25g) |
 | Tenacidade | 1% | 10,333334g | Passos de Mercúrio (1.250g; 45 de Movimento a 12g, 20 RM a 20g) |
 
@@ -69,7 +69,7 @@ O bônus do Mestre Forjador usa uma tabela própria, diferente da de cima, e som
 ```
 Abatedora: Cull[
     ID: 1083
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1083.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1083.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 450g
@@ -91,7 +91,7 @@ Abatedora: Cull[
         Valor de Ouro (base): 245g
     ]
     Ápice[
-        100 tropas abatidas: +450g recebidos no total (100g + 350g); Ceifar desativada. Atributos iguais ao base.
+        100 tropas abatidas: +450g recebidos no total (100g + 350g); Ceifar desativada. Atributos iguais ao base. Vendida nesse ponto (preço de venda 180g), a Abatedora se paga: 450g de Ceifar + 180g da venda = 630g de retorno sobre 450g de compra, lucro de 180g.
     ]
     Ápice numérico[
         Valor de Ouro no ápice: 695g (calculado: 245g de atributos + 450g recebidos de Ceifar)
@@ -105,12 +105,12 @@ Abatedora: Cull[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Cura, Geração de Ouro
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Cull") · https://wiki.leagueoflegends.com/en-us/Cull · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Cull") · https://wiki.leagueoflegends.com/en-us/Cull · Data Dragon pt_BR 16.21.1
 ]
 
 Lacre Sombrio: Dark Seal[
     ID: 1082
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1082.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1082.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 350g
@@ -147,12 +147,12 @@ Lacre Sombrio: Dark Seal[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: Acúmulos
     Região: Noxus
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dark Seal") · https://wiki.leagueoflegends.com/en-us/Dark_Seal · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dark Seal") · https://wiki.leagueoflegends.com/en-us/Dark_Seal · Data Dragon pt_BR 16.21.1
 ]
 
 Lâmina de Doran: Doran's Blade[
     ID: 1055
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1055.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1055.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 450g
@@ -184,12 +184,12 @@ Lâmina de Doran: Doran's Blade[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Ionia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Doran's Blade") · https://wiki.leagueoflegends.com/en-us/Doran's_Blade · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Doran's Blade") · https://wiki.leagueoflegends.com/en-us/Doran's_Blade · Data Dragon pt_BR 16.21.1
 ]
 
 Arco de Doran: Doran's Bow[
     ID: 1086
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1086.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1086.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 400g
@@ -221,12 +221,12 @@ Arco de Doran: Doran's Bow[
     Arquétipo Recomendado: Atirador
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Doran's Bow") · https://wiki.leagueoflegends.com/en-us/Doran's_Bow · Data Dragon pt_BR 16.20.1 (subpágina Module:ItemData/data/Doran's_Bow inexistente)
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Doran's Bow") · https://wiki.leagueoflegends.com/en-us/Doran's_Bow · Data Dragon pt_BR 16.21.1 (subpágina Module:ItemData/data/Doran's_Bow inexistente)
 ]
 
 Elmo de Doran: Doran's Helm[
     ID: 1120
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1120.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1120.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 450g
@@ -259,12 +259,12 @@ Elmo de Doran: Doran's Helm[
     Arquétipo Recomendado: Tanque
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Doran's Helm") · https://wiki.leagueoflegends.com/en-us/Doran's_Helm · Data Dragon pt_BR 16.20.1 (subpágina Module:ItemData/data/Doran's_Helm inexistente)
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Doran's Helm") · https://wiki.leagueoflegends.com/en-us/Doran's_Helm · Data Dragon pt_BR 16.21.1 (subpágina Module:ItemData/data/Doran's_Helm inexistente)
 ]
 
 Anel de Doran: Doran's Ring[
     ID: 1056
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1056.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1056.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 400g
@@ -302,12 +302,12 @@ Anel de Doran: Doran's Ring[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: Restauração de Mana, Cura
     Região: Ionia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Doran's Ring") · https://wiki.leagueoflegends.com/en-us/Doran's_Ring · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Doran's Ring") · https://wiki.leagueoflegends.com/en-us/Doran's_Ring · Data Dragon pt_BR 16.21.1
 ]
 
 Escudo de Doran: Doran's Shield[
     ID: 1054
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1054.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1054.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 450g
@@ -345,12 +345,12 @@ Escudo de Doran: Doran's Shield[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Cura
     Região: Ionia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Doran's Shield") · https://wiki.leagueoflegends.com/en-us/Doran's_Shield · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Doran's Shield") · https://wiki.leagueoflegends.com/en-us/Doran's_Shield · Data Dragon pt_BR 16.21.1
 ]
 
 Lâmina do Guardião: Guardian's Blade[
     ID: 3177
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3177.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3177.png
     Tier: Starter
     Modo de jogo: ARAM, ARAM: Mayhem
     Preço: 950g
@@ -382,12 +382,12 @@ Lâmina do Guardião: Guardian's Blade[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Targon
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guardian's Blade") · https://wiki.leagueoflegends.com/en-us/Guardian's_Blade · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guardian's Blade") · https://wiki.leagueoflegends.com/en-us/Guardian's_Blade · Data Dragon pt_BR 16.21.1
 ]
 
 Martelo do Guardião: Guardian's Hammer[
     ID: 3184
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3184.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3184.png
     Tier: Starter
     Modo de jogo: ARAM, ARAM: Mayhem
     Preço: 950g
@@ -419,12 +419,12 @@ Martelo do Guardião: Guardian's Hammer[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guardian's Hammer") · https://wiki.leagueoflegends.com/en-us/Guardian's_Hammer · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guardian's Hammer") · https://wiki.leagueoflegends.com/en-us/Guardian's_Hammer · Data Dragon pt_BR 16.21.1
 ]
 
 Berrante do Guardião: Guardian's Horn[
     ID: 2051
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2051.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2051.png
     Tier: Starter
     Modo de jogo: ARAM, ARAM: Mayhem
     Preço: 950g
@@ -458,12 +458,12 @@ Berrante do Guardião: Guardian's Horn[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Redução de Dano
     Região: Freljord
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guardian's Horn") · https://wiki.leagueoflegends.com/en-us/Guardian's_Horn · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guardian's Horn") · https://wiki.leagueoflegends.com/en-us/Guardian's_Horn · Data Dragon pt_BR 16.21.1
 ]
 
 Orbe do Guardião: Guardian's Orb[
     ID: 3112
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3112.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3112.png
     Tier: Starter
     Modo de jogo: ARAM, ARAM: Mayhem
     Preço: 950g
@@ -495,12 +495,12 @@ Orbe do Guardião: Guardian's Orb[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guardian's Orb") · https://wiki.leagueoflegends.com/en-us/Guardian's_Orb · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guardian's Orb") · https://wiki.leagueoflegends.com/en-us/Guardian's_Orb · Data Dragon pt_BR 16.21.1
 ]
 
 Cria de Andabrisas: Gustwalker Hatchling[
     ID: 1102
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1102.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1102.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 450g
@@ -537,12 +537,12 @@ Cria de Andabrisas: Gustwalker Hatchling[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Missão/Evolução, Acúmulos, Dano Verdadeiro, Dano em Área, Dano a Monstros, Cura, Restauração de Mana, Movimento
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Gustwalker Hatchling") · https://wiki.leagueoflegends.com/en-us/Gustwalker_Hatchling · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Gustwalker Hatchling") · https://wiki.leagueoflegends.com/en-us/Gustwalker_Hatchling · Data Dragon pt_BR 16.21.1
 ]
 
 Broto de Esmagamusgo: Mosstomper Seedling[
     ID: 1103
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1103.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1103.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 450g
@@ -579,12 +579,12 @@ Broto de Esmagamusgo: Mosstomper Seedling[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Missão/Evolução, Acúmulos, Dano Verdadeiro, Dano em Área, Dano a Monstros, Cura, Restauração de Mana, Escudo
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mosstomper Seedling") · https://wiki.leagueoflegends.com/en-us/Mosstomper_Seedling · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mosstomper Seedling") · https://wiki.leagueoflegends.com/en-us/Mosstomper_Seedling · Data Dragon pt_BR 16.21.1
 ]
 
 Filhote de Garrabrasa: Scorchclaw Pup[
     ID: 1101
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1101.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1101.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 450g
@@ -621,12 +621,12 @@ Filhote de Garrabrasa: Scorchclaw Pup[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Missão/Evolução, Acúmulos, Dano Verdadeiro, Dano em Área, Dano a Monstros, Cura, Restauração de Mana, Dano ao Longo do Tempo, Dano Percentual, Lentidão
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Scorchclaw Pup") · https://wiki.leagueoflegends.com/en-us/Scorchclaw_Pup · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Scorchclaw Pup") · https://wiki.leagueoflegends.com/en-us/Scorchclaw_Pup · Data Dragon pt_BR 16.21.1
 ]
 
 Lágrima da Deusa: Tear of the Goddess[
     ID: 3070
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3070.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3070.png
     Tier: Starter
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 400g
@@ -664,12 +664,12 @@ Lágrima da Deusa: Tear of the Goddess[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Acúmulos, Missão/Evolução
     Região: Shurima
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Tear of the Goddess") · https://wiki.leagueoflegends.com/en-us/Tear_of_the_Goddess · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Tear of the Goddess") · https://wiki.leagueoflegends.com/en-us/Tear_of_the_Goddess · Data Dragon pt_BR 16.21.1
 ]
 
 Atlas Mundial: World Atlas[
     ID: 3865
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3865.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3865.png
     Tier: Starter
     Modo de jogo: Summoner's Rift
     Preço: 400g
@@ -682,9 +682,9 @@ Atlas Mundial: World Atlas[
         +3 de ouro a cada 10s
     ]
     Habilidade[
-        [— (Support Quest) — passiva única][none — description vazia no Data Dragon pt_BR 16.20.1; nome mantido em EN]
+        [— (Support Quest) — passiva única][none — description vazia no Data Dragon pt_BR 16.21.1; nome mantido em EN]
         Mecânica (wiki): obter 400g por Riquezas Compartilhadas e pelo atributo de geração de ouro deste item transforma-o automaticamente em Bússola Rúnica, com a ativa Sentinela e 3 sentinelas em estoque. Se a missão for concluída em combate com campeões, a transformação é adiada até 5s após sair do combate.
-        [— (Shared Riches) — passiva única][none — description vazia no Data Dragon pt_BR 16.20.1; nome mantido em EN]
+        [— (Shared Riches) — passiva única][none — description vazia no Data Dragon pt_BR 16.21.1; nome mantido em EN]
         Mecânica (wiki): concede 1 carga a cada 20s, até 3 (primeira carga aos 1:05). Com um campeão aliado a até 1.050 unidades, consome 1 carga ao: abater uma tropa por qualquer meio → 18g para você e o ouro do abate para o campeão aliado mais próximo; causar dano com ataque básico que deixe uma tropa abaixo de 50% (corpo a corpo) / 30% (à distância) da Vida máxima → executa a tropa, se houver cargas (executa se a Vida cair abaixo do limiar após o dano do ataque; conta como abate para o aliado que recebeu o ouro); causar dano a campeão ou estrutura inimiga com ataque básico ou habilidade → 18g, no máximo 1 carga por ataque ou habilidade. Sem scaling.
     ]
     Análise de custo[
@@ -708,7 +708,7 @@ Atlas Mundial: World Atlas[
     Arquétipo Recomendado: Suporte
     Efeitos Especiais: Missão/Evolução, Geração de Ouro, Execução
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "World Atlas") · https://wiki.leagueoflegends.com/en-us/World_Atlas · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "World Atlas") · https://wiki.leagueoflegends.com/en-us/World_Atlas · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -717,7 +717,7 @@ Atlas Mundial: World Atlas[
 ```
 Sentinela de Controle: Control Ward[
     ID: 2055
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2055.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2055.png
     Tier: Consumível
     Modo de jogo: Summoner's Rift
     Preço: 75g
@@ -748,12 +748,12 @@ Sentinela de Controle: Control Ward[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Consumível, Visão, Revelação
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Control Ward") · https://wiki.leagueoflegends.com/en-us/Control_Ward · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Control Ward") · https://wiki.leagueoflegends.com/en-us/Control_Ward · Data Dragon pt_BR 16.21.1
 ]
 
 Elixir de Ferro: Elixir of Iron[
     ID: 2138
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2138.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2138.png
     Tier: Consumível
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 500g
@@ -790,12 +790,12 @@ Elixir de Ferro: Elixir of Iron[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Consumível, Tenacidade, Movimento
     Região: Freljord
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Iron") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Iron · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Iron") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Iron · Data Dragon pt_BR 16.21.1
 ]
 
 Elixir da Feitiçaria: Elixir of Sorcery[
     ID: 2139
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2139.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2139.png
     Tier: Consumível
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 500g
@@ -832,12 +832,12 @@ Elixir da Feitiçaria: Elixir of Sorcery[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: Consumível, Dano Verdadeiro, Dano a Estruturas
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Sorcery") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Sorcery · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Sorcery") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Sorcery · Data Dragon pt_BR 16.21.1
 ]
 
 Elixir da Ira: Elixir of Wrath[
     ID: 2140
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2140.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2140.png
     Tier: Consumível
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 500g
@@ -873,12 +873,12 @@ Elixir da Ira: Elixir of Wrath[
     Arquétipo Recomendado: Lutador
     Efeitos Especiais: Consumível, Cura
     Região: Noxus
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Wrath") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Wrath · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Wrath") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Wrath · Data Dragon pt_BR 16.21.1
 ]
 
 Poção de Vida: Health Potion[
     ID: 2003
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2003.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2003.png
     Tier: Consumível
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 50g
@@ -909,12 +909,12 @@ Poção de Vida: Health Potion[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Consumível, Cura
     Região: Ionia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Health Potion") · https://wiki.leagueoflegends.com/en-us/Health_Potion · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Health Potion") · https://wiki.leagueoflegends.com/en-us/Health_Potion · Data Dragon pt_BR 16.21.1
 ]
 
 Poção com Refil: Refillable Potion[
     ID: 2031
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2031.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2031.png
     Tier: Consumível
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 150g
@@ -951,12 +951,12 @@ Poção com Refil: Refillable Potion[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Consumível, Cura, Acúmulos
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Refillable Potion") · https://wiki.leagueoflegends.com/en-us/Refillable_Potion · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Refillable Potion") · https://wiki.leagueoflegends.com/en-us/Refillable_Potion · Data Dragon pt_BR 16.21.1
 ]
 
 Atributo adicional: Stat Bonus[
     ID: 6032 (a wiki registra 220000 na entrada de ARAM: Mayhem)
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6032.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6032.png
     Nome na wiki: Stat Bonus (ARAM: Mayhem)
     Tier: Consumível
     Modo de jogo: ARAM: Mayhem
@@ -1028,12 +1028,12 @@ Atributo adicional: Stat Bonus[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Consumível
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Stat Bonus (ARAM: Mayhem)") · https://wiki.leagueoflegends.com/en-us/Stat_Bonus_(ARAM:_Mayhem) · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Stat Bonus (ARAM: Mayhem)") · https://wiki.leagueoflegends.com/en-us/Stat_Bonus_(ARAM:_Mayhem) · Data Dragon pt_BR 16.21.1
 ]
 
 Alteração Vidente: Farsight Alteration[
     ID: 3363
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3363.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3363.png
     Tier: Trinket
     Modo de jogo: Summoner's Rift
     Preço: 0g (gratuito)
@@ -1064,12 +1064,12 @@ Alteração Vidente: Farsight Alteration[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Ativa, Visão
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Farsight Alteration") · https://wiki.leagueoflegends.com/en-us/Farsight_Alteration · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Farsight Alteration") · https://wiki.leagueoflegends.com/en-us/Farsight_Alteration · Data Dragon pt_BR 16.21.1
 ]
 
 Lente do Oráculo: Oracle Lens[
     ID: 3364
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3364.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3364.png
     Tier: Trinket
     Modo de jogo: Summoner's Rift
     Preço: 0g (gratuito)
@@ -1104,12 +1104,12 @@ Lente do Oráculo: Oracle Lens[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Ativa, Revelação, Acúmulos
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Oracle Lens") · https://wiki.leagueoflegends.com/en-us/Oracle_Lens · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Oracle Lens") · https://wiki.leagueoflegends.com/en-us/Oracle_Lens · Data Dragon pt_BR 16.21.1
 ]
 
 Sentinela Invisível: Stealth Ward[
     ID: 3340
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3340.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3340.png
     Tier: Trinket
     Modo de jogo: Summoner's Rift
     Preço: 0g (gratuito)
@@ -1144,12 +1144,12 @@ Sentinela Invisível: Stealth Ward[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Ativa, Visão, Acúmulos
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Stealth Ward") · https://wiki.leagueoflegends.com/en-us/Stealth_Ward · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Stealth Ward") · https://wiki.leagueoflegends.com/en-us/Stealth_Ward · Data Dragon pt_BR 16.21.1
 ]
 
 Elixir da Avareza: Elixir of Avarice[
     ID: 2151
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2151.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2151.png
     Tier: Distribuído
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 0g (não comprável; concedido pela runa Tônico Triplo)
@@ -1184,12 +1184,12 @@ Elixir da Avareza: Elixir of Avarice[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Consumível, Dano Verdadeiro, Efeitos ao Contato, Dano a Tropas, Geração de Ouro
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Avarice") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Avarice · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Avarice") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Avarice · Data Dragon pt_BR 16.21.1
 ]
 
 Elixir da Força: Elixir of Force[
     ID: 2152
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2152.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2152.png
     Tier: Distribuído
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 0g (não comprável; concedido pela runa Tônico Triplo)
@@ -1226,12 +1226,12 @@ Elixir da Força: Elixir of Force[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Consumível
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Force") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Force · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Force") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Force · Data Dragon pt_BR 16.21.1
 ]
 
 Elixir da Habilidade: Elixir of Skill[
     ID: 2150
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2150.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2150.png
     Tier: Distribuído
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 0g (não comprável; concedido pela runa Tônico Triplo)
@@ -1262,12 +1262,12 @@ Elixir da Habilidade: Elixir of Skill[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Consumível
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Skill") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Skill · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Elixir of Skill") · https://wiki.leagueoflegends.com/en-us/Elixir_of_Skill · Data Dragon pt_BR 16.21.1
 ]
 
 Botas Levemente Mágicas: Slightly Magical Footwear[
     ID: 2422
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2422.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2422.png
     Nome na wiki: Slightly Magical Boots
     Tier: Distribuído
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
@@ -1299,12 +1299,12 @@ Botas Levemente Mágicas: Slightly Magical Footwear[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Slightly Magical Boots") · https://wiki.leagueoflegends.com/en-us/Slightly_Magical_Boots · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Slightly Magical Boots") · https://wiki.leagueoflegends.com/en-us/Slightly_Magical_Boots · Data Dragon pt_BR 16.21.1
 ]
 
 Biscoito Total da Determinação Eterna: Total Biscuit of Everlasting Will[
     ID: 2010
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2010.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2010.png
     Tier: Distribuído
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 0g (não comprável; concedido pela runa Entrega de Biscoitos)
@@ -1339,7 +1339,7 @@ Biscoito Total da Determinação Eterna: Total Biscuit of Everlasting Will[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Consumível, Cura, Dano Percentual
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Total Biscuit of Everlasting Will") · https://wiki.leagueoflegends.com/en-us/Total_Biscuit_of_Everlasting_Will · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Total Biscuit of Everlasting Will") · https://wiki.leagueoflegends.com/en-us/Total_Biscuit_of_Everlasting_Will · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -1348,7 +1348,7 @@ Biscoito Total da Determinação Eterna: Total Biscuit of Everlasting Will[
 ```
 Grevas do Berserker: Berserker's Greaves[
     ID: 3006
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3006.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3006.png
     Tier: Bota
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.100g
@@ -1379,12 +1379,12 @@ Grevas do Berserker: Berserker's Greaves[
     Arquétipo Recomendado: Atirador
     Efeitos Especiais: none
     Região: Demacia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Berserker's Greaves") · https://wiki.leagueoflegends.com/en-us/Berserker's_Greaves · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Berserker's Greaves") · https://wiki.leagueoflegends.com/en-us/Berserker's_Greaves · Data Dragon pt_BR 16.21.1
 ]
 
 Botas: Boots[
     ID: 1001
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1001.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1001.png
     Tier: Bota
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 300g
@@ -1414,12 +1414,12 @@ Botas: Boots[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Boots") · https://wiki.leagueoflegends.com/en-us/Boots · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Boots") · https://wiki.leagueoflegends.com/en-us/Boots · Data Dragon pt_BR 16.21.1
 ]
 
 Botas da Rapidez: Boots of Swiftness[
     ID: 3009
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3009.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3009.png
     Tier: Bota
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.000g
@@ -1451,17 +1451,17 @@ Botas da Rapidez: Boots of Swiftness[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Freljord
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Boots of Swiftness") · https://wiki.leagueoflegends.com/en-us/Boots_of_Swiftness · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Boots of Swiftness") · https://wiki.leagueoflegends.com/en-us/Boots_of_Swiftness · Data Dragon pt_BR 16.21.1
 ]
 
 Grevas Vorazes: Gluttonous Greaves[
     ID: 3008
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3008.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3008.png
     Tier: Bota
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
-    Preço: 1.000g
+    Preço: 1.100g
     Condição: Limitado a 1 item de Botas.
-    Componentes: Botas (Boots) 300g, +700g
+    Componentes: Botas (Boots) 300g, +800g
     Ingrediente: Caminho Imortal (Immortal Path)
     Atributo[
         +45 de Velocidade de Movimento
@@ -1473,7 +1473,7 @@ Grevas Vorazes: Gluttonous Greaves[
     ]
     Análise de custo[
         Valor de Ouro: 45 Velocidade de Movimento = 540g; 4% Vampirismo Universal = 184g; total 724g. Eliminar por acúmulo: 0,6%–6% de Vampirismo = 27,6g–276g; total 751,6g–1.000g
-        Eficiência de Ouro: 72,4% (calculada: 724g ÷ 1.000g; a wiki não declara porcentagem base — item de referência do Vampirismo Universal, ≈46g por 1%); de 75,16% a 100% com os acúmulos de Eliminar (wiki)
+        Eficiência de Ouro: 65,82% (calculada: 724g ÷ 1.100g; a página do item não declara porcentagem base, e a tabela "Gold efficiency" da wiki dá 65,82% — item de referência do Vampirismo Universal, ≈46g por 1%); de 68,33% a 90,91% com os acúmulos de Eliminar (wiki)
         Valor de Ouro (atributos): 724g
         Valor de Ouro (base): 724g
     ]
@@ -1483,7 +1483,7 @@ Grevas Vorazes: Gluttonous Greaves[
     Ápice numérico[
         Vampirismo · 10 · % · total
         Valor de Ouro no ápice: 1.000g
-        Eficiência de Ouro no ápice: 100%
+        Eficiência de Ouro no ápice: 90,91%
     ]
     Notas: Com a Missão do Meio concluída, esta Bota é aprimorada para a variante de tier 3 sem custo; a transformação também ocorre de forma proativa ao equipar qualquer Bota de tier 2 e bloqueia o usuário da função Desfazer (bug). Com a Missão da Rota Inferior concluída, esta Bota passa a ocupar exclusivamente o espaço da Missão de Função, separado do inventário, liberando um espaço; se estiver no inventário na conclusão da missão, é movida para lá. A troca de espaço também ocorre de forma proativa ao equipar qualquer Bota.
     Notas de ARAM: none
@@ -1493,12 +1493,12 @@ Grevas Vorazes: Gluttonous Greaves[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Acúmulos
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Gluttonous Greaves") · https://wiki.leagueoflegends.com/en-us/Gluttonous_Greaves · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Gluttonous Greaves") · https://wiki.leagueoflegends.com/en-us/Gluttonous_Greaves · Data Dragon pt_BR 16.21.1
 ]
 
 Botas Ionianas da Lucidez: Ionian Boots of Lucidity[
     ID: 3158
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3158.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3158.png
     Tier: Bota
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 900g
@@ -1531,12 +1531,12 @@ Botas Ionianas da Lucidez: Ionian Boots of Lucidity[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Ionia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Ionian Boots of Lucidity") · https://wiki.leagueoflegends.com/en-us/Ionian_Boots_of_Lucidity · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Ionian Boots of Lucidity") · https://wiki.leagueoflegends.com/en-us/Ionian_Boots_of_Lucidity · Data Dragon pt_BR 16.21.1
 ]
 
 Passos de Mercúrio: Mercury's Treads[
     ID: 3111
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3111.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3111.png
     Tier: Bota
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.250g
@@ -1568,12 +1568,12 @@ Passos de Mercúrio: Mercury's Treads[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Demacia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mercury's Treads") · https://wiki.leagueoflegends.com/en-us/Mercury's_Treads · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mercury's Treads") · https://wiki.leagueoflegends.com/en-us/Mercury's_Treads · Data Dragon pt_BR 16.21.1
 ]
 
 Botas Galvanizadas de Aço: Plated Steelcaps[
     ID: 3047
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3047.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3047.png
     Tier: Bota
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.200g
@@ -1606,12 +1606,12 @@ Botas Galvanizadas de Aço: Plated Steelcaps[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Redução de Dano
     Região: Noxus
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Plated Steelcaps") · https://wiki.leagueoflegends.com/en-us/Plated_Steelcaps · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Plated Steelcaps") · https://wiki.leagueoflegends.com/en-us/Plated_Steelcaps · Data Dragon pt_BR 16.21.1
 ]
 
 Sapatos do Feiticeiro: Sorcerer's Shoes[
     ID: 3020
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3020.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3020.png
     Tier: Bota
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.100g
@@ -1642,7 +1642,7 @@ Sapatos do Feiticeiro: Sorcerer's Shoes[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: none
     Região: Ixtal
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sorcerer's Shoes") · https://wiki.leagueoflegends.com/en-us/Sorcerer's_Shoes · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sorcerer's Shoes") · https://wiki.leagueoflegends.com/en-us/Sorcerer's_Shoes · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -1651,7 +1651,7 @@ Sapatos do Feiticeiro: Sorcerer's Shoes[
 ```
 Tomo Amplificador: Amplifying Tome[
     ID: 1052
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1052.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1052.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 400g
@@ -1681,12 +1681,12 @@ Tomo Amplificador: Amplifying Tome[
     Arquétipo Recomendado: Mago, Suporte
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Amplifying Tome") · https://wiki.leagueoflegends.com/en-us/Amplifying_Tome · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Amplifying Tome") · https://wiki.leagueoflegends.com/en-us/Amplifying_Tome · Data Dragon pt_BR 16.21.1
 ]
 
 Espada G. p. C.: B. F. Sword[
     ID: 1038
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1038.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1038.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.300g
@@ -1716,12 +1716,12 @@ Espada G. p. C.: B. F. Sword[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Demacia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "B. F. Sword") · https://wiki.leagueoflegends.com/en-us/B._F._Sword · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "B. F. Sword") · https://wiki.leagueoflegends.com/en-us/B._F._Sword · Data Dragon pt_BR 16.21.1
 ]
 
 Varinha Explosiva: Blasting Wand[
     ID: 1026
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1026.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1026.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 850g
@@ -1751,12 +1751,12 @@ Varinha Explosiva: Blasting Wand[
     Arquétipo Recomendado: Mago, Suporte
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Blasting Wand") · https://wiki.leagueoflegends.com/en-us/Blasting_Wand · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Blasting Wand") · https://wiki.leagueoflegends.com/en-us/Blasting_Wand · Data Dragon pt_BR 16.21.1
 ]
 
 Capa da Agilidade: Cloak of Agility[
     ID: 1018
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1018.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1018.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 600g
@@ -1786,12 +1786,12 @@ Capa da Agilidade: Cloak of Agility[
     Arquétipo Recomendado: Atirador
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Cloak of Agility") · https://wiki.leagueoflegends.com/en-us/Cloak_of_Agility · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Cloak of Agility") · https://wiki.leagueoflegends.com/en-us/Cloak_of_Agility · Data Dragon pt_BR 16.21.1
 ]
 
 Couraça de Pano: Cloth Armor[
     ID: 1029
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1029.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1029.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 300g
@@ -1821,12 +1821,12 @@ Couraça de Pano: Cloth Armor[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Cloth Armor") · https://wiki.leagueoflegends.com/en-us/Cloth_Armor · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Cloth Armor") · https://wiki.leagueoflegends.com/en-us/Cloth_Armor · Data Dragon pt_BR 16.21.1
 ]
 
 Adaga: Dagger[
     ID: 1042
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1042.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1042.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 250g
@@ -1856,12 +1856,12 @@ Adaga: Dagger[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Ionia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dagger") · https://wiki.leagueoflegends.com/en-us/Dagger · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dagger") · https://wiki.leagueoflegends.com/en-us/Dagger · Data Dragon pt_BR 16.21.1
 ]
 
 Amuleto da Fada: Faerie Charm[
     ID: 1004
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1004.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1004.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 200g
@@ -1891,12 +1891,12 @@ Amuleto da Fada: Faerie Charm[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Shadow Isles
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Faerie Charm") · https://wiki.leagueoflegends.com/en-us/Faerie_Charm · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Faerie Charm") · https://wiki.leagueoflegends.com/en-us/Faerie_Charm · Data Dragon pt_BR 16.21.1
 ]
 
 Partícula Brilhante: Glowing Mote[
     ID: 2022
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2022.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2022.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 250g
@@ -1926,12 +1926,12 @@ Partícula Brilhante: Glowing Mote[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Glowing Mote") · https://wiki.leagueoflegends.com/en-us/Glowing_Mote · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Glowing Mote") · https://wiki.leagueoflegends.com/en-us/Glowing_Mote · Data Dragon pt_BR 16.21.1
 ]
 
 Espada Longa: Long Sword[
     ID: 1036
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1036.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1036.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 350g
@@ -1961,12 +1961,12 @@ Espada Longa: Long Sword[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Noxus
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Long Sword") · https://wiki.leagueoflegends.com/en-us/Long_Sword · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Long Sword") · https://wiki.leagueoflegends.com/en-us/Long_Sword · Data Dragon pt_BR 16.21.1
 ]
 
 Bastão Desnecessariamente Grande: Needlessly Large Rod[
     ID: 1058
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1058.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1058.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.200g
@@ -1996,12 +1996,12 @@ Bastão Desnecessariamente Grande: Needlessly Large Rod[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: none
     Região: Ionia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Needlessly Large Rod") · https://wiki.leagueoflegends.com/en-us/Needlessly_Large_Rod · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Needlessly Large Rod") · https://wiki.leagueoflegends.com/en-us/Needlessly_Large_Rod · Data Dragon pt_BR 16.21.1
 ]
 
 Manto Anula-Magia: Null-Magic Mantle[
     ID: 1033
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1033.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1033.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 400g
@@ -2031,12 +2031,12 @@ Manto Anula-Magia: Null-Magic Mantle[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Demacia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Null-Magic Mantle") · https://wiki.leagueoflegends.com/en-us/Null-Magic_Mantle · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Null-Magic Mantle") · https://wiki.leagueoflegends.com/en-us/Null-Magic_Mantle · Data Dragon pt_BR 16.21.1
 ]
 
 Picareta: Pickaxe[
     ID: 1037
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1037.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1037.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 875g
@@ -2066,12 +2066,12 @@ Picareta: Pickaxe[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Pickaxe") · https://wiki.leagueoflegends.com/en-us/Pickaxe · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Pickaxe") · https://wiki.leagueoflegends.com/en-us/Pickaxe · Data Dragon pt_BR 16.21.1
 ]
 
 Pérola do Rejuvenescimento: Rejuvenation Bead[
     ID: 1006
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1006.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1006.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 300g
@@ -2101,12 +2101,12 @@ Pérola do Rejuvenescimento: Rejuvenation Bead[
     Arquétipo Recomendado: Tanque
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rejuvenation Bead") · https://wiki.leagueoflegends.com/en-us/Rejuvenation_Bead · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rejuvenation Bead") · https://wiki.leagueoflegends.com/en-us/Rejuvenation_Bead · Data Dragon pt_BR 16.21.1
 ]
 
 Cristal de Rubi: Ruby Crystal[
     ID: 1028
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1028.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1028.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 400g
@@ -2136,12 +2136,12 @@ Cristal de Rubi: Ruby Crystal[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Ruby Crystal") · https://wiki.leagueoflegends.com/en-us/Ruby_Crystal · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Ruby Crystal") · https://wiki.leagueoflegends.com/en-us/Ruby_Crystal · Data Dragon pt_BR 16.21.1
 ]
 
 Cristal de Safira: Sapphire Crystal[
     ID: 1027
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1027.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1027.png
     Tier: Básico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 300g
@@ -2171,7 +2171,7 @@ Cristal de Safira: Sapphire Crystal[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sapphire Crystal") · https://wiki.leagueoflegends.com/en-us/Sapphire_Crystal · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sapphire Crystal") · https://wiki.leagueoflegends.com/en-us/Sapphire_Crystal · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -2180,7 +2180,7 @@ Cristal de Safira: Sapphire Crystal[
 ```
 Cintilação Etérea: Aether Wisp[
     ID: 3113
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3113.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3113.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 900g
@@ -2211,12 +2211,12 @@ Cintilação Etérea: Aether Wisp[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: none
     Região: Shadow Isles
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Aether Wisp") · https://wiki.leagueoflegends.com/en-us/Aether_Wisp · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Aether Wisp") · https://wiki.leagueoflegends.com/en-us/Aether_Wisp · Data Dragon pt_BR 16.21.1
 ]
 
 Brasa de Bami: Bami's Cinder[
     ID: 6660
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6660.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6660.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 900g
@@ -2248,12 +2248,12 @@ Brasa de Bami: Bami's Cinder[
     Arquétipo Recomendado: Tanque
     Efeitos Especiais: Aura, Dano Mágico, Dano em Área, Dano ao Longo do Tempo, Dano a Tropas, Dano a Monstros, Execução
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bami's Cinder") · https://wiki.leagueoflegends.com/en-us/Bami's_Cinder · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bami's Cinder") · https://wiki.leagueoflegends.com/en-us/Bami's_Cinder · Data Dragon pt_BR 16.21.1
 ]
 
 Espelho de Bandópolis: Bandleglass Mirror[
     ID: 4642
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4642.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4642.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 900g
@@ -2285,12 +2285,12 @@ Espelho de Bandópolis: Bandleglass Mirror[
     Arquétipo Recomendado: Suporte
     Efeitos Especiais: none
     Região: Bandle City
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bandleglass Mirror") · https://wiki.leagueoflegends.com/en-us/Bandleglass_Mirror · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bandleglass Mirror") · https://wiki.leagueoflegends.com/en-us/Bandleglass_Mirror · Data Dragon pt_BR 16.21.1
 ]
 
 Joia da Ruína: Blighting Jewel[
     ID: 4630
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4630.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4630.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.100g
@@ -2321,12 +2321,12 @@ Joia da Ruína: Blighting Jewel[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: none
     Região: The Void
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Blighting Jewel") · https://wiki.leagueoflegends.com/en-us/Blighting_Jewel · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Blighting Jewel") · https://wiki.leagueoflegends.com/en-us/Blighting_Jewel · Data Dragon pt_BR 16.21.1
 ]
 
 Colete Espinhoso: Bramble Vest[
     ID: 3076
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3076.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3076.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 800g
@@ -2357,12 +2357,12 @@ Colete Espinhoso: Bramble Vest[
     Arquétipo Recomendado: Tanque
     Efeitos Especiais: Reflexão de Dano, Dano Mágico, Anti-Cura
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bramble Vest") · https://wiki.leagueoflegends.com/en-us/Bramble_Vest · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bramble Vest") · https://wiki.leagueoflegends.com/en-us/Bramble_Vest · Data Dragon pt_BR 16.21.1
 ]
 
 Catalisador das Eras: Catalyst of Aeons[
     ID: 3803
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3803.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3803.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.300g
@@ -2394,12 +2394,12 @@ Catalisador das Eras: Catalyst of Aeons[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: Restauração de Mana, Cura
     Região: Shadow Isles
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Catalyst of Aeons") · https://wiki.leagueoflegends.com/en-us/Catalyst_of_Aeons · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Catalyst of Aeons") · https://wiki.leagueoflegends.com/en-us/Catalyst_of_Aeons · Data Dragon pt_BR 16.21.1
 ]
 
 Martelo de Guerra de Caulfield: Caulfield's Warhammer[
     ID: 3133
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3133.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3133.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.050g
@@ -2430,12 +2430,12 @@ Martelo de Guerra de Caulfield: Caulfield's Warhammer[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Caulfield's Warhammer") · https://wiki.leagueoflegends.com/en-us/Caulfield's_Warhammer · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Caulfield's Warhammer") · https://wiki.leagueoflegends.com/en-us/Caulfield's_Warhammer · Data Dragon pt_BR 16.21.1
 ]
 
 Cota de Malha: Chain Vest[
     ID: 1031
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1031.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1031.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 800g
@@ -2465,12 +2465,12 @@ Cota de Malha: Chain Vest[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Chain Vest") · https://wiki.leagueoflegends.com/en-us/Chain_Vest · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Chain Vest") · https://wiki.leagueoflegends.com/en-us/Chain_Vest · Data Dragon pt_BR 16.21.1
 ]
 
 Braçadeira Cristalina: Crystalline Bracer[
     ID: 3801
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3801.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3801.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 800g
@@ -2501,12 +2501,12 @@ Braçadeira Cristalina: Crystalline Bracer[
     Arquétipo Recomendado: Tanque, Suporte
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Crystalline Bracer") · https://wiki.leagueoflegends.com/en-us/Crystalline_Bracer · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Crystalline Bracer") · https://wiki.leagueoflegends.com/en-us/Crystalline_Bracer · Data Dragon pt_BR 16.21.1
 ]
 
 Chamado do Carrasco: Executioner's Calling[
     ID: 3123
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3123.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3123.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 800g
@@ -2537,12 +2537,12 @@ Chamado do Carrasco: Executioner's Calling[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Anti-Cura
     Região: Zaun
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Executioner's Calling") · https://wiki.leagueoflegends.com/en-us/Executioner's_Calling · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Executioner's Calling") · https://wiki.leagueoflegends.com/en-us/Executioner's_Calling · Data Dragon pt_BR 16.21.1
 ]
 
 Cinzas do Destino: Fated Ashes[
     ID: 2508
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2508.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2508.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 900g
@@ -2573,12 +2573,12 @@ Cinzas do Destino: Fated Ashes[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: Dano Mágico, Dano ao Longo do Tempo, Dano a Monstros
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Fated Ashes") · https://wiki.leagueoflegends.com/en-us/Fated_Ashes · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Fated Ashes") · https://wiki.leagueoflegends.com/en-us/Fated_Ashes · Data Dragon pt_BR 16.21.1
 ]
 
 Códex Demoníaco: Fiendish Codex[
     ID: 3108
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3108.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3108.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 850g
@@ -2609,12 +2609,12 @@ Códex Demoníaco: Fiendish Codex[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: none
     Região: Shadow Isles
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Fiendish Codex") · https://wiki.leagueoflegends.com/en-us/Fiendish_Codex · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Fiendish Codex") · https://wiki.leagueoflegends.com/en-us/Fiendish_Codex · Data Dragon pt_BR 16.21.1
 ]
 
 Ídolo Proibido: Forbidden Idol[
     ID: 3114
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3114.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3114.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 600g
@@ -2645,12 +2645,12 @@ Códex Demoníaco: Fiendish Codex[
     Arquétipo Recomendado: Suporte
     Efeitos Especiais: none
     Região: The Void
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Forbidden Idol") · https://wiki.leagueoflegends.com/en-us/Forbidden_Idol · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Forbidden Idol") · https://wiki.leagueoflegends.com/en-us/Forbidden_Idol · Data Dragon pt_BR 16.21.1
 ]
 
 Cinto do Gigante: Giant's Belt[
     ID: 1011
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1011.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1011.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 900g
@@ -2680,12 +2680,12 @@ Cinto do Gigante: Giant's Belt[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Giant's Belt") · https://wiki.leagueoflegends.com/en-us/Giant's_Belt · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Giant's Belt") · https://wiki.leagueoflegends.com/en-us/Giant's_Belt · Data Dragon pt_BR 16.21.1
 ]
 
 Broquel Glacial: Glacial Buckler[
     ID: 3024
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3024.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3024.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 900g
@@ -2717,7 +2717,7 @@ Broquel Glacial: Glacial Buckler[
     Arquétipo Recomendado: Tanque, Suporte
     Efeitos Especiais: none
     Região: Freljord
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Glacial Buckler") · https://wiki.leagueoflegends.com/en-us/Glacial_Buckler · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Glacial Buckler") · https://wiki.leagueoflegends.com/en-us/Glacial_Buckler · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -2726,7 +2726,7 @@ Broquel Glacial: Glacial Buckler[
 ```
 Máscara Assustadora: Haunting Guise[
     ID: 3147
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3147.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3147.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.300g
@@ -2762,12 +2762,12 @@ Máscara Assustadora: Haunting Guise[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: Acúmulos, Amplificação de Dano
     Região: Ionia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Haunting Guise") · https://wiki.leagueoflegends.com/en-us/Haunting_Guise · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Haunting Guise") · https://wiki.leagueoflegends.com/en-us/Haunting_Guise · Data Dragon pt_BR 16.21.1
 ]
 
 Machado Termestre: Hearthbound Axe[
     ID: 3051
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3051.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3051.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.200g
@@ -2798,12 +2798,12 @@ Machado Termestre: Hearthbound Axe[
     Arquétipo Recomendado: Lutador
     Efeitos Especiais: none
     Região: Freljord
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hearthbound Axe") · https://wiki.leagueoflegends.com/en-us/Hearthbound_Axe · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hearthbound Axe") · https://wiki.leagueoflegends.com/en-us/Hearthbound_Axe · Data Dragon pt_BR 16.21.1
 ]
 
 Hexdrinker: Hexdrinker[
     ID: 3155
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3155.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3155.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.300g
@@ -2835,12 +2835,12 @@ Hexdrinker: Hexdrinker[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Gatilho de Vida Baixa, Escudo
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hexdrinker") · https://wiki.leagueoflegends.com/en-us/Hexdrinker · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hexdrinker") · https://wiki.leagueoflegends.com/en-us/Hexdrinker · Data Dragon pt_BR 16.21.1
 ]
 
 Alternador Hextec: Hextech Alternator[
     ID: 3145
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3145.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3145.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.100g
@@ -2871,12 +2871,12 @@ Alternador Hextec: Hextech Alternator[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: Dano Mágico
     Região: Piltover
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hextech Alternator") · https://wiki.leagueoflegends.com/en-us/Hextech_Alternator · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hextech Alternator") · https://wiki.leagueoflegends.com/en-us/Hextech_Alternator · Data Dragon pt_BR 16.21.1
 ]
 
 Gema Ardente: Kindlegem[
     ID: 3067
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3067.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3067.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 800g
@@ -2907,12 +2907,12 @@ Gema Ardente: Kindlegem[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Kindlegem") · https://wiki.leagueoflegends.com/en-us/Kindlegem · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Kindlegem") · https://wiki.leagueoflegends.com/en-us/Kindlegem · Data Dragon pt_BR 16.21.1
 ]
 
 Último Sussurro: Last Whisper[
     ID: 3035
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3035.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3035.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.450g
@@ -2943,12 +2943,12 @@ Gema Ardente: Kindlegem[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Last Whisper") · https://wiki.leagueoflegends.com/en-us/Last_Whisper · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Last Whisper") · https://wiki.leagueoflegends.com/en-us/Last_Whisper · Data Dragon pt_BR 16.21.1
 ]
 
 Salva-Vidas: Lifeline[
     ID: 4003
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4003.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4003.png
     Tier: Épico
     Modo de jogo: ARAM, ARAM: Mayhem
     Preço: 1.600g
@@ -2981,12 +2981,12 @@ Salva-Vidas: Lifeline[
     Arquétipo Recomendado: Assassino
     Efeitos Especiais: Ativa, Investida
     Região: Bilgewater
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Lifeline") · https://wiki.leagueoflegends.com/en-us/Lifeline · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Lifeline") · https://wiki.leagueoflegends.com/en-us/Lifeline · Data Dragon pt_BR 16.21.1
 ]
 
 Capítulo Perdido: Lost Chapter[
     ID: 3802
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3802.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3802.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.200g
@@ -3019,12 +3019,12 @@ Capítulo Perdido: Lost Chapter[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: Restauração de Mana
     Região: Shadow Isles
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Lost Chapter") · https://wiki.leagueoflegends.com/en-us/Lost_Chapter · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Lost Chapter") · https://wiki.leagueoflegends.com/en-us/Lost_Chapter · Data Dragon pt_BR 16.21.1
 ]
 
 Capa Negatron: Negatron Cloak[
     ID: 1057
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1057.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1057.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 850g
@@ -3054,12 +3054,12 @@ Capa Negatron: Negatron Cloak[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Demacia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Negatron Cloak") · https://wiki.leagueoflegends.com/en-us/Negatron_Cloak · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Negatron Cloak") · https://wiki.leagueoflegends.com/en-us/Negatron_Cloak · Data Dragon pt_BR 16.21.1
 ]
 
 Aljava Vespertina: Noonquiver[
     ID: 6670
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6670.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6670.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.300g
@@ -3090,12 +3090,12 @@ Aljava Vespertina: Noonquiver[
     Arquétipo Recomendado: Atirador
     Efeitos Especiais: none
     Região: Shadow Isles
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Noonquiver") · https://wiki.leagueoflegends.com/en-us/Noonquiver · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Noonquiver") · https://wiki.leagueoflegends.com/en-us/Noonquiver · Data Dragon pt_BR 16.21.1
 ]
 
 Orbe do Oblívio: Oblivion Orb[
     ID: 3916
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3916.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3916.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 800g
@@ -3126,12 +3126,12 @@ Orbe do Oblívio: Oblivion Orb[
     Arquétipo Recomendado: Mago, Suporte
     Efeitos Especiais: Anti-Cura
     Região: Piltover
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Oblivion Orb") · https://wiki.leagueoflegends.com/en-us/Oblivion_Orb · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Oblivion Orb") · https://wiki.leagueoflegends.com/en-us/Oblivion_Orb · Data Dragon pt_BR 16.21.1
 ]
 
 Fago: Phage[
     ID: 3044
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3044.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3044.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.100g
@@ -3168,12 +3168,12 @@ Fago: Phage[
     Arquétipo Recomendado: Lutador, Tanque
     Efeitos Especiais: Movimento
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Phage") · https://wiki.leagueoflegends.com/en-us/Phage · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Phage") · https://wiki.leagueoflegends.com/en-us/Phage · Data Dragon pt_BR 16.21.1
 ]
 
 Bandana de Mercúrio: Quicksilver Sash[
     ID: 3140
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3140.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3140.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.300g
@@ -3204,12 +3204,12 @@ Bandana de Mercúrio: Quicksilver Sash[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Ativa, Remoção de Controle
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Quicksilver Sash") · https://wiki.leagueoflegends.com/en-us/Quicksilver_Sash · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Quicksilver Sash") · https://wiki.leagueoflegends.com/en-us/Quicksilver_Sash · Data Dragon pt_BR 16.21.1
 ]
 
 Retriz: Rectrix[
     ID: 6690
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6690.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6690.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 775g
@@ -3240,12 +3240,12 @@ Retriz: Rectrix[
     Arquétipo Recomendado: Assassino, Lutador
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rectrix") · https://wiki.leagueoflegends.com/en-us/Rectrix · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rectrix") · https://wiki.leagueoflegends.com/en-us/Rectrix · Data Dragon pt_BR 16.21.1
 ]
 
 Arco Recurvo: Recurve Bow[
     ID: 1043
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1043.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1043.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 700g
@@ -3277,7 +3277,7 @@ Arco Recurvo: Recurve Bow[
     Arquétipo Recomendado: Lutador, Atirador
     Efeitos Especiais: Dano Físico
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Recurve Bow") · https://wiki.leagueoflegends.com/en-us/Recurve_Bow · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Recurve Bow") · https://wiki.leagueoflegends.com/en-us/Recurve_Bow · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -3286,7 +3286,7 @@ Arco Recurvo: Recurve Bow[
 ```
 Estilingue do Patrulheiro: Scout's Slingshot[
     ID: 3144
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3144.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3144.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 600g
@@ -3317,12 +3317,12 @@ Estilingue do Patrulheiro: Scout's Slingshot[
     Arquétipo Recomendado: Atirador
     Efeitos Especiais: Dano Mágico, Redução de Recarga
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Scout's Slingshot") · https://wiki.leagueoflegends.com/en-us/Scout's_Slingshot · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Scout's Slingshot") · https://wiki.leagueoflegends.com/en-us/Scout's_Slingshot · Data Dragon pt_BR 16.21.1
 ]
 
 Armaguarda da Caçadora: Seeker's Armguard[
     ID: 2420
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2420.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2420.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.600g
@@ -3354,12 +3354,12 @@ Armaguarda da Caçadora: Seeker's Armguard[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: Ativa, Estase, Missão/Evolução
     Região: Freljord
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Seeker's Armguard") · https://wiki.leagueoflegends.com/en-us/Seeker's_Armguard · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Seeker's Armguard") · https://wiki.leagueoflegends.com/en-us/Seeker's_Armguard · Data Dragon pt_BR 16.21.1
 ]
 
 Punhal Serrilhado: Serrated Dirk[
     ID: 3134
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3134.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3134.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.000g
@@ -3390,12 +3390,12 @@ Punhal Serrilhado: Serrated Dirk[
     Arquétipo Recomendado: Assassino
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Serrated Dirk") · https://wiki.leagueoflegends.com/en-us/Serrated_Dirk · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Serrated Dirk") · https://wiki.leagueoflegends.com/en-us/Serrated_Dirk · Data Dragon pt_BR 16.21.1
 ]
 
 Fulgor: Sheen[
     ID: 3057
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3057.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3057.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 900g
@@ -3426,12 +3426,12 @@ Fulgor: Sheen[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Ataque Fortalecido, Dano Físico, Efeitos ao Contato, Dano a Estruturas
     Região: Freljord
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sheen") · https://wiki.leagueoflegends.com/en-us/Sheen · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sheen") · https://wiki.leagueoflegends.com/en-us/Sheen · Data Dragon pt_BR 16.21.1
 ]
 
 Capuz do Espectro: Spectre's Cowl[
     ID: 3211
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3211.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3211.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.250g
@@ -3463,12 +3463,12 @@ Capuz do Espectro: Spectre's Cowl[
     Arquétipo Recomendado: Tanque
     Efeitos Especiais: none
     Região: Shadow Isles
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Spectre's Cowl") · https://wiki.leagueoflegends.com/en-us/Spectre's_Cowl · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Spectre's Cowl") · https://wiki.leagueoflegends.com/en-us/Spectre's_Cowl · Data Dragon pt_BR 16.21.1
 ]
 
 Sigilo de Aço: Steel Sigil[
     ID: 2019
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2019.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2019.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.100g
@@ -3499,12 +3499,12 @@ Sigilo de Aço: Steel Sigil[
     Arquétipo Recomendado: Lutador
     Efeitos Especiais: none
     Região: Noxus
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Steel Sigil") · https://wiki.leagueoflegends.com/en-us/Steel_Sigil · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Steel Sigil") · https://wiki.leagueoflegends.com/en-us/Steel_Sigil · Data Dragon pt_BR 16.21.1
 ]
 
 Brutalizador: The Brutalizer[
     ID: 2020
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2020.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2020.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.337g
@@ -3536,12 +3536,12 @@ Brutalizador: The Brutalizer[
     Arquétipo Recomendado: Assassino
     Efeitos Especiais: none
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "The Brutalizer") · https://wiki.leagueoflegends.com/en-us/The_Brutalizer · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "The Brutalizer") · https://wiki.leagueoflegends.com/en-us/The_Brutalizer · Data Dragon pt_BR 16.21.1
 ]
 
 Tiamat: Tiamat[
     ID: 3077
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3077.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3077.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.200g
@@ -3574,12 +3574,12 @@ Tiamat: Tiamat[
     Arquétipo Recomendado: Lutador, Tanque
     Efeitos Especiais: Ativa, Dano Físico, Dano em Área, Efeitos ao Contato
     Região: Shurima
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Tiamat") · https://wiki.leagueoflegends.com/en-us/Tiamat · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Tiamat") · https://wiki.leagueoflegends.com/en-us/Tiamat · Data Dragon pt_BR 16.21.1
 ]
 
 Tunelizador: Tunneler[
     ID: 2021
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2021.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2021.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.150g
@@ -3610,12 +3610,12 @@ Tunelizador: Tunneler[
     Arquétipo Recomendado: Lutador
     Efeitos Especiais: none
     Região: Piltover
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Tunneler") · https://wiki.leagueoflegends.com/en-us/Tunneler · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Tunneler") · https://wiki.leagueoflegends.com/en-us/Tunneler · Data Dragon pt_BR 16.21.1
 ]
 
 Cetro Vampírico: Vampiric Scepter[
     ID: 1053
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/1053.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/1053.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 900g
@@ -3646,12 +3646,12 @@ Cetro Vampírico: Vampiric Scepter[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Noxus
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Vampiric Scepter") · https://wiki.leagueoflegends.com/en-us/Vampiric_Scepter · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Vampiric Scepter") · https://wiki.leagueoflegends.com/en-us/Vampiric_Scepter · Data Dragon pt_BR 16.21.1
 ]
 
 Barreira Verdejante: Verdant Barrier[
     ID: 4632
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4632.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4632.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.600g
@@ -3683,12 +3683,12 @@ Barreira Verdejante: Verdant Barrier[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: Escudo de Feitiço
     Região: Ixtal
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Verdant Barrier") · https://wiki.leagueoflegends.com/en-us/Verdant_Barrier · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Verdant Barrier") · https://wiki.leagueoflegends.com/en-us/Verdant_Barrier · Data Dragon pt_BR 16.21.1
 ]
 
 Carapaça do Vigia: Warden's Mail[
     ID: 3082
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3082.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3082.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.000g
@@ -3719,12 +3719,12 @@ Carapaça do Vigia: Warden's Mail[
     Arquétipo Recomendado: Tanque
     Efeitos Especiais: Redução de Dano
     Região: Demacia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Warden's Mail") · https://wiki.leagueoflegends.com/en-us/Warden's_Mail · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Warden's Mail") · https://wiki.leagueoflegends.com/en-us/Warden's_Mail · Data Dragon pt_BR 16.21.1
 ]
 
 Couraça Lunar Alada: Winged Moonplate[
     ID: 3066
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3066.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3066.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 800g
@@ -3755,12 +3755,12 @@ Couraça Lunar Alada: Winged Moonplate[
     Arquétipo Recomendado: Tanque
     Efeitos Especiais: none
     Região: Targon
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Winged Moonplate") · https://wiki.leagueoflegends.com/en-us/Winged_Moonplate · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Winged Moonplate") · https://wiki.leagueoflegends.com/en-us/Winged_Moonplate · Data Dragon pt_BR 16.21.1
 ]
 
 Zelo: Zeal[
     ID: 3086
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3086.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3086.png
     Tier: Épico
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 1.200g
@@ -3792,7 +3792,7 @@ Zelo: Zeal[
     Arquétipo Recomendado: Atirador
     Efeitos Especiais: none
     Região: Demacia
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Zeal") · https://wiki.leagueoflegends.com/en-us/Zeal · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Zeal") · https://wiki.leagueoflegends.com/en-us/Zeal · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -3801,7 +3801,7 @@ Zelo: Zeal[
 ```
 Máscara Abissal: Abyssal Mask[
     ID: 8020
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/8020.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/8020.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.650g
@@ -3837,12 +3837,12 @@ Máscara Abissal: Abyssal Mask[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Vida 350(+125)=475; Resistência Mágica 45(+18,52)=63,52; Aceleração de Habilidade 15(+10,67)=25,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.650g = 198,75g (líquido: 2.451,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Abyssal Mask") · https://wiki.leagueoflegends.com/en-us/Abyssal_Mask · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Abyssal Mask") · https://wiki.leagueoflegends.com/en-us/Abyssal_Mask · Data Dragon pt_BR 16.21.1
 ]
 
 Concretizador: Actualizer[
     ID: 2522
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2522.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2522.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -3882,12 +3882,12 @@ Concretizador: Actualizer[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Mana não conta): Poder de Habilidade 90(+25)=115; Aceleração de Habilidade 10(+16)=26
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Actualizer") · https://wiki.leagueoflegends.com/en-us/Actualizer · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Actualizer") · https://wiki.leagueoflegends.com/en-us/Actualizer · Data Dragon pt_BR 16.21.1
 ]
 
 Cajado do Arcanjo: Archangel's Staff[
     ID: 3003
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3003.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3003.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g
@@ -3933,12 +3933,12 @@ Cajado do Arcanjo: Archangel's Staff[
     Mestre Forjador: Não elegível (linha da Lágrima da Deusa)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): 7,5% de 2.900g = 217,5g (líquido: 2.682,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Archangel's Staff") · https://wiki.leagueoflegends.com/en-us/Archangel's_Staff · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Archangel's Staff") · https://wiki.leagueoflegends.com/en-us/Archangel's_Staff · Data Dragon pt_BR 16.21.1
 ]
 
 Turíbulo Ardente: Ardent Censer[
     ID: 3504
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3504.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3504.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.200g
@@ -3981,12 +3981,12 @@ Turíbulo Ardente: Ardent Censer[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g): Poder de Habilidade 45(+50)=95
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.200g = 165g (líquido: 2.035g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Ardent Censer") · https://wiki.leagueoflegends.com/en-us/Ardent_Censer · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Ardent Censer") · https://wiki.leagueoflegends.com/en-us/Ardent_Censer · Data Dragon pt_BR 16.21.1
 ]
 
 Acerto de Contas de Atma: Atma's Reckoning[
     ID: 3039
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3039.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3039.png
     Tier: Lendário
     Modo de jogo: ARAM: Mayhem
     Preço: 2.900g
@@ -4027,12 +4027,12 @@ Acerto de Contas de Atma: Atma's Reckoning[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Acerto Crítico não conta): Vida 700(+375)=1.075
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.900g = 217,5g (líquido: 2.682,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Atma's Reckoning") · https://wiki.leagueoflegends.com/en-us/Atma's_Reckoning · Data Dragon pt_BR 16.20.1 · captura do cliente (ARAM) fornecida pelo usuário em 12/09/2026
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Atma's Reckoning") · https://wiki.leagueoflegends.com/en-us/Atma's_Reckoning · Data Dragon pt_BR 16.21.1 · captura do cliente (ARAM) fornecida pelo usuário em 12/09/2026
 ]
 
 Arco do Axioma: Axiom Arc[
     ID: 6696
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6696.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6696.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.750g
@@ -4068,12 +4068,12 @@ Arco do Axioma: Axiom Arc[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Letalidade não conta): Dano de Ataque 55(+14,29)=69,29; Aceleração de Habilidade 20(+16)=36
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.750g = 206,25g (líquido: 2.543,75g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Axiom Arc") · https://wiki.leagueoflegends.com/en-us/Axiom_Arc · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Axiom Arc") · https://wiki.leagueoflegends.com/en-us/Axiom_Arc · Data Dragon pt_BR 16.21.1
 ]
 
 Bandocanos: Bandlepipes[
     ID: 2524
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2524.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2524.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.300g
@@ -4116,12 +4116,12 @@ Bandocanos: Bandlepipes[
     Mestre Forjador: Elegível — 4 categorias upgradáveis (250g cada): Vida 200(+90)=290; Aceleração de Habilidade 15(+8)=23; Armadura 20(+12,5)=32,5; Resistência Mágica 20(+13,89)=33,89
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.300g = 172,5g (líquido: 2.127,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bandlepipes") · https://wiki.leagueoflegends.com/en-us/Bandlepipes · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bandlepipes") · https://wiki.leagueoflegends.com/en-us/Bandlepipes · Data Dragon pt_BR 16.21.1
 ]
 
 Véu da Banshee: Banshee's Veil[
     ID: 3102
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3102.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3102.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -4156,12 +4156,12 @@ Véu da Banshee: Banshee's Veil[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Poder de Habilidade 105(+25)=130; Resistência Mágica 40(+27,78)=67,78
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Banshee's Veil") · https://wiki.leagueoflegends.com/en-us/Banshee's_Veil · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Banshee's Veil") · https://wiki.leagueoflegends.com/en-us/Banshee's_Veil · Data Dragon pt_BR 16.21.1
 ]
 
 Quebra-Bastião: Bastionbreaker[
     ID: 2520
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2520.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2520.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift
     Preço: 3.000g
@@ -4170,23 +4170,23 @@ Quebra-Bastião: Bastionbreaker[
     Ingrediente: none
     Atributo[
         +55 de Dano de Ataque
-        +22 de Letalidade
+        +18 de Letalidade
         +15 de Aceleração de Habilidade
     ]
     Habilidade[
         [Investida Esculpida (Shaped Charge) — passiva única][Causar dano de habilidade a um Campeão ou monstro épico causa 0 de Dano Verdadeiro adicional.]
-        Mecânica (wiki): a próxima instância de dano de habilidade a um campeão ou monstro épico com uma habilidade de campeão causa 50 (corpo a corpo) / 25 (à distância) (+1,5 / +0,75 por 1 de Letalidade) de dano verdadeiro bônus → 83 / 41,5 com os 22 de Letalidade do item. Recarga de 20s. Dano de proc: NÃO ativa efeitos de habilidade. É bloqueado por escudo de feitiço.
-        [Sabotagem (Sabotage) — passiva única][Eliminar um Campeão até 3s após você causar dano a ele concede Sabotagem por 90s. Enquanto você tiver Sabotagem, seu próximo ataque contra um monstro épico ou torre causará 0 de Dano Verdadeiro adicional ao longo de 3s.]
-        Mecânica (wiki): abater ou assistir um campeão inimigo até 3s após causar dano a ele concede Sabotagem por 90s: o próximo ataque básico contra torre ou monstro épico consome o efeito para causar 300 / 240 (+25 / +20 por 1 de Letalidade) de dano verdadeiro bônus ao longo de 3s → 850 / 680 com 22 de Letalidade. Dano em intervalos de 0,25s. Instâncias de Sabotagem NÃO acumulam: uma nova aplicação aplica imediatamente todo o dano pendente da anterior.
+        Mecânica (wiki): a próxima instância de dano de habilidade a um campeão ou monstro épico com uma habilidade de campeão causa 40 (corpo a corpo) / 20 (à distância) (+1,5 / +0,75 por 1 de Letalidade) de dano verdadeiro bônus → 67 / 33,5 com os 18 de Letalidade do item. Recarga de 20s. Dano de proc: NÃO ativa efeitos de habilidade. É bloqueado por escudo de feitiço.
+        [Sabotagem (Sabotage) — passiva única][Eliminar um Campeão até 3s após você causar dano a ele concede Sabotagem por 25000s. Enquanto você tiver Sabotagem, seu próximo ataque contra um monstro épico ou torre causará 0 de Dano Verdadeiro adicional ao longo de 3s.]
+        Mecânica (wiki): abater ou assistir um campeão inimigo até 3s após causar dano a ele concede Sabotagem, que dura indefinidamente depois de obtida e é removida ao morrer, como a maioria dos buffs (o cliente exibe 25000s): o próximo ataque básico contra torre ou monstro épico consome o efeito para causar 300 / 240 (+25 / +20 por 1 de Letalidade) de dano verdadeiro bônus ao longo de 3s → 750 / 600 com 18 de Letalidade. Dano em intervalos de 0,25s. Instâncias de Sabotagem NÃO acumulam: uma nova aplicação aplica imediatamente todo o dano pendente da anterior.
     ]
     Análise de custo[
-        Valor de Ouro: 55 DdA = 1.925g; 15 AdH = 750g; 22 Letalidade = 660g; total 3.335g
-        Eficiência de Ouro: 111,17% (base)
-        Valor de Ouro (atributos): 3.335g
-        Valor de Ouro (base): 3.335g
+        Valor de Ouro: 55 DdA = 1.925g; 15 AdH = 750g; 18 Letalidade = 540g; total 3.215g
+        Eficiência de Ouro: 107,17% (base)
+        Valor de Ouro (atributos): 3.215g
+        Valor de Ouro (base): 3.215g
     ]
     Ápice[
-        Sabotagem ativa: próximo ataque a torre/monstro épico causa 850 (680) de dano verdadeiro em 3s com 22 de Letalidade.
+        Sabotagem ativa: próximo ataque a torre/monstro épico causa 750 (600) de dano verdadeiro em 3s com 18 de Letalidade.
     ]
     Ápice numérico[
         Valor de Ouro no ápice: none
@@ -4196,19 +4196,19 @@ Quebra-Bastião: Bastionbreaker[
     Notas de ARAM: none
     Notas de ARAM: Mayhem: none
     Categoria de Atributo: Dano de Ataque, Letalidade, Aceleração de Habilidade
-    Classe: AD (AD 2.585g · Vitalidade 0g · AP 0g)
+    Classe: AD (AD 2.465g · Vitalidade 0g · AP 0g)
     Arquétipo Recomendado: Assassino
     Efeitos Especiais: Dano Verdadeiro, Dano a Estruturas, Dano a Monstros, Dano ao Longo do Tempo
     Região: Noxus
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Letalidade não conta): Dano de Ataque 55(+14,29)=69,29; Aceleração de Habilidade 15(+16)=31
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bastionbreaker") · https://wiki.leagueoflegends.com/en-us/Bastionbreaker · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bastionbreaker") · https://wiki.leagueoflegends.com/en-us/Bastionbreaker · Data Dragon pt_BR 16.21.1
 ]
 
 Cutelo Negro: Black Cleaver[
     ID: 3071
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3071.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3071.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -4251,12 +4251,12 @@ Cutelo Negro: Black Cleaver[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Dano de Ataque 45(+9,52)=54,52; Vida 400(+125)=525; Aceleração de Habilidade 20(+10,67)=30,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Black Cleaver") · https://wiki.leagueoflegends.com/en-us/Black_Cleaver · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Black Cleaver") · https://wiki.leagueoflegends.com/en-us/Black_Cleaver · Data Dragon pt_BR 16.21.1
 ]
 
 Tocha de Chamas Negras: Blackfire Torch[
     ID: 2503
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2503.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2503.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -4299,12 +4299,12 @@ Tocha de Chamas Negras: Blackfire Torch[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Mana não conta): Poder de Habilidade 80(+25)=105; Aceleração de Habilidade 20(+16)=36
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Blackfire Torch") · https://wiki.leagueoflegends.com/en-us/Blackfire_Torch · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Blackfire Torch") · https://wiki.leagueoflegends.com/en-us/Blackfire_Torch · Data Dragon pt_BR 16.21.1
 ]
 
 Espada do Rei Destruído: Blade of The Ruined King[
     ID: 3153
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3153.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3153.png
     Nome na wiki: Blade of the Ruined King
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
@@ -4347,12 +4347,12 @@ Espada do Rei Destruído: Blade of The Ruined King[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Roubo de Vida não conta): Dano de Ataque 40(+14,29)=54,29; Velocidade de Ataque 25%(+16,67%)=41,67%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.200g = 240g (líquido: 2.960g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Blade of The Ruined King") · https://wiki.leagueoflegends.com/en-us/Blade_of_the_Ruined_King · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Blade of The Ruined King") · https://wiki.leagueoflegends.com/en-us/Blade_of_the_Ruined_King · Data Dragon pt_BR 16.21.1
 ]
 
 Maldição Sanguinária: Bloodletter's Curse[
     ID: 8010
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/8010.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/8010.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g
@@ -4392,12 +4392,12 @@ Maldição Sanguinária: Bloodletter's Curse[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Poder de Habilidade 65(+16,67)=81,67; Vida 400(+125)=525; Aceleração de Habilidade 15(+10,67)=25,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.900g = 217,5g (líquido: 2.682,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bloodletter's Curse") · https://wiki.leagueoflegends.com/en-us/Bloodletter's_Curse · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bloodletter's Curse") · https://wiki.leagueoflegends.com/en-us/Bloodletter's_Curse · Data Dragon pt_BR 16.21.1
 ]
 
 Canção de Sangue: Bloodsong[
     ID: 3877
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3877.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3877.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift
     Preço: 400g
@@ -4440,12 +4440,12 @@ Canção de Sangue: Bloodsong[
     Mestre Forjador: Não elegível (classe Legendary Support Item)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): none (item Lendário da linha de Suporte, obtido gratuitamente por transformação — sem compra, sem reembolso; confirmado pelo usuário em 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bloodsong") · https://wiki.leagueoflegends.com/en-us/Bloodsong · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bloodsong") · https://wiki.leagueoflegends.com/en-us/Bloodsong · Data Dragon pt_BR 16.21.1
 ]
 
 Sedenta por Sangue: Bloodthirster[
     ID: 3072
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3072.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3072.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.400g
@@ -4484,7 +4484,7 @@ Sedenta por Sangue: Bloodthirster[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Roubo de Vida não conta): Dano de Ataque 80(+28,57)=108,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.400g = 255g (líquido: 3.145g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bloodthirster") · https://wiki.leagueoflegends.com/en-us/Bloodthirster · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bloodthirster") · https://wiki.leagueoflegends.com/en-us/Bloodthirster · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -4493,7 +4493,7 @@ Sedenta por Sangue: Bloodthirster[
 ```
 Oposição Celestial: Celestial Opposition[
     ID: 3869
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3869.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3869.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift
     Preço: 400g
@@ -4536,12 +4536,12 @@ Oposição Celestial: Celestial Opposition[
     Mestre Forjador: Não elegível (classe Legendary Support Item)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): none (item Lendário da linha de Suporte, obtido gratuitamente por transformação — sem compra, sem reembolso; decisão de 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Celestial Opposition") · https://wiki.leagueoflegends.com/en-us/Celestial_Opposition · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Celestial Opposition") · https://wiki.leagueoflegends.com/en-us/Celestial_Opposition · Data Dragon pt_BR 16.21.1
 ]
 
 Serrespada Quimiopunk: Chempunk Chainsword[
     ID: 6609
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6609.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6609.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -4577,12 +4577,12 @@ Serrespada Quimiopunk: Chempunk Chainsword[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Dano de Ataque 45(+9,52)=54,52; Vida 450(+125)=575; Aceleração de Habilidade 15(+10,67)=25,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Chempunk Chainsword") · https://wiki.leagueoflegends.com/en-us/Chempunk_Chainsword · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Chempunk Chainsword") · https://wiki.leagueoflegends.com/en-us/Chempunk_Chainsword · Data Dragon pt_BR 16.21.1
 ]
 
 Ímpeto Cósmico: Cosmic Drive[
     ID: 4629
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4629.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4629.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -4624,12 +4624,12 @@ Serrespada Quimiopunk: Chempunk Chainsword[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada; Velocidade de Movimento não conta): Poder de Habilidade 70(+16,67)=86,67; Vida 350(+125)=475; Aceleração de Habilidade 25(+10,67)=35,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Cosmic Drive") · https://wiki.leagueoflegends.com/en-us/Cosmic_Drive · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Cosmic Drive") · https://wiki.leagueoflegends.com/en-us/Cosmic_Drive · Data Dragon pt_BR 16.21.1
 ]
 
 Criptoflora: Cryptbloom[
     ID: 3137
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3137.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3137.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -4665,12 +4665,12 @@ Criptoflora: Cryptbloom[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Penetração Mágica não conta): Poder de Habilidade 75(+25)=100; Aceleração de Habilidade 20(+16)=36
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Cryptbloom") · https://wiki.leagueoflegends.com/en-us/Cryptbloom · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Cryptbloom") · https://wiki.leagueoflegends.com/en-us/Cryptbloom · Data Dragon pt_BR 16.21.1
 ]
 
 Auronúcleo: Dawncore[
     ID: 6621
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6621.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6621.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.500g
@@ -4683,21 +4683,21 @@ Auronúcleo: Dawncore[
         +100% de Regeneração de Mana base
     ]
     Habilidade[
-        [Primeira Luz (First Light) — passiva única][Recebe 2% de cura e Resistência do Escudo e 10 de Poder de Habilidade a cada 100% de Regeneração de Mana base.]
-        Mecânica (wiki): +2% de Poder de Cura e Escudo e +10 de Poder de Habilidade por 100% de Regeneração de Mana base adicional. Só com o próprio item: +10 de PdH e +2% de Poder de Cura e Escudo → 55 de PdH e 18% de Poder de Cura e Escudo no total; +10 de PdH e +2% por 100% de Regeneração de Mana base de outras fontes.
+        [Primeira Luz (First Light) — passiva única][Recebe 2% de cura e Resistência do Escudo e 15 de Poder de Habilidade a cada 100% de Regeneração de Mana base.]
+        Mecânica (wiki): +2% de Poder de Cura e Escudo e +15 de Poder de Habilidade por 100% de Regeneração de Mana base adicional. Só com o próprio item: +15 de PdH e +2% de Poder de Cura e Escudo → 60 de PdH e 18% de Poder de Cura e Escudo no total; +15 de PdH e +2% por 100% de Regeneração de Mana base de outras fontes.
     ]
     Análise de custo[
-        Valor de Ouro: 45 PdH = 900g; 100% Regeneração de Mana base = 400g; 16% Poder de Cura e Escudo = 800g; total 2.100g. Primeira Luz (dos atributos base): 10 PdH = 200g + 2% Poder de Cura e Escudo = 100g; total 2.400g. Por 100% de Regeneração de Mana base: 300g
-        Eficiência de Ouro: 96% (base); +12% por 100% de Regeneração de Mana base de outras fontes
+        Valor de Ouro: 45 PdH = 900g; 100% Regeneração de Mana base = 400g; 16% Poder de Cura e Escudo = 800g; total 2.100g. Primeira Luz (dos atributos base): 15 PdH = 300g + 2% Poder de Cura e Escudo = 100g; total 2.500g. Por 100% de Regeneração de Mana base: 400g
+        Eficiência de Ouro: 100% (base); +16% por 100% de Regeneração de Mana base de outras fontes
         Valor de Ouro (atributos): 2.100g
-        Valor de Ouro (base): 2.400g
+        Valor de Ouro (base): 2.500g
     ]
     Ápice[
-        Sem teto documentado: cresce com a Regeneração de Mana base de outras fontes (ex.: +200% de outras fontes → 75 de PdH, 22% de Poder de Cura e Escudo).
+        Sem teto documentado: cresce com a Regeneração de Mana base de outras fontes (ex.: +200% de outras fontes → 90 de PdH, 22% de Poder de Cura e Escudo).
     ]
     Ápice numérico[
-        Valor de Ouro no ápice: none (sem teto: +300g por 100% de Regeneração de Mana base de outras fontes)
-        Eficiência de Ouro no ápice: none (sem teto: +12% por 100% de Regeneração de Mana base de outras fontes)
+        Valor de Ouro no ápice: none (sem teto: +400g por 100% de Regeneração de Mana base de outras fontes)
+        Eficiência de Ouro no ápice: none (sem teto: +16% por 100% de Regeneração de Mana base de outras fontes)
     ]
     Notas: O cliente pt_BR grafa "Cura e Resistência do Escudo"; catálogo adota "Poder de Cura e Escudo".
     Notas de ARAM: none
@@ -4710,12 +4710,12 @@ Auronúcleo: Dawncore[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g): Poder de Habilidade 45(+50)=95
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.500g = 187,5g (líquido: 2.312,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dawncore") · https://wiki.leagueoflegends.com/en-us/Dawncore · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dawncore") · https://wiki.leagueoflegends.com/en-us/Dawncore · Data Dragon pt_BR 16.21.1
 ]
 
 Couraça do Defunto: Dead Man's Plate[
     ID: 3742
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3742.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3742.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g
@@ -4759,12 +4759,12 @@ Couraça do Defunto: Dead Man's Plate[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Velocidade de Movimento não conta): Vida 350(+185)=535; Armadura 55(+25)=80
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.900g = 217,5g (líquido: 2.682,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dead Man's Plate") · https://wiki.leagueoflegends.com/en-us/Dead_Man's_Plate · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dead Man's Plate") · https://wiki.leagueoflegends.com/en-us/Dead_Man's_Plate · Data Dragon pt_BR 16.21.1
 ]
 
 Dança da Morte: Death's Dance[
     ID: 6333
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6333.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6333.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.300g
@@ -4802,12 +4802,12 @@ Dança da Morte: Death's Dance[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Dano de Ataque 60(+9,52)=69,52; Armadura 50(+16,67)=66,67; Aceleração de Habilidade 15(+10,67)=25,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.300g = 247,5g (líquido: 3.052,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Death's Dance") · https://wiki.leagueoflegends.com/en-us/Death's_Dance · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Death's Dance") · https://wiki.leagueoflegends.com/en-us/Death's_Dance · Data Dragon pt_BR 16.21.1
 ]
 
 Criassonhos: Dream Maker[
     ID: 3870
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3870.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3870.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift
     Preço: 400g
@@ -4850,12 +4850,12 @@ Criassonhos: Dream Maker[
     Mestre Forjador: Não elegível (classe Legendary Support Item)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): none (item Lendário da linha de Suporte, obtido gratuitamente por transformação — sem compra, sem reembolso; decisão de 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dream Maker") · https://wiki.leagueoflegends.com/en-us/Dream_Maker · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dream Maker") · https://wiki.leagueoflegends.com/en-us/Dream_Maker · Data Dragon pt_BR 16.21.1
 ]
 
 Aurora e Crepúsculo: Dusk and Dawn[
     ID: 2510
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2510.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2510.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.100g
@@ -4892,12 +4892,12 @@ Aurora e Crepúsculo: Dusk and Dawn[
     Mestre Forjador: Elegível — 4 categorias upgradáveis (250g cada): Vida 300(+90)=390; Poder de Habilidade 60(+12,5)=72,5; Aceleração de Habilidade 20(+8)=28; Velocidade de Ataque 20%(+8,33%)=28,33%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.100g = 232,5g (líquido: 2.867,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dusk and Dawn") · https://wiki.leagueoflegends.com/en-us/Dusk_and_Dawn · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Dusk and Dawn") · https://wiki.leagueoflegends.com/en-us/Dusk_and_Dawn · Data Dragon pt_BR 16.21.1
 ]
 
 Ecos de Helia: Echoes of Helia[
     ID: 6620
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6620.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6620.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.200g
@@ -4938,12 +4938,12 @@ Ecos de Helia: Echoes of Helia[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada; Regeneração de Mana não conta): Poder de Habilidade 35(+16,67)=51,67; Vida 200(+125)=325; Aceleração de Habilidade 20(+10,67)=30,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.200g = 165g (líquido: 2.035g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Echoes of Helia") · https://wiki.leagueoflegends.com/en-us/Echoes_of_Helia · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Echoes of Helia") · https://wiki.leagueoflegends.com/en-us/Echoes_of_Helia · Data Dragon pt_BR 16.21.1
 ]
 
 Eclipse: Eclipse[
     ID: 6692
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6692.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6692.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g
@@ -4982,12 +4982,12 @@ Eclipse: Eclipse[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Dano de Ataque 60(+14,29)=74,29; Aceleração de Habilidade 15(+16)=31
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.900g = 217,5g (líquido: 2.682,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Eclipse") · https://wiki.leagueoflegends.com/en-us/Eclipse · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Eclipse") · https://wiki.leagueoflegends.com/en-us/Eclipse · Data Dragon pt_BR 16.21.1
 ]
 
 Limiar da Noite: Edge of Night[
     ID: 3814
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3814.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3814.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -5023,12 +5023,12 @@ Limiar da Noite: Edge of Night[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Letalidade não conta): Dano de Ataque 50(+14,29)=64,29; Vida 250(+185)=435
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Edge of Night") · https://wiki.leagueoflegends.com/en-us/Edge_of_Night · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Edge of Night") · https://wiki.leagueoflegends.com/en-us/Edge_of_Night · Data Dragon pt_BR 16.21.1
 ]
 
 Fome Eterna: Endless Hunger[
     ID: 2517
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2517.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2517.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.100g
@@ -5072,12 +5072,12 @@ Fome Eterna: Endless Hunger[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Vampirismo e Tenacidade não contam): Dano de Ataque 65(+28,57)=93,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.100g = 232,5g (líquido: 2.867,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Endless Hunger") · https://wiki.leagueoflegends.com/en-us/Endless_Hunger · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Endless Hunger") · https://wiki.leagueoflegends.com/en-us/Endless_Hunger · Data Dragon pt_BR 16.21.1
 ]
 
 Colhedor de Essência: Essence Reaver[
     ID: 3508
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3508.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3508.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.050g
@@ -5117,12 +5117,12 @@ Colhedor de Essência: Essence Reaver[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Acerto Crítico não conta): Dano de Ataque 50(+14,29)=64,29; Aceleração de Habilidade 20(+16)=36
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.050g = 228,75g (líquido: 2.821,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Essence Reaver") · https://wiki.leagueoflegends.com/en-us/Essence_Reaver · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Essence Reaver") · https://wiki.leagueoflegends.com/en-us/Essence_Reaver · Data Dragon pt_BR 16.21.1
 ]
 
 Hexoplaca Experimental: Experimental Hexplate[
     ID: 3073
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3073.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3073.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -5167,7 +5167,7 @@ Hexoplaca Experimental: Experimental Hexplate[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Dano de Ataque 40(+9,52)=49,52; Velocidade de Ataque 20%(+11,11%)=31,11%; Vida 450(+125)=575
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Experimental Hexplate") · https://wiki.leagueoflegends.com/en-us/Experimental_Hexplate · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Experimental Hexplate") · https://wiki.leagueoflegends.com/en-us/Experimental_Hexplate · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -5176,7 +5176,7 @@ Hexoplaca Experimental: Experimental Hexplate[
 ```
 Dardos de Caça-Demônios: Fiendhunter Bolts[
     ID: 2512
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2512.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2512.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.650g
@@ -5220,12 +5220,12 @@ Dardos de Caça-Demônios: Fiendhunter Bolts[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Acerto Crítico e Velocidade de Movimento não contam): Velocidade de Ataque 45%(+33,33%)=78,33%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.650g = 198,75g (líquido: 2.451,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Fiendhunter Bolts") · https://wiki.leagueoflegends.com/en-us/Fiendhunter_Bolts · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Fiendhunter Bolts") · https://wiki.leagueoflegends.com/en-us/Fiendhunter_Bolts · Data Dragon pt_BR 16.21.1
 ]
 
 Força da Natureza: Force of Nature[
     ID: 4401
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4401.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4401.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -5267,12 +5267,12 @@ Força da Natureza: Force of Nature[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Velocidade de Movimento não conta): Vida 400(+185)=585; Resistência Mágica 55(+27,78)=82,78
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Force of Nature") · https://wiki.leagueoflegends.com/en-us/Force_of_Nature · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Force of Nature") · https://wiki.leagueoflegends.com/en-us/Force_of_Nature · Data Dragon pt_BR 16.21.1
 ]
 
 Coração Congelado: Frozen Heart[
     ID: 3110
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3110.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3110.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.500g
@@ -5308,12 +5308,12 @@ Coração Congelado: Frozen Heart[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Mana não conta): Armadura 75(+25)=100; Aceleração de Habilidade 20(+16)=36
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.500g = 187,5g (líquido: 2.312,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Frozen Heart") · https://wiki.leagueoflegends.com/en-us/Frozen_Heart · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Frozen Heart") · https://wiki.leagueoflegends.com/en-us/Frozen_Heart · Data Dragon pt_BR 16.21.1
 ]
 
 Anjo Guardião: Guardian Angel[
     ID: 3026
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3026.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3026.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift
     Preço: 3.200g
@@ -5348,12 +5348,12 @@ Anjo Guardião: Guardian Angel[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Dano de Ataque 55(+14,29)=69,29; Armadura 45(+25)=70
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.200g = 240g (líquido: 2.960g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guardian Angel") · https://wiki.leagueoflegends.com/en-us/Guardian_Angel · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guardian Angel") · https://wiki.leagueoflegends.com/en-us/Guardian_Angel · Data Dragon pt_BR 16.21.1
 ]
 
 Lâmina da Fúria de Guinsoo: Guinsoo's Rageblade[
     ID: 3124
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3124.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3124.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -5397,12 +5397,12 @@ Lâmina da Fúria de Guinsoo: Guinsoo's Rageblade[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Dano de Ataque 30(+9,52)=39,52; Poder de Habilidade 30(+16,67)=46,67; Velocidade de Ataque 25%(+11,11%)=36,11%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guinsoo's Rageblade") · https://wiki.leagueoflegends.com/en-us/Guinsoo's_Rageblade · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Guinsoo's Rageblade") · https://wiki.leagueoflegends.com/en-us/Guinsoo's_Rageblade · Data Dragon pt_BR 16.21.1
 ]
 
 Coração de Aço: Heartsteel[
     ID: 3084
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3084.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3084.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -5443,12 +5443,12 @@ Coração de Aço: Heartsteel[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g): Vida 900(+375)=1.275
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Heartsteel") · https://wiki.leagueoflegends.com/en-us/Heartsteel · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Heartsteel") · https://wiki.leagueoflegends.com/en-us/Heartsteel · Data Dragon pt_BR 16.21.1
 ]
 
 Hexótica C44: Hexoptics C44[
     ID: 2523
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2523.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2523.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -5490,12 +5490,12 @@ Hexótica C44: Hexoptics C44[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Acerto Crítico não conta): Dano de Ataque 55(+28,57)=83,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hexoptics C44") · https://wiki.leagueoflegends.com/en-us/Hexoptics_C44 · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hexoptics C44") · https://wiki.leagueoflegends.com/en-us/Hexoptics_C44 · Data Dragon pt_BR 16.21.1
 ]
 
 Pistola Laminar Hextec: Hextech Gunblade[
     ID: 3146
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3146.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3146.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -5531,12 +5531,12 @@ Pistola Laminar Hextec: Hextech Gunblade[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Vampirismo não conta): Poder de Habilidade 80(+25)=105; Dano de Ataque 40(+14,29)=54,29
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hextech Gunblade") · https://wiki.leagueoflegends.com/en-us/Hextech_Gunblade · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hextech Gunblade") · https://wiki.leagueoflegends.com/en-us/Hextech_Gunblade · Data Dragon pt_BR 16.21.1
 ]
 
 Explocinturão Hextec: Hextech Rocketbelt[
     ID: 3152
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3152.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3152.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.650g
@@ -5572,12 +5572,12 @@ Explocinturão Hextec: Hextech Rocketbelt[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Poder de Habilidade 60(+16,67)=76,67; Vida 350(+125)=475; Aceleração de Habilidade 10(+10,67)=20,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.650g = 198,75g (líquido: 2.451,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hextech Rocketbelt") · https://wiki.leagueoflegends.com/en-us/Hextech_Rocketbelt · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hextech Rocketbelt") · https://wiki.leagueoflegends.com/en-us/Hextech_Rocketbelt · Data Dragon pt_BR 16.21.1
 ]
 
 Resplendor Vazio: Hollow Radiance[
     ID: 6664
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6664.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6664.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -5616,12 +5616,12 @@ Resplendor Vazio: Hollow Radiance[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Vida 400(+125)=525; Resistência Mágica 40(+18,52)=58,52; Aceleração de Habilidade 10(+10,67)=20,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hollow Radiance") · https://wiki.leagueoflegends.com/en-us/Hollow_Radiance · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hollow Radiance") · https://wiki.leagueoflegends.com/en-us/Hollow_Radiance · Data Dragon pt_BR 16.21.1
 ]
 
 Foco do Horizonte: Horizon Focus[
     ID: 4628
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4628.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4628.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.700g
@@ -5662,12 +5662,12 @@ Foco do Horizonte: Horizon Focus[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Poder de Habilidade 75(+25)=100; Aceleração de Habilidade 25(+16)=41
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.700g = 202,5g (líquido: 2.497,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Horizon Focus") · https://wiki.leagueoflegends.com/en-us/Horizon_Focus · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Horizon Focus") · https://wiki.leagueoflegends.com/en-us/Horizon_Focus · Data Dragon pt_BR 16.21.1
 ]
 
 Húbris: Hubris[
     ID: 6697
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6697.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6697.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -5680,23 +5680,23 @@ Húbris: Hubris[
         +10 de Aceleração de Habilidade
     ]
     Habilidade[
-        [Eminência (Eminence) — passiva única][Quando um Campeão a quem você tenha causado dano nos últimos 3s for abatido, recebe 12 de Dano de Ataque mais 3 por Campeão abatido por 90s.]
-        Mecânica (wiki): abater ou assistir um campeão inimigo até 3s após causar dano a ele gera 1 acúmulo permanente e concede 12 (+3 por acúmulo) de DdA bônus por 90s → 15 no 1º abate, 42 no 10º. Abates subsequentes com Eminência ativa renovam a duração e atualizam o valor. O buff é removido ao morrer, como a maioria dos buffs; os acúmulos permanecem.
+        [Eminência (Eminence) — passiva única][Quando um Campeão a quem você tenha causado dano nos últimos 3s for abatido, recebe 0 de Dano de Ataque mais 0 por Campeão abatido por 90s.]
+        Mecânica (wiki): abater ou assistir um campeão inimigo até 3s após causar dano a ele gera 1 acúmulo permanente e concede 15 (corpo a corpo) / 10 (à distância) (+3 / +2 por acúmulo) de DdA bônus por 90s → 18 / 12 no 1º abate, 45 / 30 no 10º. Abates subsequentes com Eminência ativa renovam a duração e atualizam o valor. O buff é removido ao morrer, como a maioria dos buffs; os acúmulos permanecem.
     ]
     Análise de custo[
-        Valor de Ouro: 55 DdA = 1.925g; 10 AdH = 500g; 18 Letalidade = 540g; total 2.965g. Eminência: 12 DdA = 420g; por acúmulo: 3 DdA = 105g
-        Eficiência de Ouro: 105,89% (base); +15% com Eminência ativa, +3,75% por acúmulo
+        Valor de Ouro: 55 DdA = 1.925g; 10 AdH = 500g; 18 Letalidade = 540g; total 2.965g. Eminência: 15 / 10 DdA = 525g / 350g; por acúmulo: 3 / 2 DdA = 105g / 70g
+        Eficiência de Ouro: 105,89% (base); +18,75% / +12,5% com Eminência ativa, +3,75% / +2,5% por acúmulo
         Valor de Ouro (atributos): 2.965g
         Valor de Ouro (base): 2.965g
     ]
     Ápice[
-        Sem teto documentado de acúmulos. Com Eminência ativa e N acúmulos: 55 + 12 + 3N de DdA (ex.: 97 com 10 acúmulos).
+        Sem teto documentado de acúmulos. Com Eminência ativa e N acúmulos: 55 + 15 + 3N (corpo a corpo) / 55 + 10 + 2N (à distância) de DdA (ex.: 100 / 85 com 10 acúmulos).
     ]
     Ápice numérico[
-        Valor de Ouro no ápice: none (sem teto: 420g com Eminência ativa + 105g por acúmulo)
-        Eficiência de Ouro no ápice: none (sem teto: +15% com Eminência ativa, +3,75% por acúmulo)
+        Valor de Ouro no ápice: none (sem teto: 525g / 350g com Eminência ativa + 105g / 70g por acúmulo)
+        Eficiência de Ouro no ápice: none (sem teto: +18,75% / +12,5% com Eminência ativa, +3,75% / +2,5% por acúmulo)
     ]
-    Notas: none
+    Notas: O texto oficial pt_BR exibe "0 de Dano de Ataque mais 0" na Eminência desde o 16.21.1 (placeholders); valores reais em Mecânica.
     Notas de ARAM: Variante própria (ID 126697). Preço 2.950g; Dano de Ataque 55; Aceleração de Habilidade 10; Eminência base 15 (corpo a corpo) / 10 (à distância); por acúmulo 2 / 1; duração 90s / 45s.
     Notas de ARAM: Mayhem: none
     Categoria de Atributo: Dano de Ataque, Letalidade, Aceleração de Habilidade
@@ -5707,12 +5707,12 @@ Húbris: Hubris[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Letalidade não conta): Dano de Ataque 55(+14,29)=69,29; Aceleração de Habilidade 10(+16)=26
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hubris") · https://wiki.leagueoflegends.com/en-us/Hubris · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hubris") · https://wiki.leagueoflegends.com/en-us/Hubris · Data Dragon pt_BR 16.21.1
 ]
 
 Quebracascos: Hullbreaker[
     ID: 3181
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3181.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3181.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -5754,12 +5754,12 @@ Quebracascos: Hullbreaker[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Velocidade de Movimento não conta): Dano de Ataque 40(+14,29)=54,29; Vida 500(+185)=685
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hullbreaker") · https://wiki.leagueoflegends.com/en-us/Hullbreaker · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Hullbreaker") · https://wiki.leagueoflegends.com/en-us/Hullbreaker · Data Dragon pt_BR 16.21.1
 ]
 
 Manopla dos Glacinatas: Iceborn Gauntlet[
     ID: 6662
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6662.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6662.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g
@@ -5795,12 +5795,12 @@ Manopla dos Glacinatas: Iceborn Gauntlet[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Vida 300(+125)=425; Armadura 50(+16,67)=66,67; Aceleração de Habilidade 15(+10,67)=25,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.900g = 217,5g (líquido: 2.682,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Iceborn Gauntlet") · https://wiki.leagueoflegends.com/en-us/Iceborn_Gauntlet · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Iceborn Gauntlet") · https://wiki.leagueoflegends.com/en-us/Iceborn_Gauntlet · Data Dragon pt_BR 16.21.1
 ]
 
 Arco-escudo Imortal: Immortal Shieldbow[
     ID: 6673
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6673.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6673.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -5835,7 +5835,7 @@ Arco-escudo Imortal: Immortal Shieldbow[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Acerto Crítico não conta): Dano de Ataque 55(+28,57)=83,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Immortal Shieldbow") · https://wiki.leagueoflegends.com/en-us/Immortal_Shieldbow · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Immortal Shieldbow") · https://wiki.leagueoflegends.com/en-us/Immortal_Shieldbow · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -5844,7 +5844,7 @@ Arco-escudo Imortal: Immortal Shieldbow[
 ```
 Mandato Imperial: Imperial Mandate[
     ID: 4005
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4005.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4005.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.400g
@@ -5886,12 +5886,12 @@ Mandato Imperial: Imperial Mandate[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Regeneração de Mana não conta): Poder de Habilidade 60(+25)=85; Aceleração de Habilidade 15(+16)=31
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.400g = 180g (líquido: 2.220g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Imperial Mandate") · https://wiki.leagueoflegends.com/en-us/Imperial_Mandate · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Imperial Mandate") · https://wiki.leagueoflegends.com/en-us/Imperial_Mandate · Data Dragon pt_BR 16.21.1
 ]
 
 Gume do Infinito: Infinity Edge[
     ID: 3031
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3031.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3031.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.500g
@@ -5926,12 +5926,12 @@ Gume do Infinito: Infinity Edge[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Acerto Crítico e Dano Crítico não contam): Dano de Ataque 75(+28,57)=103,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.500g = 262,5g (líquido: 3.237,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Infinity Edge") · https://wiki.leagueoflegends.com/en-us/Infinity_Edge · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Infinity Edge") · https://wiki.leagueoflegends.com/en-us/Infinity_Edge · Data Dragon pt_BR 16.21.1
 ]
 
 Jak'Sho, o Inconstante: Jak'Sho, The Protean[
     ID: 6665
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6665.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6665.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.200g
@@ -5973,12 +5973,12 @@ Jak'Sho, o Inconstante: Jak'Sho, The Protean[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Vida 350(+125)=475; Armadura 45(+16,67)=61,67; Resistência Mágica 45(+18,52)=63,52
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.200g = 240g (líquido: 2.960g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Jak'Sho, The Protean") · https://wiki.leagueoflegends.com/en-us/Jak'Sho,_The_Protean · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Jak'Sho, The Protean") · https://wiki.leagueoflegends.com/en-us/Jak'Sho,_The_Protean · Data Dragon pt_BR 16.21.1
 ]
 
 Rookern Lamúrico: Kaenic Rookern[
     ID: 2504
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2504.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2504.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g
@@ -6018,12 +6018,12 @@ Rookern Lamúrico: Kaenic Rookern[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Vida 400(+185)=585; Resistência Mágica 80(+27,78)=107,78
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.900g = 217,5g (líquido: 2.682,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Kaenic Rookern") · https://wiki.leagueoflegends.com/en-us/Kaenic_Rookern · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Kaenic Rookern") · https://wiki.leagueoflegends.com/en-us/Kaenic_Rookern · Data Dragon pt_BR 16.21.1
 ]
 
 Juramento do Cavaleiro: Knight's Vow[
     ID: 3109
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3109.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3109.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.300g
@@ -6062,12 +6062,12 @@ Juramento do Cavaleiro: Knight's Vow[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada; Regeneração de Vida não conta): Vida 200(+125)=325; Armadura 40(+16,67)=56,67; Aceleração de Habilidade 10(+10,67)=20,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.300g = 172,5g (líquido: 2.127,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Knight's Vow") · https://wiki.leagueoflegends.com/en-us/Knight's_Vow · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Knight's Vow") · https://wiki.leagueoflegends.com/en-us/Knight's_Vow · Data Dragon pt_BR 16.21.1
 ]
 
 Mata-Cráquens: Kraken Slayer[
     ID: 6672
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6672.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6672.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -6107,12 +6107,12 @@ Mata-Cráquens: Kraken Slayer[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Velocidade de Movimento não conta): Dano de Ataque 45(+14,29)=59,29; Velocidade de Ataque 40%(+16,67%)=56,67%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Kraken Slayer") · https://wiki.leagueoflegends.com/en-us/Kraken_Slayer · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Kraken Slayer") · https://wiki.leagueoflegends.com/en-us/Kraken_Slayer · Data Dragon pt_BR 16.21.1
 ]
 
 Tormento de Liandry: Liandry's Torment[
     ID: 6653
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6653.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6653.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -6153,12 +6153,12 @@ Tormento de Liandry: Liandry's Torment[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Poder de Habilidade 60(+25)=85; Vida 300(+185)=485
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Liandry's Torment") · https://wiki.leagueoflegends.com/en-us/Liandry's_Torment · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Liandry's Torment") · https://wiki.leagueoflegends.com/en-us/Liandry's_Torment · Data Dragon pt_BR 16.21.1
 ]
 
 Perdição de Lich: Lich Bane[
     ID: 3100
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3100.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3100.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g
@@ -6194,12 +6194,12 @@ Perdição de Lich: Lich Bane[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Velocidade de Movimento não conta): Poder de Habilidade 100(+25)=125; Aceleração de Habilidade 10(+16)=26
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.900g = 217,5g (líquido: 2.682,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Lich Bane") · https://wiki.leagueoflegends.com/en-us/Lich_Bane · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Lich Bane") · https://wiki.leagueoflegends.com/en-us/Lich_Bane · Data Dragon pt_BR 16.21.1
 ]
 
 Medalhão dos Solari de Ferro: Locket of the Iron Solari[
     ID: 3190
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3190.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3190.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.200g
@@ -6240,12 +6240,12 @@ Medalhão dos Solari de Ferro: Locket of the Iron Solari[
     Mestre Forjador: Elegível — 4 categorias upgradáveis (250g cada): Vida 200(+90)=290; Armadura 30(+12,5)=42,5; Resistência Mágica 30(+13,89)=43,89; Aceleração de Habilidade 10(+8)=18
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.200g = 165g (líquido: 2.035g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Locket of the Iron Solari") · https://wiki.leagueoflegends.com/en-us/Locket_of_the_Iron_Solari · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Locket of the Iron Solari") · https://wiki.leagueoflegends.com/en-us/Locket_of_the_Iron_Solari · Data Dragon pt_BR 16.21.1
 ]
 
 Lembranças do Lorde Dominik: Lord Dominik's Regards[
     ID: 3036
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3036.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3036.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.300g
@@ -6285,12 +6285,12 @@ Lembranças do Lorde Dominik: Lord Dominik's Regards[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Penetração de Armadura e Acerto Crítico não contam): Dano de Ataque 35(+28,57)=63,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.300g = 247,5g (líquido: 3.052,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Lord Dominik's Regards") · https://wiki.leagueoflegends.com/en-us/Lord_Dominik's_Regards · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Lord Dominik's Regards") · https://wiki.leagueoflegends.com/en-us/Lord_Dominik's_Regards · Data Dragon pt_BR 16.21.1
 ]
 
 Eco de Luden: Luden's Echo[
     ID: 6655
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6655.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6655.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.750g
@@ -6330,12 +6330,12 @@ Eco de Luden: Luden's Echo[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Mana não conta): Poder de Habilidade 100(+25)=125; Aceleração de Habilidade 10(+16)=26
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.750g = 206,25g (líquido: 2.543,75g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Luden's Echo") · https://wiki.leagueoflegends.com/en-us/Luden's_Echo · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Luden's Echo") · https://wiki.leagueoflegends.com/en-us/Luden's_Echo · Data Dragon pt_BR 16.21.1
 ]
 
 Malevolência: Malignance[
     ID: 3118
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3118.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3118.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.700g
@@ -6378,12 +6378,12 @@ Malevolência: Malignance[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Mana não conta): Poder de Habilidade 90(+25)=115; Aceleração de Habilidade 15(+16)=31
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.700g = 202,5g (líquido: 2.497,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Malignance") · https://wiki.leagueoflegends.com/en-us/Malignance · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Malignance") · https://wiki.leagueoflegends.com/en-us/Malignance · Data Dragon pt_BR 16.21.1
 ]
 
 Manamune: Manamune[
     ID: 3004
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3004.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3004.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g
@@ -6429,12 +6429,12 @@ Manamune: Manamune[
     Mestre Forjador: Não elegível (linha da Lágrima da Deusa)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): 7,5% de 2.900g = 217,5g (líquido: 2.682,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Manamune") · https://wiki.leagueoflegends.com/en-us/Manamune · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Manamune") · https://wiki.leagueoflegends.com/en-us/Manamune · Data Dragon pt_BR 16.21.1
 ]
 
 Mandíbula de Malmortius: Maw of Malmortius[
     ID: 3156
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3156.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3156.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.100g
@@ -6475,12 +6475,12 @@ Mandíbula de Malmortius: Maw of Malmortius[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Dano de Ataque 60(+9,52)=69,52; Aceleração de Habilidade 15(+10,67)=25,67; Resistência Mágica 40(+18,52)=58,52
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.100g = 232,5g (líquido: 2.867,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Maw of Malmortius") · https://wiki.leagueoflegends.com/en-us/Maw_of_Malmortius · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Maw of Malmortius") · https://wiki.leagueoflegends.com/en-us/Maw_of_Malmortius · Data Dragon pt_BR 16.21.1
 ]
 
 Ladrão de Almas de Mejai: Mejai's Soulstealer[
     ID: 3041
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3041.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3041.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift
     Preço: 1.500g
@@ -6521,7 +6521,7 @@ Ladrão de Almas de Mejai: Mejai's Soulstealer[
     Mestre Forjador: Não elegível (Ladrão de Almas de Mejai)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): 7,5% de 1.500g = 112,5g (líquido: 1.387,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mejai's Soulstealer") · https://wiki.leagueoflegends.com/en-us/Mejai's_Soulstealer · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mejai's Soulstealer") · https://wiki.leagueoflegends.com/en-us/Mejai's_Soulstealer · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -6530,7 +6530,7 @@ Ladrão de Almas de Mejai: Mejai's Soulstealer[
 ```
 Cimitarra Mercurial: Mercurial Scimitar[
     ID: 3139
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3139.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3139.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.200g
@@ -6566,12 +6566,12 @@ Cimitarra Mercurial: Mercurial Scimitar[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Roubo de Vida não conta): Dano de Ataque 50(+14,29)=64,29; Resistência Mágica 35(+27,78)=62,78
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.200g = 240g (líquido: 2.960g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mercurial Scimitar") · https://wiki.leagueoflegends.com/en-us/Mercurial_Scimitar · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mercurial Scimitar") · https://wiki.leagueoflegends.com/en-us/Mercurial_Scimitar · Data Dragon pt_BR 16.21.1
 ]
 
 Bênção de Mikael: Mikael's Blessing[
     ID: 3222
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3222.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3222.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.300g
@@ -6608,12 +6608,12 @@ Bênção de Mikael: Mikael's Blessing[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Regeneração de Mana e Poder de Cura e Escudo não contam): Vida 250(+185)=435; Aceleração de Habilidade 15(+16)=31
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.300g = 172,5g (líquido: 2.127,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mikael's Blessing") · https://wiki.leagueoflegends.com/en-us/Mikael's_Blessing · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mikael's Blessing") · https://wiki.leagueoflegends.com/en-us/Mikael's_Blessing · Data Dragon pt_BR 16.21.1
 ]
 
 Regenerador de Pedra Lunar: Moonstone Renewer[
     ID: 6617
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6617.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6617.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.200g
@@ -6650,12 +6650,12 @@ Regenerador de Pedra Lunar: Moonstone Renewer[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada; Regeneração de Mana não conta): Poder de Habilidade 25(+16,67)=41,67; Vida 200(+125)=325; Aceleração de Habilidade 20(+10,67)=30,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.200g = 165g (líquido: 2.035g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Moonstone Renewer") · https://wiki.leagueoflegends.com/en-us/Moonstone_Renewer · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Moonstone Renewer") · https://wiki.leagueoflegends.com/en-us/Moonstone_Renewer · Data Dragon pt_BR 16.21.1
 ]
 
 Morellonomicon: Morellonomicon[
     ID: 3165
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3165.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3165.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.850g
@@ -6691,12 +6691,12 @@ Morellonomicon: Morellonomicon[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Poder de Habilidade 75(+16,67)=91,67; Vida 350(+125)=475; Aceleração de Habilidade 15(+10,67)=25,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.850g = 213,75g (líquido: 2.636,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Morellonomicon") · https://wiki.leagueoflegends.com/en-us/Morellonomicon · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Morellonomicon") · https://wiki.leagueoflegends.com/en-us/Morellonomicon · Data Dragon pt_BR 16.21.1
 ]
 
 Lembrete Mortal: Mortal Reminder[
     ID: 3033
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3033.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3033.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -6732,12 +6732,12 @@ Lembrete Mortal: Mortal Reminder[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Penetração de Armadura e Acerto Crítico não contam): Dano de Ataque 35(+28,57)=63,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mortal Reminder") · https://wiki.leagueoflegends.com/en-us/Mortal_Reminder · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Mortal Reminder") · https://wiki.leagueoflegends.com/en-us/Mortal_Reminder · Data Dragon pt_BR 16.21.1
 ]
 
 Dente de Na'Shor: Nashor's Tooth[
     ID: 3115
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3115.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3115.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g
@@ -6778,12 +6778,12 @@ Dente de Na'Shor: Nashor's Tooth[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Poder de Habilidade 80(+16,67)=96,67; Velocidade de Ataque 50%(+11,11%)=61,11%; Aceleração de Habilidade 15(+10,67)=25,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.900g = 217,5g (líquido: 2.682,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Nashor's Tooth") · https://wiki.leagueoflegends.com/en-us/Nashor's_Tooth · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Nashor's Tooth") · https://wiki.leagueoflegends.com/en-us/Nashor's_Tooth · Data Dragon pt_BR 16.21.1
 ]
 
 Adaga Oscilante Navori: Navori Flickerblade[
     ID: 6675
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6675.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6675.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.650g
@@ -6819,12 +6819,12 @@ Adaga Oscilante Navori: Navori Flickerblade[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Acerto Crítico e Velocidade de Movimento não contam): Velocidade de Ataque 40%(+33,33%)=73,33%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.650g = 198,75g (líquido: 2.451,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Navori Flickerblade") · https://wiki.leagueoflegends.com/en-us/Navori_Flickerblade · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Navori Flickerblade") · https://wiki.leagueoflegends.com/en-us/Navori_Flickerblade · Data Dragon pt_BR 16.21.1
 ]
 
 Armadura Sangrenta do Suserano: Overlord's Bloodmail[
     ID: 2501
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2501.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2501.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.300g
@@ -6866,12 +6866,12 @@ Armadura Sangrenta do Suserano: Overlord's Bloodmail[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Dano de Ataque 30(+14,29)=44,29; Vida 550(+185)=735
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.300g = 247,5g (líquido: 3.052,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Overlord's Bloodmail") · https://wiki.leagueoflegends.com/en-us/Overlord's_Bloodmail · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Overlord's Bloodmail") · https://wiki.leagueoflegends.com/en-us/Overlord's_Bloodmail · Data Dragon pt_BR 16.21.1
 ]
 
 Dançarina Fantasma: Phantom Dancer[
     ID: 3046
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3046.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3046.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.650g
@@ -6907,12 +6907,12 @@ Dançarina Fantasma: Phantom Dancer[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Acerto Crítico e Velocidade de Movimento não contam): Velocidade de Ataque 65%(+33,33%)=98,33%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.650g = 198,75g (líquido: 2.451,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Phantom Dancer") · https://wiki.leagueoflegends.com/en-us/Phantom_Dancer · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Phantom Dancer") · https://wiki.leagueoflegends.com/en-us/Phantom_Dancer · Data Dragon pt_BR 16.21.1
 ]
 
 Hidra Profana: Profane Hydra[
     ID: 6698
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6698.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6698.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.850g
@@ -6950,12 +6950,12 @@ Hidra Profana: Profane Hydra[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Letalidade não conta): Dano de Ataque 55(+14,29)=69,29; Aceleração de Habilidade 10(+16)=26
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.850g = 213,75g (líquido: 2.636,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Profane Hydra") · https://wiki.leagueoflegends.com/en-us/Profane_Hydra · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Profane Hydra") · https://wiki.leagueoflegends.com/en-us/Profane_Hydra · Data Dragon pt_BR 16.21.1
 ]
 
 Couraça Protoplasmática: Protoplasm Harness[
     ID: 2525
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2525.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2525.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.600g
@@ -6997,12 +6997,12 @@ Couraça Protoplasmática: Protoplasm Harness[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Vida 600(+185)=785; Aceleração de Habilidade 20(+16)=36
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.600g = 195g (líquido: 2.405g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Protoplasm Harness") · https://wiki.leagueoflegends.com/en-us/Protoplasm_Harness · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Protoplasm Harness") · https://wiki.leagueoflegends.com/en-us/Protoplasm_Harness · Data Dragon pt_BR 16.21.1
 ]
 
 Capuz da Morte de Rabadon: Rabadon's Deathcap[
     ID: 3089
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3089.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3089.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.500g
@@ -7041,12 +7041,12 @@ Capuz da Morte de Rabadon: Rabadon's Deathcap[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g): Poder de Habilidade 130(+50)=180
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.500g = 262,5g (líquido: 3.237,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rabadon's Deathcap") · https://wiki.leagueoflegends.com/en-us/Rabadon's_Deathcap · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rabadon's Deathcap") · https://wiki.leagueoflegends.com/en-us/Rabadon's_Deathcap · Data Dragon pt_BR 16.21.1
 ]
 
 Presságio de Randuin: Randuin's Omen[
     ID: 3143
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3143.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3143.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.700g
@@ -7083,12 +7083,12 @@ Presságio de Randuin: Randuin's Omen[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Vida 350(+185)=535; Armadura 75(+25)=100
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.700g = 202,5g (líquido: 2.497,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Randuin's Omen") · https://wiki.leagueoflegends.com/en-us/Randuin's_Omen · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Randuin's Omen") · https://wiki.leagueoflegends.com/en-us/Randuin's_Omen · Data Dragon pt_BR 16.21.1
 ]
 
 Canhão Fumegante: Rapid Firecannon[
     ID: 3094
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3094.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3094.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.650g
@@ -7131,12 +7131,12 @@ Canhão Fumegante: Rapid Firecannon[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Acerto Crítico e Velocidade de Movimento não contam): Velocidade de Ataque 35%(+33,33%)=68,33%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.650g = 198,75g (líquido: 2.451,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rapid Firecannon") · https://wiki.leagueoflegends.com/en-us/Rapid_Firecannon · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rapid Firecannon") · https://wiki.leagueoflegends.com/en-us/Rapid_Firecannon · Data Dragon pt_BR 16.21.1
 ]
 
 Hidra Raivosa: Ravenous Hydra[
     ID: 3074
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3074.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3074.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.300g
@@ -7174,7 +7174,7 @@ Hidra Raivosa: Ravenous Hydra[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Roubo de Vida não conta): Dano de Ataque 65(+14,29)=79,29; Aceleração de Habilidade 15(+16)=31
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.300g = 247,5g (líquido: 3.052,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Ravenous Hydra") · https://wiki.leagueoflegends.com/en-us/Ravenous_Hydra · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Ravenous Hydra") · https://wiki.leagueoflegends.com/en-us/Ravenous_Hydra · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -7183,7 +7183,7 @@ Hidra Raivosa: Ravenous Hydra[
 ```
 Redenção: Redemption[
     ID: 3107
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3107.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3107.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.300g
@@ -7220,12 +7220,12 @@ Redenção: Redemption[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Regeneração de Mana e Poder de Cura e Escudo não contam): Poder de Habilidade 30(+25)=55; Aceleração de Habilidade 15(+16)=31
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.300g = 172,5g (líquido: 2.127,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Redemption") · https://wiki.leagueoflegends.com/en-us/Redemption · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Redemption") · https://wiki.leagueoflegends.com/en-us/Redemption · Data Dragon pt_BR 16.21.1
 ]
 
 Criafendas: Riftmaker[
     ID: 4633
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4633.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4633.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.100g
@@ -7269,12 +7269,12 @@ Criafendas: Riftmaker[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Poder de Habilidade 70(+16,67)=86,67; Vida 350(+125)=475; Aceleração de Habilidade 15(+10,67)=25,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.100g = 232,5g (líquido: 2.867,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Riftmaker") · https://wiki.leagueoflegends.com/en-us/Riftmaker · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Riftmaker") · https://wiki.leagueoflegends.com/en-us/Riftmaker · Data Dragon pt_BR 16.21.1
 ]
 
 Bastão das Eras: Rod of Ages[
     ID: 6657
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6657.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6657.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.600g
@@ -7319,12 +7319,12 @@ Bastão das Eras: Rod of Ages[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Mana não conta): Poder de Habilidade 45(+25)=70; Vida 350(+185)=535
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.600g = 195g (líquido: 2.405g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rod of Ages") · https://wiki.leagueoflegends.com/en-us/Rod_of_Ages · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rod of Ages") · https://wiki.leagueoflegends.com/en-us/Rod_of_Ages · Data Dragon pt_BR 16.21.1
 ]
 
 Furacão de Runaan: Runaan's Hurricane[
     ID: 3085
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3085.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3085.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.650g
@@ -7360,12 +7360,12 @@ Furacão de Runaan: Runaan's Hurricane[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Acerto Crítico e Velocidade de Movimento não contam): Velocidade de Ataque 40%(+33,33%)=73,33%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.650g = 198,75g (líquido: 2.451,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Runaan's Hurricane") · https://wiki.leagueoflegends.com/en-us/Runaan's_Hurricane · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Runaan's Hurricane") · https://wiki.leagueoflegends.com/en-us/Runaan's_Hurricane · Data Dragon pt_BR 16.21.1
 ]
 
 Cetro de Cristal de Rylai: Rylai's Crystal Scepter[
     ID: 3116
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3116.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3116.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.600g
@@ -7400,12 +7400,12 @@ Cetro de Cristal de Rylai: Rylai's Crystal Scepter[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Poder de Habilidade 65(+25)=90; Vida 400(+185)=585
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.600g = 195g (líquido: 2.405g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rylai's Crystal Scepter") · https://wiki.leagueoflegends.com/en-us/Rylai's_Crystal_Scepter · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Rylai's Crystal Scepter") · https://wiki.leagueoflegends.com/en-us/Rylai's_Crystal_Scepter · Data Dragon pt_BR 16.21.1
 ]
 
 Presa da Serpente: Serpent's Fang[
     ID: 6695
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6695.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6695.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.500g
@@ -7440,12 +7440,12 @@ Presa da Serpente: Serpent's Fang[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Letalidade não conta): Dano de Ataque 55(+28,57)=83,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.500g = 187,5g (líquido: 2.312,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Serpent's Fang") · https://wiki.leagueoflegends.com/en-us/Serpent's_Fang · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Serpent's Fang") · https://wiki.leagueoflegends.com/en-us/Serpent's_Fang · Data Dragon pt_BR 16.21.1
 ]
 
 Rancor de Serylda: Serylda's Grudge[
     ID: 6694
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6694.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6694.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -7481,12 +7481,12 @@ Rancor de Serylda: Serylda's Grudge[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Penetração de Armadura não conta): Dano de Ataque 45(+14,29)=59,29; Aceleração de Habilidade 15(+16)=31
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Serylda's Grudge") · https://wiki.leagueoflegends.com/en-us/Serylda's_Grudge · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Serylda's Grudge") · https://wiki.leagueoflegends.com/en-us/Serylda's_Grudge · Data Dragon pt_BR 16.21.1
 ]
 
 Chama Sombria: Shadowflame[
     ID: 4645
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4645.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4645.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.200g
@@ -7525,12 +7525,12 @@ Chama Sombria: Shadowflame[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Penetração Mágica não conta): Poder de Habilidade 110(+50)=160
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.200g = 240g (líquido: 2.960g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Shadowflame") · https://wiki.leagueoflegends.com/en-us/Shadowflame · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Shadowflame") · https://wiki.leagueoflegends.com/en-us/Shadowflame · Data Dragon pt_BR 16.21.1
 ]
 
 Hino Bélico de Shurelya: Shurelya's Battlesong[
     ID: 2065
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2065.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2065.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.200g
@@ -7567,12 +7567,12 @@ Hino Bélico de Shurelya: Shurelya's Battlesong[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Velocidade de Movimento e Regeneração de Mana não contam): Poder de Habilidade 50(+25)=75; Aceleração de Habilidade 15(+16)=31
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.200g = 165g (líquido: 2.035g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Shurelya's Battlesong") · https://wiki.leagueoflegends.com/en-us/Shurelya's_Battlesong · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Shurelya's Battlesong") · https://wiki.leagueoflegends.com/en-us/Shurelya's_Battlesong · Data Dragon pt_BR 16.21.1
 ]
 
 Trenó do Solstício: Solstice Sleigh[
     ID: 3876
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3876.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3876.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift
     Preço: 400g
@@ -7617,12 +7617,12 @@ Trenó do Solstício: Solstice Sleigh[
     Mestre Forjador: Não elegível (classe Legendary Support Item)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): none (item Lendário da linha de Suporte, obtido gratuitamente por transformação — sem compra, sem reembolso; decisão de 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Solstice Sleigh") · https://wiki.leagueoflegends.com/en-us/Solstice_Sleigh · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Solstice Sleigh") · https://wiki.leagueoflegends.com/en-us/Solstice_Sleigh · Data Dragon pt_BR 16.21.1
 ]
 
 Lança de Shojin: Spear of Shojin[
     ID: 3161
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3161.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3161.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.100g
@@ -7664,12 +7664,12 @@ Lança de Shojin: Spear of Shojin[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Dano de Ataque 45(+14,29)=59,29; Vida 450(+185)=635
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.100g = 232,5g (líquido: 2.867,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Spear of Shojin") · https://wiki.leagueoflegends.com/en-us/Spear_of_Shojin · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Spear of Shojin") · https://wiki.leagueoflegends.com/en-us/Spear_of_Shojin · Data Dragon pt_BR 16.21.1
 ]
 
 Alfanje Espectral: Spectral Cutlass[
     ID: 4004
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4004.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4004.png
     Tier: Lendário
     Modo de jogo: ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -7705,12 +7705,12 @@ Alfanje Espectral: Spectral Cutlass[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Letalidade e Velocidade de Movimento não contam): Dano de Ataque 50(+28,57)=78,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Spectral Cutlass") · https://wiki.leagueoflegends.com/en-us/Spectral_Cutlass · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Spectral Cutlass") · https://wiki.leagueoflegends.com/en-us/Spectral_Cutlass · Data Dragon pt_BR 16.21.1
 ]
 
 Semblante Espiritual: Spirit Visage[
     ID: 3065
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3065.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3065.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.700g
@@ -7747,12 +7747,12 @@ Semblante Espiritual: Spirit Visage[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada; Regeneração de Vida não conta): Vida 400(+125)=525; Resistência Mágica 50(+18,52)=68,52; Aceleração de Habilidade 10(+10,67)=20,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.700g = 202,5g (líquido: 2.497,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Spirit Visage") · https://wiki.leagueoflegends.com/en-us/Spirit_Visage · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Spirit Visage") · https://wiki.leagueoflegends.com/en-us/Spirit_Visage · Data Dragon pt_BR 16.21.1
 ]
 
 Cajado Aquafluxo: Staff of Flowing Water[
     ID: 6616
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6616.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6616.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.250g
@@ -7795,12 +7795,12 @@ Cajado Aquafluxo: Staff of Flowing Water[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Regeneração de Mana e Poder de Cura e Escudo não contam): Poder de Habilidade 35(+25)=60; Aceleração de Habilidade 10(+16)=26
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.250g = 168,75g (líquido: 2.081,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Staff of Flowing Water") · https://wiki.leagueoflegends.com/en-us/Staff_of_Flowing_Water · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Staff of Flowing Water") · https://wiki.leagueoflegends.com/en-us/Staff_of_Flowing_Water · Data Dragon pt_BR 16.21.1
 ]
 
 Faca de Statikk: Statikk Shiv[
     ID: 3087
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3087.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3087.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -7845,7 +7845,7 @@ Faca de Statikk: Statikk Shiv[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada; Velocidade de Movimento não conta): Dano de Ataque 45(+9,52)=54,52; Poder de Habilidade 45(+16,67)=61,67; Velocidade de Ataque 30%(+11,11%)=41,11%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Statikk Shiv") · https://wiki.leagueoflegends.com/en-us/Statikk_Shiv · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Statikk Shiv") · https://wiki.leagueoflegends.com/en-us/Statikk_Shiv · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -7854,7 +7854,7 @@ Faca de Statikk: Statikk Shiv[
 ```
 Sinal de Sterak: Sterak's Gage[
     ID: 3053
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3053.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3053.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.200g
@@ -7896,12 +7896,12 @@ Sinal de Sterak: Sterak's Gage[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Tenacidade não conta; o DdA de Garras Caçadoras não é atributo do item): Vida 400(+375)=775
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.200g = 240g (líquido: 2.960g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sterak's Gage") · https://wiki.leagueoflegends.com/en-us/Sterak's_Gage · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sterak's Gage") · https://wiki.leagueoflegends.com/en-us/Sterak's_Gage · Data Dragon pt_BR 16.21.1
 ]
 
 Chuva de Canivete: Stormrazor[
     ID: 3095
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3095.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3095.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.200g
@@ -7944,12 +7944,12 @@ Chuva de Canivete: Stormrazor[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Acerto Crítico não conta): Dano de Ataque 50(+14,29)=64,29; Velocidade de Ataque 25%(+16,67%)=41,67%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.200g = 240g (líquido: 2.960g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Stormrazor") · https://wiki.leagueoflegends.com/en-us/Stormrazor · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Stormrazor") · https://wiki.leagueoflegends.com/en-us/Stormrazor · Data Dragon pt_BR 16.21.1
 ]
 
 Ápice da Tempestade: Stormsurge[
     ID: 4646
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/4646.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/4646.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -7987,12 +7987,12 @@ Chuva de Canivete: Stormrazor[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Penetração Mágica e Velocidade de Movimento não contam): Poder de Habilidade 90(+50)=140
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Stormsurge") · https://wiki.leagueoflegends.com/en-us/Stormsurge · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Stormsurge") · https://wiki.leagueoflegends.com/en-us/Stormsurge · Data Dragon pt_BR 16.21.1
 ]
 
 Quebrapassos: Stridebreaker[
     ID: 6631
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6631.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6631.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.300g
@@ -8035,12 +8035,12 @@ Quebrapassos: Stridebreaker[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Dano de Ataque 40(+9,52)=49,52; Velocidade de Ataque 25%(+11,11%)=36,11%; Vida 450(+125)=575
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.300g = 247,5g (líquido: 3.052,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Stridebreaker") · https://wiki.leagueoflegends.com/en-us/Stridebreaker · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Stridebreaker") · https://wiki.leagueoflegends.com/en-us/Stridebreaker · Data Dragon pt_BR 16.21.1
 ]
 
 Céu Dividido: Sundered Sky[
     ID: 6610
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6610.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6610.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.100g
@@ -8080,12 +8080,12 @@ Céu Dividido: Sundered Sky[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Dano de Ataque 40(+9,52)=49,52; Vida 400(+125)=525; Aceleração de Habilidade 10(+10,67)=20,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.100g = 232,5g (líquido: 2.867,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sundered Sky") · https://wiki.leagueoflegends.com/en-us/Sundered_Sky · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sundered Sky") · https://wiki.leagueoflegends.com/en-us/Sundered_Sky · Data Dragon pt_BR 16.21.1
 ]
 
 Égide de Fogo Solar: Sunfire Aegis[
     ID: 3068
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3068.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3068.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -8121,12 +8121,12 @@ Céu Dividido: Sundered Sky[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Vida 350(+125)=475; Armadura 50(+16,67)=66,67; Aceleração de Habilidade 10(+10,67)=20,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sunfire Aegis") · https://wiki.leagueoflegends.com/en-us/Sunfire_Aegis · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Sunfire Aegis") · https://wiki.leagueoflegends.com/en-us/Sunfire_Aegis · Data Dragon pt_BR 16.21.1
 ]
 
 Terminus: Terminus[
     ID: 3302
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3302.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3302.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -8172,12 +8172,12 @@ Terminus: Terminus[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Dano de Ataque 30(+14,29)=44,29; Velocidade de Ataque 35%(+16,67%)=51,67%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Terminus") · https://wiki.leagueoflegends.com/en-us/Terminus · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Terminus") · https://wiki.leagueoflegends.com/en-us/Terminus · Data Dragon pt_BR 16.21.1
 ]
 
 A Coletora: The Collector[
     ID: 6676
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6676.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6676.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -8215,12 +8215,12 @@ A Coletora: The Collector[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Letalidade e Acerto Crítico não contam): Dano de Ataque 50(+28,57)=78,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "The Collector") · https://wiki.leagueoflegends.com/en-us/The_Collector · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "The Collector") · https://wiki.leagueoflegends.com/en-us/The_Collector · Data Dragon pt_BR 16.21.1
 ]
 
 Armadura de Espinhos: Thornmail[
     ID: 3075
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3075.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3075.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.450g
@@ -8255,12 +8255,12 @@ Armadura de Espinhos: Thornmail[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Vida 150(+185)=335; Armadura 75(+25)=100
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.450g = 183,75g (líquido: 2.266,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Thornmail") · https://wiki.leagueoflegends.com/en-us/Thornmail · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Thornmail") · https://wiki.leagueoflegends.com/en-us/Thornmail · Data Dragon pt_BR 16.21.1
 ]
 
 Hidra Titânica: Titanic Hydra[
     ID: 3748
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3748.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3748.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.300g
@@ -8301,12 +8301,12 @@ Hidra Titânica: Titanic Hydra[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Dano de Ataque 40(+14,29)=54,29; Vida 600(+185)=785
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.300g = 247,5g (líquido: 3.052,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Titanic Hydra") · https://wiki.leagueoflegends.com/en-us/Titanic_Hydra · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Titanic Hydra") · https://wiki.leagueoflegends.com/en-us/Titanic_Hydra · Data Dragon pt_BR 16.21.1
 ]
 
 Força da Trindade: Trinity Force[
     ID: 3078
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3078.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3078.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.333g
@@ -8350,12 +8350,12 @@ Força da Trindade: Trinity Force[
     Mestre Forjador: Elegível — 4 categorias upgradáveis (250g cada): Dano de Ataque 36(+7,14)=43,14; Velocidade de Ataque 30%(+8,33%)=38,33%; Vida 333(+90)=423; Aceleração de Habilidade 15(+8)=23
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.333g = 249,97g (líquido: 3.083,03g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Trinity Force") · https://wiki.leagueoflegends.com/en-us/Trinity_Force · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Trinity Force") · https://wiki.leagueoflegends.com/en-us/Trinity_Force · Data Dragon pt_BR 16.21.1
 ]
 
 Glaive Sombria: Umbral Glaive[
     ID: 3179
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3179.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3179.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -8397,12 +8397,12 @@ Glaive Sombria: Umbral Glaive[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Letalidade não conta): Dano de Ataque 60(+14,29)=74,29; Aceleração de Habilidade 15(+16)=31
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Umbral Glaive") · https://wiki.leagueoflegends.com/en-us/Umbral_Glaive · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Umbral Glaive") · https://wiki.leagueoflegends.com/en-us/Umbral_Glaive · Data Dragon pt_BR 16.21.1
 ]
 
 Desespero Eterno: Unending Despair[
     ID: 2502
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2502.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2502.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -8438,12 +8438,12 @@ Desespero Eterno: Unending Despair[
     Mestre Forjador: Elegível — 3 categorias upgradáveis (333,33g cada): Vida 400(+125)=525; Armadura 50(+16,67)=66,67; Aceleração de Habilidade 15(+10,67)=25,67
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Unending Despair") · https://wiki.leagueoflegends.com/en-us/Unending_Despair · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Unending Despair") · https://wiki.leagueoflegends.com/en-us/Unending_Despair · Data Dragon pt_BR 16.21.1
 ]
 
 Cajado do Vazio: Void Staff[
     ID: 3135
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3135.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3135.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -8477,12 +8477,12 @@ Cajado do Vazio: Void Staff[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Penetração Mágica não conta): Poder de Habilidade 95(+50)=145
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Void Staff") · https://wiki.leagueoflegends.com/en-us/Void_Staff · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Void Staff") · https://wiki.leagueoflegends.com/en-us/Void_Staff · Data Dragon pt_BR 16.21.1
 ]
 
 Cicloespada Voltaica: Voltaic Cyclosword[
     ID: 6699
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/6699.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/6699.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -8527,7 +8527,7 @@ Cicloespada Voltaica: Voltaic Cyclosword[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Letalidade não conta): Dano de Ataque 55(+14,29)=69,29; Aceleração de Habilidade 10(+16)=26
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Voltaic Cyclosword") · https://wiki.leagueoflegends.com/en-us/Voltaic_Cyclosword · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Voltaic Cyclosword") · https://wiki.leagueoflegends.com/en-us/Voltaic_Cyclosword · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -8536,7 +8536,7 @@ Cicloespada Voltaica: Voltaic Cyclosword[
 ```
 Armadura de Warmog: Warmog's Armor[
     ID: 3083
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3083.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3083.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.100g
@@ -8581,12 +8581,12 @@ Armadura de Warmog: Warmog's Armor[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Regeneração de Vida não conta): Vida 1.000(+375)=1.375
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.100g = 232,5g (líquido: 2.867,5g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Warmog's Armor") · https://wiki.leagueoflegends.com/en-us/Warmog's_Armor · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Warmog's Armor") · https://wiki.leagueoflegends.com/en-us/Warmog's_Armor · Data Dragon pt_BR 16.21.1
 ]
 
 Tiara Sussurrante: Whispering Circlet[
     ID: 2526
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2526.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2526.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.250g
@@ -8633,12 +8633,12 @@ Tiara Sussurrante: Whispering Circlet[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Mana, Regeneração de Mana e Poder de Cura e Escudo não contam): Vida 200(+375)=575 (confirmado em jogo pelo usuário em 12/09/2026: só a Vida é aprimorada)
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.250g = 168,75g (líquido: 2.081,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Whispering Circlet") · https://wiki.leagueoflegends.com/en-us/Whispering_Circlet · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Whispering Circlet") · https://wiki.leagueoflegends.com/en-us/Whispering_Circlet · Data Dragon pt_BR 16.21.1
 ]
 
 Aproximação Invernal: Winter's Approach[
     ID: 3119
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3119.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3119.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.400g
@@ -8684,12 +8684,12 @@ Aproximação Invernal: Winter's Approach[
     Mestre Forjador: Não elegível (linha da Lágrima da Deusa)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): 7,5% de 2.400g = 180g (líquido: 2.220g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Winter's Approach") · https://wiki.leagueoflegends.com/en-us/Winter's_Approach · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Winter's Approach") · https://wiki.leagueoflegends.com/en-us/Winter's_Approach · Data Dragon pt_BR 16.21.1
 ]
 
 Limite da Razão: Wit's End[
     ID: 3091
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3091.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3091.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -8726,12 +8726,12 @@ Limite da Razão: Wit's End[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Tenacidade não conta): Velocidade de Ataque 50%(+16,67%)=66,67%; Resistência Mágica 45(+27,78)=72,78
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Wit's End") · https://wiki.leagueoflegends.com/en-us/Wit's_End · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Wit's End") · https://wiki.leagueoflegends.com/en-us/Wit's_End · Data Dragon pt_BR 16.21.1
 ]
 
 Lâmina Fantasma de Youmuu: Youmuu's Ghostblade[
     ID: 3142
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3142.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3142.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.800g
@@ -8775,12 +8775,12 @@ Lâmina Fantasma de Youmuu: Youmuu's Ghostblade[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g; Letalidade e Velocidade de Movimento não contam): Dano de Ataque 55(+28,57)=83,57
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.800g = 210g (líquido: 2.590g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Youmuu's Ghostblade") · https://wiki.leagueoflegends.com/en-us/Youmuu's_Ghostblade · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Youmuu's Ghostblade") · https://wiki.leagueoflegends.com/en-us/Youmuu's_Ghostblade · Data Dragon pt_BR 16.21.1
 ]
 
 Flechatroz de Yun Tal: Yun Tal Wildarrows[
     ID: 3032
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3032.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3032.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.000g
@@ -8824,12 +8824,12 @@ Flechatroz de Yun Tal: Yun Tal Wildarrows[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Acerto Crítico não conta): Dano de Ataque 50(+14,29)=64,29; Velocidade de Ataque 45%(+16,67%)=61,67%
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.000g = 225g (líquido: 2.775g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Yun Tal Wildarrows") · https://wiki.leagueoflegends.com/en-us/Yun_Tal_Wildarrows · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Yun Tal Wildarrows") · https://wiki.leagueoflegends.com/en-us/Yun_Tal_Wildarrows · Data Dragon pt_BR 16.21.1
 ]
 
 Invadomínio de Zaz'Zak: Zaz'Zak's Realmspike[
     ID: 3871
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3871.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3871.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift
     Preço: 400g
@@ -8868,12 +8868,12 @@ Invadomínio de Zaz'Zak: Zaz'Zak's Realmspike[
     Mestre Forjador: Não elegível (classe Legendary Support Item)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): none (item Lendário da linha de Suporte, obtido gratuitamente por transformação — sem compra, sem reembolso; decisão de 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Zaz'Zak's Realmspike") · https://wiki.leagueoflegends.com/en-us/Zaz'Zak's_Realmspike · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Zaz'Zak's Realmspike") · https://wiki.leagueoflegends.com/en-us/Zaz'Zak's_Realmspike · Data Dragon pt_BR 16.21.1
 ]
 
 Convergência de Zeke: Zeke's Convergence[
     ID: 3050
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3050.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3050.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.200g
@@ -8888,7 +8888,7 @@ Convergência de Zeke: Zeke's Convergence[
         +15 de Aceleração de Ultimate
     ]
     Habilidade[
-        [— (Cryocombustion) — passiva única][sem texto próprio no Data Dragon pt_BR 16.20.1; nome mantido em EN]
+        [— (Cryocombustion) — passiva única][sem texto próprio no Data Dragon pt_BR 16.21.1; nome mantido em EN]
         Mecânica (wiki): +15 de Aceleração de Ultimate (permanente). Ex.: ultimate de 100s de recarga cai para 86,96s.
         [Tempestade do Raio de Gelo (Frostfire Tempest) — passiva única][Conjurar sua ultimate invoca uma tempestade ao seu redor por 5s. A tempestade causa 30 de Dano Mágico por segundo e 30% de Lentidão a Campeões inimigos.]
         Mecânica (wiki): ao conjurar a ultimate e, assim que um campeão inimigo entrar no raio (ou após 5s), invoca ao seu redor uma tempestade de fogo e gelo por 5s: 7,5 de dano mágico a cada 0,25s (150 no total) a campeões inimigos e monstros num raio de 350, com 30% de lentidão. Recarga 45s, iniciada na conjuração da ultimate. Dano de proc marcado como área, NÃO aplica efeitos de habilidade; NÃO bloqueado por escudo de feitiço; concedido no início do tempo de conjuração da ultimate; auto-direcionado. Efeitos de item que ativam ao conjurar a ultimate (Turbo da Hexoplaca, Barragem de Abertura, Tempestade Gelofogo): no Udyr, ativam por conjuração Despertada; ativam assim que a ultimate é conjurada; com tempo de conjuração, podem ativar até 0,25s depois (inesperado). Ultimates com ativação adiada (Briar, Fiddlesticks, Galio, Kled, Nocturne, Pantheon, Poppy, Rek'Sai, Rengar, Shen, Sion, Tahm Kench, Vi, Warwick): detalhes transcritos no bloco da Hexoplaca Experimental (Lote 09).
@@ -8917,12 +8917,12 @@ Convergência de Zeke: Zeke's Convergence[
     Mestre Forjador: Elegível — 4 categorias upgradáveis (250g cada): Vida 300(+90)=390; Armadura 25(+12,5)=37,5; Resistência Mágica 25(+13,89)=38,89; Aceleração de Habilidade 10(+8)=18
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 2.200g = 165g (líquido: 2.035g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Zeke's Convergence") · https://wiki.leagueoflegends.com/en-us/Zeke's_Convergence · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Zeke's Convergence") · https://wiki.leagueoflegends.com/en-us/Zeke's_Convergence · Data Dragon pt_BR 16.21.1
 ]
 
 Ampulheta de Zhonya: Zhonya's Hourglass[
     ID: 3157
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3157.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3157.png
     Tier: Lendário
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 3.250g
@@ -8957,7 +8957,7 @@ Ampulheta de Zhonya: Zhonya's Hourglass[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada): Poder de Habilidade 105(+25)=130; Armadura 50(+25)=75
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): 7,5% de 3.250g = 243,75g (líquido: 3.006,25g)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Zhonya's Hourglass") · https://wiki.leagueoflegends.com/en-us/Zhonya's_Hourglass · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Zhonya's Hourglass") · https://wiki.leagueoflegends.com/en-us/Zhonya's_Hourglass · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -8966,7 +8966,7 @@ Ampulheta de Zhonya: Zhonya's Hourglass[
 ```
 Mobilização Blindada: Armored Advance[
     ID: 3174
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3174.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3174.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift
     Preço: 1.200g (aprimoramento gratuito; valor de venda 840g)
@@ -9004,12 +9004,12 @@ Mobilização Blindada: Armored Advance[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Redução de Dano, Escudo
     Região: Noxus (nome: Vigor Noxiano)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Armored Advance") · https://wiki.leagueoflegends.com/en-us/Armored_Advance · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Armored Advance") · https://wiki.leagueoflegends.com/en-us/Armored_Advance · Data Dragon pt_BR 16.21.1
 ]
 
 Dádiva dos Mundos: Bounty of Worlds[
     ID: 3867
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3867.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3867.png
     Tier: Lendário (Evolução)
     Modo de jogo: Summoner's Rift
     Preço: 400g (não comprável; transformação da Bússola Rúnica)
@@ -9052,12 +9052,12 @@ Dádiva dos Mundos: Bounty of Worlds[
     Mestre Forjador: Não elegível (classe Legendary Support Item)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): none (item obtido por transformação gratuita — sem compra, sem reembolso; regra de 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bounty of Worlds") · https://wiki.leagueoflegends.com/en-us/Bounty_of_Worlds · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Bounty of Worlds") · https://wiki.leagueoflegends.com/en-us/Bounty_of_Worlds · Data Dragon pt_BR 16.21.1
 ]
 
 Esmagadores Acorrentados: Chainlaced Crushers[
     ID: 3173
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3173.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3173.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift
     Preço: 1.250g (aprimoramento gratuito; valor de venda 875g)
@@ -9094,12 +9094,12 @@ Esmagadores Acorrentados: Chainlaced Crushers[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Escudo
     Região: Noxus (nome: Persistência Noxiana)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Chainlaced Crushers") · https://wiki.leagueoflegends.com/en-us/Chainlaced_Crushers · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Chainlaced Crushers") · https://wiki.leagueoflegends.com/en-us/Chainlaced_Crushers · Data Dragon pt_BR 16.21.1
 ]
 
 Lucidez Escarlate: Crimson Lucidity[
     ID: 3171
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3171.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3171.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift
     Preço: 900g (aprimoramento gratuito; valor de venda 630g)
@@ -9139,12 +9139,12 @@ Lucidez Escarlate: Crimson Lucidity[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Movimento
     Região: Noxus (nome: Aceleração Noxiana; passiva Ioniana herdada)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Crimson Lucidity") · https://wiki.leagueoflegends.com/en-us/Crimson_Lucidity · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Crimson Lucidity") · https://wiki.leagueoflegends.com/en-us/Crimson_Lucidity · Data Dragon pt_BR 16.21.1
 ]
 
 Diadema de Canções: Diadem of Songs[
     ID: 2530
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/2530.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/2530.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.250g (não comprável; transformação da Tiara Sussurrante)
@@ -9188,12 +9188,12 @@ Diadema de Canções: Diadem of Songs[
     Mestre Forjador: Elegível — 1 categoria upgradável (1.000g): Vida 200(+375)=575 (infobox da wiki; confirmado em jogo pelo usuário, 12/09/2026)
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): none (item obtido por transformação gratuita — sem compra, sem reembolso; regra de 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Diadem of Songs") · https://wiki.leagueoflegends.com/en-us/Diadem_of_Songs · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Diadem of Songs") · https://wiki.leagueoflegends.com/en-us/Diadem_of_Songs · Data Dragon pt_BR 16.21.1
 ]
 
 Fimbulwinter: Fimbulwinter[
     ID: 3121
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3121.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3121.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.400g (não comprável; transformação da Aproximação Invernal)
@@ -9236,12 +9236,12 @@ Fimbulwinter: Fimbulwinter[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Mana não conta): Vida 550(+185)=735; Aceleração de Habilidade 15(+16)=31 (infobox da wiki; confirmado em jogo pelo usuário, 12/09/2026)
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): none (item obtido por transformação gratuita — sem compra, sem reembolso; regra de 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Fimbulwinter") · https://wiki.leagueoflegends.com/en-us/Fimbulwinter · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Fimbulwinter") · https://wiki.leagueoflegends.com/en-us/Fimbulwinter · Data Dragon pt_BR 16.21.1
 ]
 
 Grevas Bélicas: Gunmetal Greaves[
     ID: 3172
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3172.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3172.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift
     Preço: 1.100g (aprimoramento gratuito; valor de venda 770g)
@@ -9273,17 +9273,17 @@ Grevas Bélicas: Gunmetal Greaves[
     Arquétipo Recomendado: Atirador
     Efeitos Especiais: none
     Região: Noxus
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Gunmetal Greaves") · https://wiki.leagueoflegends.com/en-us/Gunmetal_Greaves · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Gunmetal Greaves") · https://wiki.leagueoflegends.com/en-us/Gunmetal_Greaves · Data Dragon pt_BR 16.21.1
 ]
 
 Caminho Imortal: Immortal Path[
     ID: 3168
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3168.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3168.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift
-    Preço: 1.000g (aprimoramento gratuito; valor de venda 700g)
+    Preço: 1.100g (aprimoramento gratuito; valor de venda 770g)
     Condição: Requer a conclusão da Missão do Meio (Midlane Quest). Com a missão concluída, Grevas Vorazes é aprimorada para este item gratuitamente; se Grevas Vorazes estiver no inventário na conclusão da missão, é aprimorada automaticamente. Limitado a 1 item de Botas.
-    Componentes: Grevas Vorazes (Gluttonous Greaves) 1.000g. +0g
+    Componentes: Grevas Vorazes (Gluttonous Greaves) 1.100g. +0g
     Ingrediente: none
     Atributo[
         +45 de Velocidade de Movimento
@@ -9297,7 +9297,7 @@ Caminho Imortal: Immortal Path[
     ]
     Análise de custo[
         Valor de Ouro: 45 Velocidade de Movimento = 540g; 4% Vampirismo Universal = 184g; total 724g. Eliminar: 0,6%–6% = 27,6–276g; total 751,6–1.000g
-        Eficiência de Ouro: 72,4% (base); 75,16%–100% com acúmulos de Eliminar
+        Eficiência de Ouro: 65,82% (base); 68,33%–90,91% com acúmulos de Eliminar
         Valor de Ouro (atributos): 724g
         Valor de Ouro (base): 724g
     ]
@@ -9307,7 +9307,7 @@ Caminho Imortal: Immortal Path[
     Ápice numérico[
         Vampirismo · 10 · % · total
         Valor de Ouro no ápice: 1.000g
-        Eficiência de Ouro no ápice: 100%
+        Eficiência de Ouro no ápice: 90,91%
     ]
     Notas: none
     Notas de ARAM: none
@@ -9317,12 +9317,12 @@ Caminho Imortal: Immortal Path[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: Acúmulos, Amplificação de Dano, Poder de Cura e Escudo
     Região: Runeterra (sem brasão na página)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Immortal Path") · https://wiki.leagueoflegends.com/en-us/Immortal_Path · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Immortal Path") · https://wiki.leagueoflegends.com/en-us/Immortal_Path · Data Dragon pt_BR 16.21.1
 ]
 
 Muramana: Muramana[
     ID: 3042
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3042.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3042.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g (não comprável; transformação do Manamune)
@@ -9365,12 +9365,12 @@ Muramana: Muramana[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Mana não conta): Dano de Ataque 35(+14,29)=49,29; Aceleração de Habilidade 15(+16)=31 (infobox da wiki; confirmado em jogo pelo usuário, 12/09/2026)
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): none (item obtido por transformação gratuita — sem compra, sem reembolso; regra de 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Muramana") · https://wiki.leagueoflegends.com/en-us/Muramana · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Muramana") · https://wiki.leagueoflegends.com/en-us/Muramana · Data Dragon pt_BR 16.21.1
 ]
 
 Bússola Rúnica: Runic Compass[
     ID: 3866
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3866.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3866.png
     Tier: Épico (Evolução)
     Modo de jogo: Summoner's Rift
     Preço: 400g (não comprável; transformação do Atlas Mundial)
@@ -9415,12 +9415,12 @@ Bússola Rúnica: Runic Compass[
     Mestre Forjador: Não elegível (item Épico da linha de Suporte)
     Mestre Forjador (ouro): none
     Reembolso (runa Cash Back): none (item obtido por transformação gratuita — sem compra, sem reembolso; regra de 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Runic Compass") · https://wiki.leagueoflegends.com/en-us/Runic_Compass · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Runic Compass") · https://wiki.leagueoflegends.com/en-us/Runic_Compass · Data Dragon pt_BR 16.21.1
 ]
 
 Abraço de Seraph: Seraph's Embrace[
     ID: 3040
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3040.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3040.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift, ARAM, ARAM: Mayhem
     Preço: 2.900g (não comprável; transformação do Cajado do Arcanjo)
@@ -9463,12 +9463,12 @@ Abraço de Seraph: Seraph's Embrace[
     Mestre Forjador: Elegível — 2 categorias upgradáveis (500g cada; Mana não conta): Poder de Habilidade 70(+25)=95; Aceleração de Habilidade 25(+16)=41 (infobox da wiki; confirmado em jogo pelo usuário, 12/09/2026)
     Mestre Forjador (ouro): 1.000g
     Reembolso (runa Cash Back): none (item obtido por transformação gratuita — sem compra, sem reembolso; regra de 12/09/2026)
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Seraph's Embrace") · https://wiki.leagueoflegends.com/en-us/Seraph's_Embrace · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Seraph's Embrace") · https://wiki.leagueoflegends.com/en-us/Seraph's_Embrace · Data Dragon pt_BR 16.21.1
 ]
 
 Sapatos Enfeitiçados: Spellslinger's Shoes[
     ID: 3175
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3175.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3175.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift
     Preço: 1.100g (aprimoramento gratuito; valor de venda 770g)
@@ -9500,12 +9500,12 @@ Sapatos Enfeitiçados: Spellslinger's Shoes[
     Arquétipo Recomendado: Mago
     Efeitos Especiais: none
     Região: Noxus
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Spellslinger's Shoes") · https://wiki.leagueoflegends.com/en-us/Spellslinger's_Shoes · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Spellslinger's Shoes") · https://wiki.leagueoflegends.com/en-us/Spellslinger's_Shoes · Data Dragon pt_BR 16.21.1
 ]
 
 Marcha Célere: Swiftmarch[
     ID: 3170
-    Ícone: https://ddragon.leagueoflegends.com/cdn/16.20.1/img/item/3170.png
+    Ícone: https://ddragon.leagueoflegends.com/cdn/16.21.1/img/item/3170.png
     Tier: Evolução
     Modo de jogo: Summoner's Rift
     Preço: 1.000g (aprimoramento gratuito; valor de venda 700g)
@@ -9544,7 +9544,7 @@ Marcha Célere: Swiftmarch[
     Arquétipo Recomendado: Universal
     Efeitos Especiais: none
     Região: Freljord
-    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Swiftmarch") · https://wiki.leagueoflegends.com/en-us/Swiftmarch · Data Dragon pt_BR 16.20.1
+    Fontes: https://wiki.leagueoflegends.com/en-us/Module:ItemData/data (entrada "Swiftmarch") · https://wiki.leagueoflegends.com/en-us/Swiftmarch · Data Dragon pt_BR 16.21.1
 ]
 ```
 
@@ -9920,3 +9920,71 @@ No texto do cliente, só essas palavras mudaram. Nenhum valor desses três itens
 - Informativo (para a Pendência F, fora desta reconciliação): a seção Notes do Furacão de Runaan lista hoje mais casos do que a Mecânica do catálogo. São eles: as exceções de dano modificado (Frost Shot, Infernum e Hextech Munitions, além de Ranger's Focus e Fishbones) e os efeitos que modificam ou não os dardos (Infernum, Switcheroo! e Cultivation of Spirit modificam; New Destiny, Spray and Pray e Ricochet não modificam). Não houve mudança de valor. Fica para quando as interações forem catalogadas.
 - Informativo: a Lista_Piloto_v2 classifica a Diadema como "Único/Evolução", que é a categoria de lote e não o Tier. Ela continua assim.
 - Informativo (Tier): depois da correção da Diadema, dois itens ainda têm Tier composto, fora da lista fechada do Guia: Dádiva dos Mundos (`Lendário (Evolução)`) e Bússola Rúnica (`Épico (Evolução)`). Fimbulwinter, Muramana e Abraço de Seraph já estavam em `Evolução`, o que diverge da regra de Tier do Lote 16 (12/09/2026). O pedido foi só a Diadema; os dois itens ficam como estão, à espera da decisão do usuário.
+
+# Ajustes — correção de 21/10/2026 (Abatedora: preço de venda no Ápice)
+
+Origem: apontamento recebido pelo usuário em 20/10/2026. O Ápice da Abatedora deixava de fora o preço de venda, e o uso do item é justamente se pagar. Fontes: Cull (revisão 4025119; infobox "Sell 180" e Cost Analysis: os 450g máximos de Ceifar mais a venda dão lucro de 180g), `Module:ItemData/data` (entrada "Cull") e Data Dragon 16.20.1 e 16.21.1 (`gold.sell` = 180 nos dois). Extratos em `fontes/2026-10-21/`. A Abatedora não muda no 16.21.1, já publicado em 21/10/2026, então a correção vale nos dois patches. O catálogo continua em 16.20.1. Modelo: Claude Opus 5.5.
+
+| Item · campo | Antes | Depois | Fonte |
+|---|---|---|---|
+| Abatedora · Ápice | 100 tropas abatidas: +450g recebidos no total (100g + 350g); Ceifar desativada. Atributos iguais ao base. | o mesmo texto, mais: "Vendida nesse ponto (preço de venda 180g), a Abatedora se paga: 450g de Ceifar + 180g da venda = 630g de retorno sobre 450g de compra, lucro de 180g." | infobox e Cost Analysis da página; Data Dragon `gold.sell` |
+
+Sem mudança: o Ápice numérico (695g e 154,44%) segue a Cost Analysis da wiki e a regra do D1 (23/09/2026). Ele mede o item ainda no inventário, com o ouro de Ceifar e sem a venda. A Análise de custo já registrava o lucro de 180g.
+
+## Divergências da sessão
+- Nenhuma.
+
+# Ajustes — reconciliação do patch 16.21.1 (22/10/2026)
+
+Origem: checagem de patch (`versions.json` = 16.21.1 desde 21/10/2026; catálogo em 16.20.1) e autorização do usuário em 21/10/2026. Pausada no dia 21, porque a wiki ainda estava sendo atualizada e se contradizia (Quebra-Bastião com 1038 de Letalidade no módulo; Cost Analysis do Auronúcleo com o valor antigo). O usuário confirmou que a wiki estava errada. Retomada em 22/10/2026 com a wiki já corrigida. Mestre Forjador (Ornn#Notes, revisão 4012186) e Cash Back (7,5%, revisão 3991600) sem mudança. Fontes: V26.21 (revisão 4088966), `Module:ItemData/data` (revisão 4088750), Bastionbreaker (4088751), Dawncore (4089058), Hubris (4088390), Gluttonous_Greaves (4088330), Immortal_Path (4063581), Gold_efficiency (4014965), Titanic_Hydra (4088332), Data Dragon pt_BR e en_US 16.20.1 e 16.21.1. Extratos em `fontes/2026-10-22/` (e a leitura de 21/10 em `fontes/2026-10-21/`). Modelo: Claude Opus 5.5.
+
+## Correções de dado (V26.21)
+
+| Item · campo | Antes (16.20.1) | Depois (16.21.1) | Fonte |
+|---|---|---|---|
+| Quebra-Bastião · Atributo | +22 de Letalidade | +18 de Letalidade | módulo (`lethality` = 18), página e Data Dragon 16.21.1 |
+| Quebra-Bastião · Mecânica (Investida Esculpida) | 50 / 25 (+1,5 / +0,75 por Letalidade) → 83 / 41,5 com 22 | 40 / 20 (+1,5 / +0,75 por Letalidade) → 67 / 33,5 com 18 | módulo e página |
+| Quebra-Bastião · Habilidade (texto oficial, Sabotagem) | concede Sabotagem por 90s | concede Sabotagem por 25000s | Data Dragon pt_BR 16.21.1 |
+| Quebra-Bastião · Mecânica (Sabotagem) | Sabotagem por 90s; 850 / 680 com 22 de Letalidade | Sabotagem dura indefinidamente depois de obtida e é removida ao morrer (o cliente exibe 25000s); 750 / 600 com 18 de Letalidade | módulo (sem duração), Notes da página, Data Dragon |
+| Quebra-Bastião · Valor de Ouro | 22 Letalidade = 660g; total 3.335g | 18 Letalidade = 540g; total 3.215g | Cost Analysis |
+| Quebra-Bastião · Eficiência de Ouro | 111,17% (base) | 107,17% (base) | Cost Analysis; 3.215g ÷ 3.000g |
+| Quebra-Bastião · Valor de Ouro (atributos) / (base) | 3.335g / 3.335g | 3.215g / 3.215g | Cost Analysis |
+| Quebra-Bastião · Ápice | 850 (680) de dano verdadeiro com 22 de Letalidade | 750 (600) com 18 de Letalidade | página (300 / 240 + 25 / 20 por Letalidade) |
+| Quebra-Bastião · Classe | AD (AD 2.585g · …) | AD (AD 2.465g · …) | soma de ouro (CLASSES_DE_ITENS_v2); núcleo mantido |
+| Auronúcleo · Habilidade (texto oficial) | … e 10 de Poder de Habilidade a cada 100% … | … e 15 de Poder de Habilidade a cada 100% … | Data Dragon pt_BR 16.21.1 |
+| Auronúcleo · Mecânica (Primeira Luz) | +10 de PdH por 100%; 55 de PdH e 18% só com o item | +15 de PdH por 100%; 60 de PdH e 18% só com o item | módulo e Notes da página |
+| Auronúcleo · Valor de Ouro | Primeira Luz: 10 PdH = 200g + 2% = 100g; total 2.400g; 300g por 100% | Primeira Luz: 15 PdH = 300g + 2% = 100g; total 2.500g; 400g por 100% | Cost Analysis |
+| Auronúcleo · Eficiência de Ouro | 96% (base); +12% por 100% | 100% (base); +16% por 100% | Cost Analysis |
+| Auronúcleo · Valor de Ouro (base) | 2.400g | 2.500g | Cost Analysis; `(atributos)` continua 2.100g |
+| Auronúcleo · Ápice / Ápice numérico | +200% de outras fontes → 75 de PdH; +300g e +12% por 100% | +200% de outras fontes → 90 de PdH; +400g e +16% por 100% | cálculo com os valores da wiki |
+| Grevas Vorazes · Preço / Componentes | 1.000g; Botas 300g, +700g | 1.100g; Botas 300g, +800g | módulo (`buy` = 1100), página e Data Dragon |
+| Grevas Vorazes · Eficiência de Ouro | 72,4% (calculada: 724g ÷ 1.000g); 75,16% a 100% com Eliminar | 65,82% (calculada: 724g ÷ 1.100g, igual à tabela da wiki); 68,33% a 90,91% com Eliminar | Cost Analysis e tabela "Gold efficiency" |
+| Grevas Vorazes · Ápice numérico | Eficiência no ápice 100% | 90,91% | Cost Analysis (1.000g ÷ 1.100g) |
+| Caminho Imortal · Preço / Componentes | 1.000g (venda 700g); Grevas Vorazes 1.000g | 1.100g (venda 770g); Grevas Vorazes 1.100g | página e Data Dragon (`sell` = 770) |
+| Caminho Imortal · Eficiência de Ouro / Ápice numérico | 72,4%; 75,16%–100%; ápice 100% | 65,82%; 68,33%–90,91%; ápice 90,91% | Cost Analysis |
+| Húbris · Habilidade (texto oficial) | recebe 12 de Dano de Ataque mais 3 por Campeão abatido | recebe 0 de Dano de Ataque mais 0 por Campeão abatido (placeholders) | Data Dragon pt_BR 16.21.1 |
+| Húbris · Mecânica (Eminência) | 12 (+3 por acúmulo) → 15 no 1º abate, 42 no 10º | 15 / 10 (+3 / +2 por acúmulo; corpo a corpo / à distância) → 18 / 12 no 1º, 45 / 30 no 10º | módulo e página |
+| Húbris · Valor de Ouro (Eminência) | 12 DdA = 420g; 3 DdA = 105g por acúmulo | 15 / 10 DdA = 525g / 350g; 3 / 2 DdA = 105g / 70g por acúmulo | Cost Analysis |
+| Húbris · Eficiência de Ouro | +15% com Eminência, +3,75% por acúmulo | +18,75% / +12,5% com Eminência, +3,75% / +2,5% por acúmulo | Cost Analysis |
+| Húbris · Ápice / Ápice numérico | 55 + 12 + 3N (97 com 10); 420g + 105g; +15% + 3,75% | 55 + 15 + 3N / 55 + 10 + 2N (100 / 85 com 10); 525g / 350g + 105g / 70g; +18,75% / +12,5% + 3,75% / 2,5% | Cost Analysis |
+| Húbris · Notas | none | o texto oficial pt_BR exibe "0 de Dano de Ataque mais 0" desde o 16.21.1 (placeholders) | Data Dragon pt_BR 16.21.1 |
+| Tabela "Preços de atributo" · Vampirismo | Grevas Vorazes (1.000g; 45 de Movimento a 12g) | Grevas Vorazes (1.100g; 45 de Movimento a 12g); valor continua 46g | Gold_efficiency |
+
+Sem mudança: Mestre Forjador e Reembolso do Quebra-Bastião, do Auronúcleo e do Húbris (preços iguais); Classe do Auronúcleo (a Primeira Luz não entra na soma), do Húbris e das botas; Notas de ARAM do Húbris (a variante 126697 não mudou). A Hidra Titânica teve só uma correção de exibição da recarga, que o catálogo não cita.
+
+## Troca de patch
+
+- Ícone: 225 linhas, `cdn/16.20.1` → `cdn/16.21.1`.
+- Fontes: 225 linhas, `Data Dragon pt_BR 16.20.1` → `Data Dragon pt_BR 16.21.1`. Nos outros 220 itens, o Data Dragon 16.21.1 não mudou nome pt_BR e en_US, preço, receita, ingredientes, texto, `stats`, tags nem mapas de SR e ARAM.
+- Habilidade: 2 linhas do Atlas Mundial e 1 da Convergência de Zeke citam agora o pt_BR 16.21.1 (as afirmações continuam verdadeiras).
+- Cabeçalho do catálogo: `Patch: 16.21.1` e a data desta reconciliação.
+- Ficam como estão, por serem registros datados: "Divergências por lote", as seções de Ajustes anteriores e as Notas da Convergência de Zeke (pendência aberta).
+
+## Para o Capítulo 2 e o Gerador de builds
+
+- Valores novos: Quebra-Bastião 3.215g e 107,17%; Auronúcleo `Valor de Ouro (base)` 2.500g e 100%; Grevas Vorazes e Caminho Imortal com preço 1.100g e 65,82%; Húbris com a Eminência separada entre corpo a corpo e à distância.
+- Nenhum rótulo de linha mudou e nenhuma linha foi criada ou removida dentro dos blocos.
+
+## Divergências da sessão
+- Nenhuma em aberto. Os conflitos de 21/10 (Quebra-Bastião com 1038 de Letalidade; Cost Analysis do Auronúcleo com 10 de PdH) eram da wiki em atualização: o usuário confirmou o erro, e a wiki corrigida em 22/10 concorda com o V26.21 e com o Data Dragon.
+- Informativo: a wiki mantém o Vampirismo Universal em 46g por 1% com as Grevas a 1.100g. Pela conta antiga, (1.100g − 540g) ÷ 10% daria 56g. O catálogo segue a wiki (Cost Analysis e tabela "Gold efficiency").

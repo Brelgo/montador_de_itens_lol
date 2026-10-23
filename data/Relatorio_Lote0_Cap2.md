@@ -1,6 +1,6 @@
 # Relatório — Lote 0 do Capítulo 2 (catálogo → JSON)
 
-Fonte: `Catalogo_Itens_LoL.md` · Patch: **16.20.1** · Itens: **225** · Saída: `catalog.json`
+Fonte: `Catalogo_Itens_LoL.md` · Patch: **16.21.1** · Itens: **225** · Saída: `catalog.json`
 
 ## Tiers
 
