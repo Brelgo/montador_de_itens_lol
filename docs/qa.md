@@ -86,7 +86,14 @@ clique cai num retângulo de tamanho zero e acusa bug que não existe.
 **Runas** — a página fecha em 9 de 9 e a faixa aparece na forja.
 
 **Habilidades** — o nível 1 aceita clique (já ficou inalcançável uma vez), o
-supremo é recusado no nível 5 e aceito no 6.
+supremo é recusado no nível 5 e aceito no 6. Desde a F13-T58, com as regras do
+Capítulo 1.1 (`data/habilidades.js`; esquema em `docs/esquema_habilidades.md`),
+por cliques de verdade: a regra de nível vale para todos (rank 2 só no nível 3; o
+5º ponto só no 9); o supremo pode atrasar, como no jogo (R no 7; o 2º só a partir
+do 11); as fichas valem (Udyr com 6 ranks e o R desde o nível 1; o R do Jayce
+sozinho no nível 1 e sem ponto; o Azir sem Q antes do W); o ponto que já estava
+fora da regra fica, em vermelho e com o motivo; e importar ou copiar não corta
+pontos (6º rank, R no 7).
 
 **Texto** — exportar e reimportar devolve a mesma build (itens, marcadores,
 habilidades e runas). F13-T36 (bugs nºs 17 e 28): a descrição e a observação

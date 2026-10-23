@@ -2929,6 +2929,12 @@ body.editando .modo-leitura { display: none; }
 .bh-cel.bloqueada { cursor: not-allowed; opacity: .28; }
 .bh-cel.bloqueada:hover { border-color: #3a3029; }
 .bh-cel.ultimate { border-style: dashed; }
+/* F13-T58: o rank que vem sozinho (o R do Jayce no nível 1, o W da Yuumi…) e o ponto fora da regra do jogo */
+.bh-cel.auto:not(.marcada) { background: repeating-linear-gradient(135deg, rgba(255,176,102,.55) 0 3px, transparent 3px 6px); opacity: 1; }
+.bh-cel.invalida { background: #c8503c; border-color: #ff8a73; box-shadow: 0 0 0 1px #ff8a73; }
+.build-habs .bh-nota { width: 0; min-width: 100%;   /* acompanha a grade, sem alargar a caixa (o texto do Udyr esticava as células) */
+  margin: 6px 0 0; font-family: var(--loja-texto); font-style: italic; font-size: 12px; line-height: 1.4; color: var(--forja-texto-suave, #9a8778); }
+.build-habs .bh-nota.erro { color: #ff8a73; }
 body:not(.editando) .build-habs .bh-cel { cursor: default; pointer-events: none; }
 body:not(.editando) .build-habs .bh-limpar { display: none; }
 
@@ -5448,6 +5454,7 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
 <script src="data/catalog.js"></script>
 <script src="data/regioes.js"></script>
 <script src="data/runas.js"></script>
+<script src="data/habilidades.js"></script>
 <script src="data/servidor.js"></script>
 <script src="data/ganho_sons.js"></script>
 <script>
@@ -5849,7 +5856,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.57";
+const ATUALIZACAO = "13.58";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -6037,36 +6044,63 @@ function normRunas(r) {
 }
 
 // F12-T4: a ordem de habilidades da build — 18 níveis, cada um com Q, W, E, R
-// ou vazio. As regras do jogo são conferidas aqui, não só desenhadas.
+// ou vazio. F13-T58: as regras vêm do Capítulo 1.1 (data/habilidades.js), não
+// do código: a regra geral vale para todos — o 1º, 2º… ponto de cada botão só a
+// partir de um nível (rank r de básica a partir do 2r − 1: no nível 8 ninguém
+// está no rank 5) — e os campeões de exceção têm ficha própria (Udyr, Jayce,
+// Aphelios, Yuumi, Azir…). O nível é mínimo, não exato: dá para atrasar um
+// ponto, o supremo inclusive (Leo, 22/10/2026: "como o jogo").
 const HAB_LETRAS = ["Q", "W", "E", "R"];
 const HAB_NIVEIS = 18;
-const HAB_MAX = { Q: 5, W: 5, E: 5, R: 3 };
-const HAB_NIVEIS_R = [6, 11, 16];
+const HAB_GERAL = (window.HABILIDADES && window.HABILIDADES.regraGeral) || null;
+// Só o formato: 18 níveis, uma letra ou nada em cada. A regra fica na grade,
+// que sabe o campeão — antes este passo apagava o que fugia da regra comum (o
+// 6º rank do Udyr, o R fora do 6/11/16) em toda importação, cópia e publicação.
 function normHabilidades(h) {
   const out = Array(HAB_NIVEIS).fill(null);
   if (!Array.isArray(h)) return out;
-  const usados = { Q: 0, W: 0, E: 0, R: 0 };
-  h.slice(0, HAB_NIVEIS).forEach((L, i) => {
-    if (!HAB_LETRAS.includes(L)) return;
-    if (usados[L] >= HAB_MAX[L]) return;                       // teto de pontos
-    if (L === "R" && !HAB_NIVEIS_R.includes(i + 1)) return;    // R só nos níveis dele
-    usados[L]++;
-    out[i] = L;
-  });
+  h.slice(0, HAB_NIVEIS).forEach((L, i) => { if (HAB_LETRAS.includes(L)) out[i] = L; });
   return out;
 }
-// F12 (Leo, 20/09/2026): "a ordem de maximização" — qual habilidade chega aos
-// 5 pontos primeiro. Quem não chega a 5 entra depois, pela quantidade de pontos;
-// empate desempata por quem recebeu o primeiro ponto antes.
-function ordemDeMaximizacao(h) {
-  const basicas = ["Q", "W", "E"];
+// A regra de um campeão: a ficha dele, quando foge da geral; senão a geral.
+function habRegra(champ) {
+  const H = window.HABILIDADES || {};
+  const f = champ && champ.key && H.campeoes ? H.campeoes[String(champ.key)] : null;
+  const r = Object.assign({ temSupremo: true, requer: {}, automatico: {}, observacao: "", trava: "" }, HAB_GERAL || {}, f || {});
+  r.ficha = !!f;
+  r.pendente = !!(champ && champ.key && ((H.meta && H.meta.pendentes) || []).some(x => String(x.key) === String(champ.key)));
+  return r;
+}
+// Por que a letra L não entra no nível n ("" = entra), pelo esquema do Capítulo
+// 1.1: conta os pontos de L nos níveis antes de n e confere o teto, o nível
+// mínimo do próximo ponto e, no 1º ponto, a habilidade exigida antes (Azir, Zilean…).
+function habMotivo(h, L, n, regra) {
+  let k = 0;
+  for (let i = 0; i < n - 1; i++) if (h[i] === L) k++;
+  const max = (regra.maxPorHabilidade || {})[L] || 0;
+  if (!max) return `${L} não recebe ponto`;
+  if (k >= max) return `${L} já tem ${max} ${max === 1 ? "ponto" : "pontos"}, o máximo`;
+  const minimo = ((regra.niveisPorPonto || {})[L] || [])[k];
+  if (minimo === undefined || minimo > n) return `o ${k + 1}º ponto de ${L} só a partir do nível ${minimo}`;
+  const exige = (regra.requer || {})[L];
+  if (!k && exige && exige.length && !exige.some(x => h.slice(0, n - 1).includes(x))) return `${L} exige ${exige.join(" ou ")} aprendido antes`;
+  return "";
+}
+// F12 (Leo, 20/09/2026): "a ordem de maximização" — qual habilidade chega ao
+// teto primeiro (5 no comum; 6 no Udyr, no Jayce, no Aphelios). Quem não chega
+// entra depois, pela quantidade de pontos; empate desempata pelo primeiro ponto.
+// Botão sem supremo de verdade (o R do Udyr) conta como básica.
+function ordemDeMaximizacao(h, regra) {
+  regra = regra || habRegra(null);
+  const max = regra.maxPorHabilidade || {};
+  const basicas = ["Q", "W", "E"].concat(regra.temSupremo === false && max.R ? ["R"] : []);
   const dados = basicas.map(L => {
     let pontos = 0, nivelDoQuinto = 99, primeiro = 99;
     (h || []).forEach((x, i) => {
       if (x !== L) return;
       pontos++;
       if (primeiro === 99) primeiro = i;
-      if (pontos === HAB_MAX[L]) nivelDoQuinto = i;
+      if (pontos === max[L]) nivelDoQuinto = i;
     });
     return { L, pontos, nivelDoQuinto, primeiro };
   }).filter(d => d.pontos > 0);
@@ -9471,15 +9505,12 @@ function initEscolherFragmento() {
 
 
 // ---------------- F12-T4: a grade de habilidades ----------------
-// As regras conferidas aqui são as do jogo, iguais para todo campeão: um ponto
-// por nível, teto de 5 em Q/W/E e 3 no R, e o R só nos níveis 6, 11 e 16.
-// Limitação de campeão (o W do Azir, campeões de forma) é dado que o projeto
-// ainda não tem — ver docs/proposta_capitulo_1_1.md.
-function habPodeMarcar(h, letra, nivel) {
-  if (letra === "R" && !HAB_NIVEIS_R.includes(nivel)) return false;
+// F13-T58: as regras são as do campeão da build (habRegra, do Capítulo 1.1).
+// Marcar é conferido aqui; um ponto que já estava fora da regra (build antiga,
+// importada ou de outro campeão) não some: fica em vermelho, com o motivo.
+function habPodeMarcar(h, letra, nivel, regra) {
   if (h[nivel - 1] === letra) return true;                    // desmarcar sempre pode
-  const pontos = habPontos(h);
-  return pontos[letra] < HAB_MAX[letra];
+  return !habMotivo(h, letra, nivel, regra || habRegra(build.champion));
 }
 
 function renderHabilidades() {
@@ -9493,30 +9524,45 @@ function renderHabilidades() {
   if (!usados && !build.editing) { caixa.hidden = true; return; }
   caixa.hidden = false;
 
+  const regra = habRegra(build.champion);
+  const supremo = regra.niveisDoSupremo || [];
+  const errados = h.map((L, i) => L ? habMotivo(h, L, i + 1, regra) : "");
   const pontos = habPontos(h);
   const cabecalho = `<span></span>` + Array.from({ length: HAB_NIVEIS }, (_, i) => `<span class="bh-niv">${i + 1}</span>`).join("");
   const linhas = HAB_LETRAS.map(L => {
     const arte = habArte[L] ? `<img src="${habArte[L].url}" alt="" title="${esc(habArte[L].nome)}">` : "";
+    const auto = (regra.automatico || {})[L] || [];
     const celulas = Array.from({ length: HAB_NIVEIS }, (_, i) => {
       const nivel = i + 1;
       const marcada = h[i] === L;
-      const bloqueada = !habPodeMarcar(h, L, nivel);
-      const classes = ["bh-cel", marcada ? "marcada" : "", bloqueada && !marcada ? "bloqueada" : "",
-                       L === "R" && HAB_NIVEIS_R.includes(nivel) ? "ultimate" : ""].filter(Boolean).join(" ");
-      const titulo = L === "R" && !HAB_NIVEIS_R.includes(nivel)
-        ? `O supremo só sobe nos níveis ${HAB_NIVEIS_R.join(", ")}`
-        : `${L} no nível ${nivel}`;
+      const errado = marcada ? errados[i] : "";
+      const porque = marcada ? "" : habMotivo(h, L, nivel, regra);
+      const automatica = auto.includes(nivel);
+      const classes = ["bh-cel", marcada ? "marcada" : "", errado ? "invalida" : "", porque ? "bloqueada" : "",
+                       automatica ? "auto" : "", L === "R" && supremo.includes(nivel) ? "ultimate" : ""].filter(Boolean).join(" ");
+      const titulo = errado ? `Este ponto não vale no jogo: ${errado}`
+        : automatica && !marcada ? `${L} ganha um rank sozinho no nível ${nivel}, sem gastar ponto`
+        : porque ? `${L} no nível ${nivel}: ${porque}` : `${L} no nível ${nivel}`;
       return `<button type="button" class="${classes}" data-hab="${L}" data-nivel="${nivel}" title="${esc(titulo)}"></button>`;
     }).join("");
-    return `<span class="bh-letra">${arte}${L}<span class="bh-conta">${pontos[L]}/${HAB_MAX[L]}</span></span>${celulas}`;
+    const max = (regra.maxPorHabilidade || {})[L] || 0;
+    return `<span class="bh-letra">${arte}${L}<span class="bh-conta">${pontos[L]}/${max}${auto.length ? ` +${auto.length}` : ""}</span></span>${celulas}`;
   }).join("");
 
+  // o que explica a grade: o ponto fora da regra, a exceção do campeão, a trava e a regra não conferida
+  const nErrados = errados.filter(Boolean).length;
+  const notas = [
+    nErrados ? `<p class="bh-nota erro">${nErrados} ${nErrados === 1 ? "ponto fora da regra do jogo" : "pontos fora da regra do jogo"} (em vermelho; passe o mouse para ver o motivo).</p>` : "",
+    regra.ficha && regra.observacao ? `<p class="bh-nota">${esc(regra.observacao)}</p>` : "",
+    regra.trava ? `<p class="bh-nota">Trava: ${esc(regra.trava)}.</p>` : "",
+    regra.pendente ? `<p class="bh-nota">A regra deste campeão ainda não foi conferida: a grade usa a regra comum e pode errar.</p>` : "",
+  ].join("");
   caixa.innerHTML = `<div class="bh-topo">
       <span class="bh-rotulo">Ordem de habilidades</span>
-      <span class="bh-aviso">${usados}/${HAB_NIVEIS} níveis${build.champion ? "" : " · escolha um campeão para ver os ícones"}</span>
+      <span class="bh-aviso">${usados}/${HAB_NIVEIS} níveis${build.champion ? "" : " · escolha um campeão para ver os ícones e a regra dele"}</span>
       <button type="button" class="bh-limpar" id="bh-limpar">Limpar</button>
     </div>
-    <div class="bh-grade">${cabecalho}${linhas}</div>`;
+    <div class="bh-grade">${cabecalho}${linhas}</div>${notas}`;
 }
 
 // Arte das habilidades do campeão da build, do Data Dragon — a mesma fonte que
@@ -10297,7 +10343,7 @@ function detalheHtml(d, partes) {
   // maximização), depois a subida nível a nível.
   if (partes.habilidades === undefined) {
     const h = normHabilidades(d.habilidades);
-    const ordem = ordemDeMaximizacao(h);
+    const ordem = ordemDeMaximizacao(h, habRegra(d.champ));
     partes.habilidades = h.some(Boolean)
       ? `<div class="bd-label">Habilidades</div>
          <div class="bd-habs">

@@ -900,7 +900,8 @@ def garantir_build_editavel(s):
     """Runas, habilidades e texto são da build ativa, e a grade de habilidades só
     existe com o Editar ligado. Rodando um grupo sozinho (-k), nada disso existe
     ainda — então o roteiro monta o cenário antes de cobrar."""
-    if not s.js("typeof build !== 'undefined' && !!build"):
+    # F13-T53: o primeiro acesso nasce sem build — sem uma na bigorna, cria
+    if not s.js("typeof build !== 'undefined' && !!build && !!build.id"):
         s.nova_build()
     else:
         s.js("switchTab('build'); showBuildScreen('forja')")
@@ -1037,6 +1038,68 @@ def checar_habilidades(s, p):
     p.conta("habilidades", "duplicar leva habilidades, runas e Mestre Forjador",
             depois["id"] != antes["id"] and depois["hab"] == antes["hab"] and depois["runas"] == antes["runas"] and depois["mf"],
             "habilidades %s" % depois["hab"])
+
+    # F13-T58: as regras de pontos do Capítulo 1.1 (data/habilidades.js) — a geral
+    # para todos e as fichas dos campeões de exceção; cliques de verdade na grade
+    s.js("switchTab('build'); showBuildScreen('forja'); 'ok'")
+    time.sleep(0.4)
+    def grade(seq, champ=None):
+        s.js("""(() => { build.champion = %s; build.habilidades = normHabilidades(%s); renderHabilidades(); return 'ok'; })()"""
+             % (json.dumps(champ), json.dumps(seq)))
+        time.sleep(0.2)
+    def marca(L, n):
+        s.clicar(".bh-cel[data-hab='%s'][data-nivel='%d']" % (L, n), 0.2)
+    em = lambda n: s.js("build.habilidades[%d]" % (n - 1))
+    vazio = [None] * 18
+    udyr = {"key": "77", "id": "Udyr", "name": "Udyr"}
+    jayce = {"key": "126", "id": "Jayce", "name": "Jayce"}
+    azir = {"key": "268", "id": "Azir", "name": "Azir"}
+    # a regra geral: rank 2 só no nível 3; no nível 8 ninguém está no rank 5 (o 5º ponto, só no 9)
+    grade(vazio)
+    for n in (1, 2, 3, 5, 7, 8, 9):
+        marca("Q", n)
+    geral = {n: em(n) for n in (1, 2, 3, 5, 7, 8, 9)}
+    p.conta("habilidades", "a regra de nível vale para todos (rank 2 no 3; o 5º ponto só no 9)",
+            geral[1] == "Q" and geral[2] != "Q" and geral[3] == "Q" and geral[8] != "Q" and geral[9] == "Q", "%s" % geral)
+    # o supremo como o jogo: o 1º ponto a partir do 6 (pode atrasar), o 2º só a partir do 11
+    grade(vazio)
+    for n in (7, 10, 12):
+        marca("R", n)
+    sup = {n: em(n) for n in (7, 10, 12)}
+    p.conta("habilidades", "o supremo pode atrasar, como no jogo (R no 7; o 2º só a partir do 11)",
+            sup[7] == "R" and sup[10] != "R" and sup[12] == "R", "%s" % sup)
+    # as fichas: Udyr com 6 ranks e o R desde o nível 1; Jayce com o R sozinho; Azir com o W antes
+    grade(vazio, udyr)
+    for n in (1, 3, 5, 7, 9, 11):
+        marca("Q", n)
+    marca("R", 2)
+    u = s.js("({ q: build.habilidades.filter(x => x === 'Q').length, r2: build.habilidades[1], nota: !!document.querySelector('.build-habs .bh-nota') })")
+    grade(vazio, jayce)
+    marca("R", 6)
+    j = s.js("""(() => ({ auto: document.querySelector(".bh-cel[data-hab='R'][data-nivel='1']").classList.contains('auto'), r6: build.habilidades[5] }))()""")
+    grade(vazio, azir)
+    marca("Q", 2)                       # sem o W antes: o Azir não aceita (o nível 2 já seria o mínimo do Q)
+    sem_w = em(2)
+    marca("W", 1); marca("Q", 2)
+    a = {n: em(n) for n in (1, 2)}
+    a["Q no 2 sem W"] = sem_w
+    if sem_w == "Q":
+        a[2] = "aceitou sem o W"
+    p.conta("habilidades", "as exceções do Capítulo 1.1 valem (Udyr, Jayce, Azir)",
+            u["q"] == 6 and u["r2"] == "R" and u["nota"] and j["auto"] and j["r6"] != "R" and a[1] == "W" and a[2] == "Q",
+            "Udyr %s; Jayce %s; Azir %s" % (u, j, a))
+    # um ponto que já estava fora da regra não some: fica em vermelho, com o motivo
+    grade(["Q", "Q"] + [None] * 16)
+    f = s.js("""(() => { const c = document.querySelector(".bh-cel[data-hab='Q'][data-nivel='2']");
+      return { fica: build.habilidades[1] === 'Q', vermelho: c.classList.contains('invalida'), motivo: c.title,
+               nota: !!document.querySelector('.build-habs .bh-nota.erro') }; })()""")
+    p.conta("habilidades", "ponto fora da regra fica, em vermelho e com o motivo", f["fica"] and f["vermelho"] and f["nota"] and "nível 3" in f["motivo"], "%s" % f)
+    # a importação (e toda cópia) não corta mais o 6º rank nem o R fora do 6/11/16
+    n = s.js("""(() => { const h = normHabilidades(['Q','W','Q','E','Q','W','R','W','Q','W','Q','E','Q','E','E','R','E','W']);
+      return { q: h.filter(x => x === 'Q').length, r7: h[6] }; })()""")
+    p.conta("habilidades", "importar e copiar não cortam pontos (6º rank, R no 7)", n["q"] == 6 and n["r7"] == "R", "%s" % n)
+    s.js("descartarAlteracoes(); 'ok'")
+    time.sleep(0.3)
 
 
 def checar_texto(s, p):
