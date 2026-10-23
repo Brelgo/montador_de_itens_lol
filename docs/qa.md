@@ -113,6 +113,12 @@ continua escolhida; sem diálogo, o Esc ainda larga a caixa. Na lista, o Enter c
 tela fica na lista), com o foco na linha abre a build. O coração da visualização de uma pública favorita a pública
 de origem: o ID entra nos favoritos e o coração acende na linha da visualização e na aba Públicas.
 
+**Redesenho** (F13-T65; nºs 18, 30 e 52 da caçada) — com a Ahri na build e os ícones dela na grade de habilidades,
+tirar o campeão pelo seletor (clique de verdade) deixa a grade só com as letras, e trocar para uma build sem
+campeão também (sem internet o caso é pulado, não aprovado); importar um texto com `DESCRIÇÃO:` e `LAYOUT:` (sem
+campeão nem Passiva do Ornn) mostra os dois na hora; e um clique parado no canto de uma caixa cuja grade gravada
+difere da vista não grava nem suja o rascunho — arrastar uma coluna para o lado ainda grava.
+
 **Passiva do Ornn** (F13-T60; Leo, 23/10/2026) — o "Mestre Forjador" virou "Passiva do Ornn" na tela e a placa
 "MF" do item virou "Ornn": nenhum texto do app diz mais o nome velho — o HTML inteiro (inclusive o que está
 escondido, menos script e style), os `title` e os `placeholder`, com o item forjado na forja, o balão aberto e a

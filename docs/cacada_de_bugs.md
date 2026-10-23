@@ -167,6 +167,8 @@ Status de cada um:
 
 ### 18. A grade de habilidades continua mostrando os ícones do campeão anterior depois de tirar o campeão
 
+**CONSERTADO na F13-T65 (23/10/2026).** A arte guarda de qual campeão é (`habArteDe`); quando o campeão muda ou sai, ela é apagada e a grade é redesenhada na hora, com as letras. Com o mesmo campeão nada é apagado — a grade não é redesenhada à toa.
+
 `index.html:8263` · media · achado por: Runas e habilidades · **passou pelos céticos**
 
 **Como quebra:** 1) Na forja, com uma build que tenha pontos de habilidade, escolha um campeão (ex.: Ahri) e espere os ícones de Q/W/E/R aparecerem na grade. 2) Abra o seletor de campeão e escolha "Todos os campeões". setBuildChampion(null) chama renderBuildAll → renderBuildSummary, que desenha a grade ANTES (linha 7050, ainda com habArte da Ahri) e só depois chama carregarArteHabilidades, que apaga habArte e volta no `return` sem redesenhar. A grade fica com os ícones da Ahri ao lado do aviso "escolha um campeão para ver os ícones", e continua assim até algo mais disparar renderHabilidades. O mesmo vale ao trocar da build A (com campeão) para a build B (sem campeão) pela lista: a grade da B aparece com a arte do campeão da A. E no caminho sem internet (.catch da linha 8272, "sem internet: ficam as letras") também não ficam as letras: ficam os ícones do campeão antigo.
@@ -257,6 +259,8 @@ Status de cada um:
 **Como quebra:** 1) Na lista de builds, aba "Publicadas", dê duplo clique numa build publicada que tenha runas: a forja abre com a placa "Só visualização. Esta é a build publicada ...; ela some quando a página recarrega e não pode ser editada" e o interruptor Editar se recusa a ligar (chamarEditarTemp). 2) A faixa de runas aparece com "9/9 · trocar"; clique nela. 3) Na aba Runas, em montar, clique em qualquer runa: escolherRuna → gravarPagina → saveBuild grava na hora (build.editing é falso numa build temp), a faixa muda para 8/9 e a página da build publicada passa a ser outra — sem o Editar nunca ter sido ligado. A grade de habilidades faz o certo no mesmo caso (linha 9546: `if (!build.editing) return;`); a tela de runas não tem guarda nenhuma. Se o Leo clicar em "Copiar e editar" logo em seguida, ele copia a versão alterada achando que é a publicada.
 
 ### 30. Descricao e layout importados ficam invisiveis na forja ate o proximo redesenho
+
+**CONSERTADO na F13-T65 (23/10/2026).** Com descrição, layout, runas ou habilidades no texto, a importação de uma build redesenha a forja depois de gravar (no lote, o redesenho já é um só, no fim).
 
 `index.html:9423` · baixa · achado por: Importar e exportar · **passou pelos céticos**
 
@@ -462,6 +466,8 @@ A janela mostra só o que falta, e redesenha a cada tecla: o nome deixa de "falt
 Marcar a visualização de uma pública no Selecionar e Excluir pergunta "Excluir 1 build(s)? … As publicadas também saem do site. Isso não dá pra desfazer." e depois diz "1 build(s) excluída(s)" — a visualização só fecha, e a pública de outra pessoa não sai de lugar nenhum.
 
 ### 52. Clicar no canto da caixa sem arrastar grava colunas e linhas diferentes
+
+**CONSERTADO na F13-T65 (23/10/2026).** O mouseup compara com a grade de quando o mouse desceu; um clique parado não grava nem suja o rascunho.
 
 `index.html` (`initCategoryResize`, mouseup) · **baixa** · achado na revisão da F13-T33 · passou pela revisão, não reproduzido à parte
 

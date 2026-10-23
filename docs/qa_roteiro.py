@@ -1246,6 +1246,76 @@ def checar_teclado(s, p):
     time.sleep(0.5)
 
 
+def checar_redesenho(s, p):
+    """F13-T65: o que ficava na tela sem ser verdade, ou mudava sem nada mudar.
+    nº 18: a grade de habilidades com os ícones do campeão anterior; nº 30: a
+    descrição e o layout importados invisíveis até sair e voltar; nº 52: um clique
+    parado no canto da caixa gravava a grade e sujava o rascunho."""
+    print("\n%sREDESENHO%s" % (AMARELO, FIM))
+    garantir_build_editavel(s)
+    s.js("""(() => { if (rascunho.sujo) descartarAlteracoes(); ligarEdicao(true);
+      build.habilidades = normHabilidades(['Q', 'W', 'E', 'Q']); setBuildChampion({ key: '103', id: 'Ahri', name: 'Ahri' });
+      switchTab('build'); showBuildScreen('forja'); return 'ok'; })()""")
+    arte = "document.querySelectorAll('#build-habs .bh-letra img').length"
+    fim = time.time() + 8
+    while time.time() < fim and not s.js(arte):
+        time.sleep(0.4)
+    if not s.js(arte):
+        p.conta("redesenho", "tirar o campeão tira os ícones dele da grade", False, "", pulou=True)
+    else:
+        s.clicar("#build-champ-btn", 0.8)
+        s.clicar("#champ-list .champ-row.todos", 0.8)
+        sem = s.js("({ campeao: build.champion, icones: %s })" % arte)
+        # e trocar para outra build sem campeão (a lista de builds, o caminho do relato)
+        s.js("(() => { setBuildChampion({ key: '103', id: 'Ahri', name: 'Ahri' }); salvarAgora(); return 1; })()")
+        fim = time.time() + 6
+        while time.time() < fim and not s.js(arte):
+            time.sleep(0.4)
+        com = s.js(arte)
+        outra = s.js("(() => { const b = library.builds.find(x => x.id !== build.id && !x.temp && !x.champion); return b ? b.id : null; })()")
+        if not outra:
+            s.js("(() => { const id = build.id; createNewBuild('Sem campeão'); const nova = build.id; activateBuild(id); return nova; })()")
+            outra = s.js("(() => { const b = library.builds.find(x => x.id !== build.id && !x.temp && !x.champion); return b ? b.id : null; })()")
+        s.js("ligarEdicao(false); activateBuild(%s); ligarEdicao(true); renderBuildAll(); 'ok'" % json.dumps(outra))
+        time.sleep(0.6)
+        troca = s.js(arte)
+        p.conta("redesenho", "tirar o campeão (ou trocar para uma build sem ele) tira os ícones da grade",
+                sem["campeao"] is None and sem["icones"] == 0 and com > 0 and troca == 0,
+                "sem campeão: %s ícones · com a Ahri: %s · na build sem campeão: %s" % (sem["icones"], com, troca))
+
+    # nº 30: importar com DESCRIÇÃO e LAYOUT (sem campeão nem Passiva do Ornn) mostra os dois na hora
+    s.js("""(() => { if (rascunho.sujo) descartarAlteracoes(); switchTab('build'); showBuildScreen('forja');
+      document.getElementById('io-panel').classList.add('show');
+      document.getElementById('import-text').value = ['BUILD: Importada com descrição', 'DESCRIÇÃO: Uma descrição que tem de aparecer', 'LAYOUT: Trilha por fases', '', '[COMUM] Core', '- Espada Longa'].join(String.fromCharCode(10));
+      return 'ok'; })()""")
+    s.clicar("#import-btn", 1.0)
+    imp = s.js("""({ nome: build.name, desc: document.getElementById('build-desc').value, layout: document.getElementById('build-layout').value,
+      quer: layoutValido('trilha'), gravado: build.layout })""")
+    p.conta("redesenho", "a descrição e o layout importados aparecem na hora",
+            imp["nome"] == "Importada com descrição" and imp["desc"] == "Uma descrição que tem de aparecer" and imp["layout"] == imp["gravado"] == "trilha",
+            "%s" % imp)
+
+    # nº 52: o clique parado no canto não grava; arrastar continua gravando
+    s.js("""(() => { if (!build.editing) ligarEdicao(true); if (rascunho.sujo) salvarAgora();
+      const c = build.cats[0]; c.kind = 'comum'; c.cols = 3; c.rows = 0;
+      c.items = ['long-sword', 'dagger', 'boots', 'cloth-armor', 'amplifying-tome'].map(i => ({ itemId: i, note: '' }));
+      salvarAgora(); renderBuild(); window.scrollTo(0, 0); return 'ok'; })()""")
+    time.sleep(0.5)
+    canto = '.build-cat[data-cat-id="%s"] .cat-resize' % s.js("build.cats[0].id")
+    s.clicar(canto, 0.5)
+    parado = s.js("({ sujo: rascunho.sujo, cols: build.cats[0].cols, rows: build.cats[0].rows })")
+    p0 = s.hover(canto)
+    for tipo, x in (("mousePressed", p0[0]), ("mouseMoved", p0[0] + 95), ("mouseReleased", p0[0] + 95)):
+        s.envia("Input.dispatchMouseEvent", {"type": tipo, "x": x, "y": p0[1], "button": "left", "buttons": 1 if tipo != "mouseReleased" else 0, "clickCount": 1})
+        time.sleep(0.15)
+    time.sleep(0.4)
+    arrastado = s.js("({ sujo: rascunho.sujo, cols: build.cats[0].cols })")
+    p.conta("redesenho", "clicar no canto sem arrastar não grava a grade (arrastar grava)",
+            not parado["sujo"] and parado["cols"] == 3 and parado["rows"] == 0 and arrastado["sujo"] and arrastado["cols"] == 4,
+            "parado %s · arrastado %s" % (parado, arrastado))
+    s.js("descartarAlteracoes(); 'ok'")
+
+
 def checar_passiva_do_ornn(s, p):
     """F13-T60 (Leo, 23/10/2026): o "Mestre Forjador" virou "Passiva do Ornn" na
     tela, e a placa MF virou "Ornn". O formato de texto continua escrevendo
@@ -3942,6 +4012,7 @@ GRUPOS = [
     ("visualização", checar_visualizacao),
     ("passiva do Ornn", checar_passiva_do_ornn),
     ("teclado", checar_teclado),
+    ("redesenho", checar_redesenho),
     ("runas", checar_runas),
     ("habilidades", checar_habilidades),
     ("texto", checar_texto),

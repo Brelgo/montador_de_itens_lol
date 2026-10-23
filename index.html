@@ -5963,7 +5963,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.64";
+const ATUALIZACAO = "13.65";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -8856,6 +8856,7 @@ function initCategoryResize() {
       colW: SLOT_W + SLOT_GAP, rowH: SLOT_H + SLOT_GAP,
       cols: catCols(cat), rows: catRows(cat), escolha: cat.kind === "escolha",
     };
+    resizeState.cols0 = resizeState.cols; resizeState.rows0 = resizeState.rows;   // F13-T65 (nº 52): a grade de quando o mouse desceu
     catEl.classList.add("resizing");
     catEl.dataset.grade = `${resizeState.cols} × ${resizeState.rows}`;
   });
@@ -8870,13 +8871,15 @@ function initCategoryResize() {
 
   window.addEventListener("mouseup", () => {
     if (!resizeState) return;
-    const { catId, cols, rows, catEl } = resizeState;
+    const { catId, cols, rows, catEl, cols0, rows0 } = resizeState;
     catEl.classList.remove("resizing");
     delete catEl.dataset.grade;
     resizeState = null;
     const cat = getCat(catId);
     if (!cat) return;
-    if (cat.cols !== cols || cat.rows !== rows) { cat.cols = cols; cat.rows = rows; saveBuild(); renderBuild(); }
+    // F13-T65 (nº 52): compara com a grade de quando o mouse desceu, não com a
+    // gravada — um clique parado no canto gravava a grade vista e sujava o rascunho
+    if (cols !== cols0 || rows !== rows0) { cat.cols = cols; cat.rows = rows; saveBuild(); renderBuild(); }
   });
 }
 
@@ -9741,10 +9744,19 @@ function renderHabilidades() {
 // Arte das habilidades do campeão da build, do Data Dragon — a mesma fonte que
 // o diálogo de marcador já usa.
 const habArte = {};
+// F13-T65 (nº 18): de qual campeão é a arte guardada. Antes ela era apagada a
+// cada redesenho e a grade não era refeita: tirar o campeão (ou trocar para uma
+// build sem ele, ou ficar sem internet) deixava os ícones do anterior na grade.
+let habArteDe = null;
 function carregarArteHabilidades() {
-  HAB_LETRAS.forEach(L => delete habArte[L]);
-  if (!build.champion) return;   // sem campeão ficam as letras, que já foram desenhadas
-  const id = build.champion.id;
+  const id = build.champion ? build.champion.id : null;
+  if (habArteDe !== id) {
+    const tinha = HAB_LETRAS.some(L => habArte[L]);
+    HAB_LETRAS.forEach(L => delete habArte[L]);
+    habArteDe = id;
+    if (tinha) renderHabilidades();   // as letras no lugar dos ícones do outro campeão
+  }
+  if (!id) return;
   Campeoes.habilidades(id).then(lista => {
     if (!build.champion || build.champion.id !== id) return;
     // Repinta só quando a arte muda de verdade. Redesenhar a grade à toa chegou
@@ -11084,7 +11096,9 @@ function initLibrary() {
     if (r.layout) { build.layout = r.layout; }
     if (r.runas) { build.runas = normRunas(r.runas); renderRunasDaForja(); }
     if (r.habilidades) { build.habilidades = normHabilidades(r.habilidades); renderHabilidades(); }
-    if (r.desc || r.layout || r.runas || r.habilidades) gravarBuild();
+    // F13-T65 (nº 30): a forja já tinha sido desenhada pelo createNewBuild — sem
+    // redesenhar, a descrição e o layout importados só apareciam ao sair e voltar
+    if (r.desc || r.layout || r.runas || r.habilidades) { gravarBuild(); if (!emLote) renderBuildAll(); }
     // F13-T37: o aviso do campeão chega depois (a lista do Data Dragon) e não apaga
     // o resumo: volta como dado ({ nome, campeao, semNet }) e entra no fim da mensagem
     let avisoCampeao = Promise.resolve(null);
