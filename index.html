@@ -2726,6 +2726,13 @@ body.nucleo .group-head::before {
 .runas-modo:hover { color: var(--loja-titulo); }
 .runas-modo:disabled { opacity: .45; cursor: not-allowed; }   /* F13-T52: sem build na bigorna */
 .runas-modo.ativo { background: linear-gradient(180deg, #6b5535, #3d2f1c); color: #f0dcae; border-color: var(--loja-latao); }
+/* Leo, 23/10/2026 (e o nº 29): sem o Editar a página da build aparece, mas não
+   muda — como a grade de habilidades */
+.runas-view.so-leitura .runa.escolhivel, .runas-view.so-leitura .trilha-btn { cursor: default; }
+.runas-view.so-leitura .runa.escolhivel:hover { transform: none; box-shadow: none; }
+.runas-view.so-leitura [data-limpar] { display: none; }
+.runas-dona .rd-ligar { margin-left: 8px; padding: 2px 9px; cursor: pointer; background: none; border: 1px solid var(--loja-latao); border-radius: 2px;
+  font-family: var(--loja-gravado); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--loja-titulo); font-style: normal; }
 .runas-dona { margin-left: 10px; font-family: var(--loja-texto); font-style: italic; font-size: 13px; color: var(--loja-legenda); }
 .runas-dona b { font-style: normal; color: var(--loja-titulo); }
 
@@ -2891,8 +2898,13 @@ body.editando .modo-leitura { display: none; }
 
 /* ---------- F12-T4: a grade de habilidades ---------- */
 .build-habs[hidden] { display: none; }
+/* Leo, 23/10/2026: a grade dividia a linha com o nome e encolhia até o
+   conteúdo — 337 px e casas de 10 px em qualquer tela. Agora ela pede 640 px
+   (e cresce até 920): cabe ao lado do nome em 2560, e desce para a linha de
+   baixo quando não cabe. */
 .build-habs {
-  margin: 8px 0 0; padding: 9px 12px;
+  flex: 1 1 640px; max-width: 920px; box-sizing: border-box;
+  margin: 8px 0 0; padding: 10px 14px;
   border: 1px solid #3a2a18; border-left: 3px solid var(--forja-brasa, #ff7a1e); border-radius: 2px;
   background: rgba(0,0,0,.28);
 }
@@ -2912,16 +2924,16 @@ body.editando .modo-leitura { display: none; }
 /* A coluna do rótulo precisa caber ícone + letra + contador (ex.: "Q 0/5"). Com
    42 px ela transbordava e cobria a casa do nível 1 — nenhuma habilidade podia
    ser marcada lá. */
-.bh-grade { display: grid; grid-template-columns: 78px repeat(18, minmax(0, 1fr)); gap: 3px; align-items: center; }
+.bh-grade { display: grid; grid-template-columns: 96px repeat(18, minmax(0, 1fr)); gap: 4px; align-items: center; }
 .bh-niv, .bh-letra {
-  font-family: var(--loja-gravado); font-size: 9px; letter-spacing: .06em;
+  font-family: var(--loja-gravado); font-size: 10.5px; letter-spacing: .06em;
   color: var(--forja-texto-suave, #9a8778); text-align: center;
 }
-.bh-letra { display: flex; align-items: center; gap: 5px; justify-content: flex-start; font-size: 11px; color: var(--forja-texto, #e8dcc8); }
-.bh-letra img { width: 20px; height: 20px; border-radius: 2px; border: 1px solid var(--forja-rebite, #3a3029); }
-.bh-letra .bh-conta { font-size: 8.5px; opacity: .7; }
+.bh-letra { display: flex; align-items: center; gap: 6px; justify-content: flex-start; font-size: 13px; color: var(--forja-texto, #e8dcc8); }
+.bh-letra img { width: 24px; height: 24px; border-radius: 2px; border: 1px solid var(--forja-rebite, #3a3029); }
+.bh-letra .bh-conta { font-size: 10px; opacity: .7; }
 .bh-cel {
-  height: 21px; border: 1px solid #3a3029; border-radius: 2px; cursor: pointer;
+  height: 26px; border: 1px solid #3a3029; border-radius: 2px; cursor: pointer;
   background: rgba(0,0,0,.35); padding: 0;
 }
 .bh-cel:hover { border-color: var(--forja-brasa, #ff7a1e); }
@@ -4104,6 +4116,18 @@ body:not(.editando) #add-cat,
 body:not(.editando) #clear-build,
 body:not(.editando) .picker,
 body:not(.editando) .item-tile .note-dot { display: none; }
+/* Leo, 23/10/2026: fora do Editar a build não muda — nome, marcadores, modo,
+   campeão e Mestre Forjador ficam só para ler. O JS desliga e segura; aqui
+   eles param de parecer clicáveis, sem ficar apagados (é o modo padrão). */
+body:not(.editando) #build-marks .mark-slot:not(.cheio),
+body:not(.editando) #build-marks .mark-x { display: none; }
+body:not(.editando) #build-marks .mark-slot { cursor: default; }
+body:not(.editando) #build-marks .mark-slot:hover { border-color: #c9973f; color: inherit; }
+body:not(.editando) .build-name { pointer-events: none; }
+body:not(.editando) .library-bar .build-select:disabled { opacity: 1; cursor: default; }
+body:not(.editando) #build-mode:disabled { appearance: none; -webkit-appearance: none; }
+body:not(.editando) .champ-btn:disabled .champ-caret { display: none; }
+body:not(.editando) #mf-switch { cursor: default; }
 body:not(.editando) .build-workspace { grid-template-columns: 1fr; }
 body:not(.editando) .cat-head { cursor: default; padding-left: 14px; }
 body:not(.editando) .cat-name, body:not(.editando) .cat-desc { pointer-events: none; border-color: transparent; }
@@ -4491,7 +4515,11 @@ body.forja #som-volume { accent-color: #ff7a1e; }
   font-family: var(--loja-texto); font-size: 14px;
 }
 #champ-search:focus { outline: none; border-color: var(--forja-brasa); box-shadow: 0 0 10px var(--forja-brasa-glow); }
-.champ-list { max-height: 380px; overflow: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px 6px; padding-right: 4px; }
+/* Leo, 23/10/2026 (a tela de um jogador: retratos e nomes colados): as três
+   colunas eram fixas e encolhiam com o menu. Agora cada coluna pede 130 px —
+   menu estreito perde coluna em vez de espremer — e o nome longo vira "…". */
+.champ-list { max-height: 380px; overflow: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 3px 8px; padding-right: 4px; }
+.champ-list .champ-row > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .champ-row {
   display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 3px; cursor: pointer;
   font-family: var(--loja-texto); font-size: 13.5px; color: var(--forja-texto); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -5856,7 +5884,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.58";
+const ATUALIZACAO = "13.59";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -8032,18 +8060,18 @@ function initChampPicker() {
     const n = norm(q.trim());
     list.querySelectorAll(".champ-row").forEach(r => { r.hidden = !!n && !r.classList.contains("todos") && !(r.dataset.nome || "").includes(n); });
   };
-  btn.addEventListener("click", () => abrir(menu.hidden));
+  btn.addEventListener("click", () => { if (build.editing) abrir(menu.hidden); });
   search.addEventListener("input", () => filtrar(search.value));
   search.addEventListener("keydown", (e) => {
     if (e.key === "Escape") { e.preventDefault(); abrir(false); btn.focus(); }
-    if (e.key === "Enter") {   // primeiro visível (sem contar "Todos") vira o campeão
+    if (e.key === "Enter" && build.editing) {   // primeiro visível (sem contar "Todos") vira o campeão
       const first = [...list.querySelectorAll(".champ-row:not(.todos)")].find(r => !r.hidden);
       if (first) { setBuildChampion(Campeoes.porChave(first.dataset.key)); abrir(false); }
     }
   });
   list.addEventListener("click", (e) => {
     const row = e.target.closest(".champ-row");
-    if (!row) return;
+    if (!row || !build.editing) return;
     setBuildChampion(row.dataset.key ? Campeoes.porChave(row.dataset.key) : null);
     abrir(false);
   });
@@ -8204,6 +8232,7 @@ function setMarker(i, m) {
 }
 function initMarkers() {
   document.getElementById("build-marks").addEventListener("click", (e) => {
+    if (!build.editing) return;   // Leo, 23/10/2026: fora do Editar a build não muda
     const x = e.target.closest(".mark-x");
     if (x) { e.stopPropagation(); setMarker(Number(x.dataset.x), null); return; }
     const slot = e.target.closest(".mark-slot");
@@ -8233,6 +8262,18 @@ function renderBuildSummary() {
   const apT = document.getElementById("apex-toggle"); if (apT) apT.checked = !!state.applyApex;
   const nameInput = document.getElementById("build-name-input");
   if (document.activeElement !== nameInput) nameInput.value = build.name;
+  // Leo, 23/10/2026: fora do Editar a build não muda. Nome, modo, campeão e
+  // Mestre Forjador gravavam direto (saveBuild sem o Editar grava na hora).
+  const fixa = !build.editing;
+  nameInput.readOnly = fixa;
+  document.getElementById("build-mode").disabled = fixa;
+  const champBtn = document.getElementById("build-champ-btn");
+  champBtn.disabled = fixa;
+  if (fixa && !document.getElementById("champ-menu").hidden) {
+    document.getElementById("champ-menu").hidden = true;
+    champBtn.classList.remove("aberto"); champBtn.setAttribute("aria-expanded", "false");
+  }
+  if (mfToggle) mfToggle.disabled = fixa;
   renderRunasDaForja();
   renderHabilidades();
   carregarArteHabilidades();   // desenha já com as letras e repinta com os ícones
@@ -9040,12 +9081,17 @@ function renderRunas() {
   }
   const montando = runasEstado.modo === "montar";
   const tela = document.getElementById("view-runas");
+  // Leo, 23/10/2026 (e o nº 29: a pública aberta para ver mudava de runas por
+  // aqui): sem o Editar, o Montar mostra a página da build e não muda nada
+  const soLeitura = montando && !build.editing;
+  tela.classList.toggle("so-leitura", soLeitura);
   ["icones", "resumido", "completo"].forEach(v => tela.classList.toggle("v-" + v, v === runasEstado.vista));
   document.querySelectorAll(".runas-vista").forEach(b => b.classList.toggle("ativa", b.dataset.vista === runasEstado.vista));
   document.querySelectorAll(".runas-modo").forEach(b => b.classList.toggle("ativo", b.dataset.modo === runasEstado.modo));
   // Montando, a placa escolhe a trilha PRIMÁRIA da página; lendo, só navega.
   if (montando) runasEstado.trilha = paginaDaBuild().primaria || runasEstado.trilha;
-  dona.innerHTML = montando ? `da build <b>${esc(build.name || "sem nome")}</b>` : "";
+  dona.innerHTML = montando ? `da build <b>${esc(build.name || "sem nome")}</b>`
+    + (!soLeitura ? "" : build.temp ? " · pública, só para ver" : ` · só para ver <button type="button" class="rd-ligar" id="rd-ligar">Ligar Editar</button>`) : "";
   const corpo = document.getElementById("runas-corpo");
   const lema = document.getElementById("runas-lema");
   const conta = document.getElementById("runas-conta");
@@ -9264,7 +9310,7 @@ function renderRunasDaForja() {
   const trilha = RUNAS.trilhas.find(t => t.id === p.primaria);
   caixa.innerHTML = `<span class="br-rotulo">Runas${trilha ? " · " + esc(trilha.nome) : ""}</span>`
     + faixaDeRunas(p)
-    + `<button type="button" class="br-abrir" id="build-runas-abrir">${escolhidas ? escolhidas + "/9 · trocar" : "escolher runas"}</button>`;
+    + `<button type="button" class="br-abrir" id="build-runas-abrir">${escolhidas ? escolhidas + "/9 · " + (build.editing ? "trocar" : "ver") : "escolher runas"}</button>`;
 }
 
 
@@ -9741,6 +9787,11 @@ function initRunas() {
     renderRunas();
     Som.play("catalog:tag_select");
   }));
+  document.getElementById("runas-dona").addEventListener("click", (e) => {
+    if (e.target.id !== "rd-ligar") return;
+    ligarEdicao(true);
+    renderRunas();
+  });
   document.querySelectorAll(".runas-modo").forEach(b => b.addEventListener("click", () => {
     runasEstado.modo = b.dataset.modo;
     if (runasEstado.busca) { runasEstado.busca = ""; document.getElementById("runas-q").value = ""; }
@@ -9753,6 +9804,7 @@ function initRunas() {
     // Montando, trocar de primária começa a página de novo: as runas da trilha
     // velha não existem na nova.
     if (runasEstado.modo === "montar") {
+      if (!build.editing) return;   // Leo, 23/10/2026: sem o Editar a página não muda
       const p = paginaDaBuild();
       if (p.primaria !== b.dataset.trilha) {
         build.runas = normRunas({ primaria: b.dataset.trilha, fragmentos: p.fragmentos });
@@ -9767,19 +9819,24 @@ function initRunas() {
   });
   document.getElementById("runas-corpo").addEventListener("click", (e) => {
     const escolha = e.target.closest("[data-escolher]");
+    // Leo, 23/10/2026: escolher, trocar a secundária e limpar só com o Editar;
+    // abrir a ficha de uma runa continua valendo
     if (escolha && !e.target.closest("[data-runa]")) {
+      if (!build.editing) return;
       const [papel, i, id] = escolha.dataset.escolher.split(":");
       escolherRuna(papel, Number(i), id);
       return;
     }
     const secB = e.target.closest("[data-secundaria]");
     if (secB) {
+      if (!build.editing) return;
       const p = paginaDaBuild();
       build.runas = normRunas({ ...p, secundaria: p.secundaria === secB.dataset.secundaria ? "" : secB.dataset.secundaria, secundarios: [] });
       gravarPagina();
       return;
     }
     if (e.target.closest("[data-limpar]")) {
+      if (!build.editing) return;
       build.runas = normRunas({ primaria: paginaDaBuild().primaria });
       gravarPagina();
       return;
@@ -10744,6 +10801,7 @@ function showIoMsg(text, isError) {
 
 function initLibrary() {
   document.getElementById("build-mode").addEventListener("change", (e) => {
+    if (!build.editing) { e.target.value = build.mode || ""; return; }   // Leo, 23/10/2026
     build.mode = e.target.value;
     saveBuild();
     renderBuildAll();
@@ -11046,6 +11104,7 @@ function initBuildBuilder() {
   // Mestre Forjador: salvo na build; o seletor reflete a build ativa.
   const mfToggle = document.getElementById("mf-toggle");
   mfToggle.addEventListener("change", () => {
+    if (!build.editing) { mfToggle.checked = !!build.masterwork; return; }   // Leo, 23/10/2026
     build.masterwork = mfToggle.checked;
     saveBuild();
     renderBuildAll();
@@ -11081,6 +11140,7 @@ function initBuildBuilder() {
     switchTab("runas");
   });
   document.getElementById("build-name-input").addEventListener("change", (e) => {
+    if (!build.editing) { e.target.value = build.name; return; }   // Leo, 23/10/2026
     build.name = e.target.value.trim() || "Build sem nome";
     saveBuild();
     renderLibrary();

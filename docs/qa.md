@@ -83,6 +83,15 @@ leitura esconde os atributos.
 `×`. O `×` só existe no hover, então o roteiro passa o mouse antes; sem isso o
 clique cai num retângulo de tamanho zero e acusa bug que não existe.
 
+**Visualização só lê** (F13-T59; Leo, 23/10/2026: "sem estar ativa a edição eu posso simplesmente trocar o
+campeão, trocar o modo de jogo… isso não é para ser possível") — com a build aberta sem o Editar, por clique de
+verdade e por `change` forçado (o teclado, ou alguém tirando o `disabled`): o campeão não troca (nem pelo botão
+nem pela lista), nem o modo, nem o nome, nem os marcadores (o espaço vazio some), nem o Mestre Forjador, e a
+assinatura da build sai igual. Na aba Runas a faixa leva à página da build ("· ver"), que aparece só para ver:
+escolher runa e trocar trilha não mudam nada (era o nº 29 numa pública); o "Ligar Editar" dali libera a página.
+Com o Editar, campeão e modo trocam como antes. E o seletor de campeão: em 1920 três colunas; com o menu
+apertado (janela estreita, zoom alto) ele perde coluna em vez de espremer — nenhuma com menos de 130 px.
+
 **Runas** — a página fecha em 9 de 9 e a faixa aparece na forja.
 
 **Habilidades** — o nível 1 aceita clique (já ficou inalcançável uma vez), o
@@ -251,7 +260,9 @@ popularidade; a nota diz quantas ficaram de fora; pelo ID exato a desatualizada 
 e as impressões da lista ficam na página.
 
 **Resoluções** — 2560×1440, 1920×1080 e 1600×900, a ordem do Leo, mais
-1280×800 como piso de notebook: sem rolagem horizontal e nada fora da tela.
+1280×800 como piso de notebook: sem rolagem horizontal e nada fora da tela. E a grade de habilidades com casas
+de 24 px ou mais, lendo e editando (F13-T59: ela dividia a linha com o nome e encolhia até 337 px — casas de
+10 px em qualquer tela; o menor caso é 2560 editando e 1280 lendo).
 **Celular não é alvo** (Leo, 21/09/2026: "não tenho a intenção de fazer para o
 celular"): o app é ferramenta de mesa, e 375px não entra na conta — medido, a
 página abre com viewport de 513px e os cards têm 281px fixos.

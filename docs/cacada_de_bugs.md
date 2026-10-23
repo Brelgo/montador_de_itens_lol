@@ -248,6 +248,8 @@ Status de cada um:
 
 ### 29. Build publicada aberta em "só visualização" tem as runas editáveis pela aba Runas
 
+**CONSERTADO na F13-T59 (23/10/2026), junto com o relato do Leo** ("sem estar ativa a edição eu posso simplesmente trocar o campeão, trocar o modo de jogo…"). Sem o Editar a build não muda por caminho nenhum: na forja, nome, marcadores, modo, campeão e Mestre Forjador ficam só para ler; na aba Runas, o Montar mostra a página da build e não deixa escolher runa, trocar trilha nem limpar — como a grade de habilidades. Numa pública o Editar nunca liga, então a página dela também não muda.
+
 `index.html:7992` · baixa · achado por: Runas e habilidades · **passou pelos céticos**
 
 **Como quebra:** 1) Na lista de builds, aba "Publicadas", dê duplo clique numa build publicada que tenha runas: a forja abre com a placa "Só visualização. Esta é a build publicada ...; ela some quando a página recarrega e não pode ser editada" e o interruptor Editar se recusa a ligar (chamarEditarTemp). 2) A faixa de runas aparece com "9/9 · trocar"; clique nela. 3) Na aba Runas, em montar, clique em qualquer runa: escolherRuna → gravarPagina → saveBuild grava na hora (build.editing é falso numa build temp), a faixa muda para 8/9 e a página da build publicada passa a ser outra — sem o Editar nunca ter sido ligado. A grade de habilidades faz o certo no mesmo caso (linha 9546: `if (!build.editing) return;`); a tela de runas não tem guarda nenhuma. Se o Leo clicar em "Copiar e editar" logo em seguida, ele copia a versão alterada achando que é a publicada.

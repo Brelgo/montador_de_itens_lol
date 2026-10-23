@@ -854,8 +854,8 @@ def checar_marcadores(s, p):
     """O bug de 20/09: o diálogo abria, a escolha não gravava. Todo passo aqui é
     clique de verdade, e o × só existe no hover."""
     print("\n%sMARCADORES%s" % (AMARELO, FIM))
-    s.js("switchTab('build'); showBuildScreen('forja')")
-    time.sleep(0.6)
+    # Leo, 23/10/2026: marcador só se escolhe com o Editar ligado
+    garantir_build_editavel(s)
     s.clicar("#build-marks .mark-slot[data-i='0']")
     p.conta("marcadores", "o diálogo abre", not s.js("document.getElementById('marker-dialog').hidden"))
     s.clicar("#md-tags .md-cell")
@@ -894,6 +894,120 @@ def checar_marcadores(s, p):
     p.conta("marcadores", "o mesmo marcador não repete",
             rep["norm"] == 2 and rep["dialogo"]["B"] and rep["dialogo"]["A"] and rep["dialogo"]["C"] and rep["depois"] and rep["falta"],
             "%s" % rep)
+
+
+def checar_visualizacao(s, p):
+    """Leo, 23/10/2026: com a build aberta sem o Editar dava para trocar campeão,
+    modo, nome, marcadores e Mestre Forjador — e saveBuild, sem o Editar, grava
+    na hora. A aba Runas também mudava a página (o nº 29 era isso numa pública).
+    Clique de verdade onde há clique; o change forçado cobre o teclado e quem
+    tirar o disabled pelo inspetor."""
+    print("\n%sVISUALIZAÇÃO SÓ LÊ%s" % (AMARELO, FIM))
+    garantir_build_editavel(s)
+    s.js("""(() => { if (rascunho.sujo) descartarAlteracoes();
+      const t = RUNAS.trilhas[0];
+      build.champion = { key: '103', id: 'Ahri', name: 'Ahri' }; build.mode = ''; build.masterwork = false;
+      build.markers = [{ t: 'tag', id: MARCADORES[0].id }];
+      build.runas = normRunas({ primaria: t.id, assinatura: t.slots[0].runas[0].id });
+      rascunho.sujo = false; gravarBuild(); ligarEdicao(false);
+      switchTab('build'); showBuildScreen('forja'); renderBuildAll(); return 'ok'; })()""")
+    time.sleep(0.8)
+    antes = s.js("assinaturaDaBuild(build)")
+
+    s.clicar("#build-champ-btn", 0.6)
+    aberto_clique = not s.js("document.getElementById('champ-menu').hidden")
+    forcado = s.js("""(() => { const b = document.getElementById('build-champ-btn'), dis = b.disabled;
+      b.disabled = false; b.click(); const abriu = !document.getElementById('champ-menu').hidden;
+      document.querySelector('#champ-list .champ-row.todos').click();
+      renderBuildAll(); return { dis, abriu, champ: build.champion && build.champion.key }; })()""")
+    p.conta("visualização", "sem o Editar o campeão não troca",
+            forcado["dis"] and not aberto_clique and not forcado["abriu"] and forcado["champ"] == "103",
+            "clique abriu o menu" if aberto_clique else "%s" % forcado)
+
+    modo = s.js("""(() => { const sel = document.getElementById('build-mode'), dis = sel.disabled;
+      const outro = [...sel.options].find(o => o.value !== sel.value);
+      sel.disabled = false; sel.value = outro.value; sel.dispatchEvent(new Event('change', { bubbles: true }));
+      const r = { dis, modo: build.mode, tela: sel.value }; renderBuildAll(); return r; })()""")
+    p.conta("visualização", "nem o modo de jogo", modo["dis"] and modo["modo"] == "" and modo["tela"] == "", "%s" % modo)
+
+    nome = s.js("""(() => { const i = document.getElementById('build-name-input'), ro = i.readOnly, era = build.name;
+      i.value = 'Nome trocado'; i.dispatchEvent(new Event('change', { bubbles: true }));
+      return { ro, mudou: build.name !== era, tela: i.value === era }; })()""")
+    p.conta("visualização", "nem o nome", nome["ro"] and not nome["mudou"] and nome["tela"], "%s" % nome)
+
+    s.clicar("#build-marks .mark-slot.cheio", 0.6)
+    marcas = s.js("""(() => ({ dialogo: !document.getElementById('marker-dialog').hidden,
+      vazios: [...document.querySelectorAll('#build-marks .mark-slot:not(.cheio)')].filter(e => getComputedStyle(e).display !== 'none').length,
+      n: build.markers.length }))()""")
+    if marcas["dialogo"]:
+        s.js("closeMarkerDialog(); 'ok'")
+    p.conta("visualização", "nem os marcadores", not marcas["dialogo"] and marcas["vazios"] == 0 and marcas["n"] == 1, "%s" % marcas)
+
+    s.clicar("#mf-switch", 0.5)
+    mf = s.js("""(() => { const c = document.getElementById('mf-toggle'), dis = c.disabled, clique = build.masterwork;
+      c.disabled = false; c.click(); const r = { dis, clique, forcado: build.masterwork, tela: c.checked }; renderBuildAll(); return r; })()""")
+    p.conta("visualização", "nem o Mestre Forjador", mf["dis"] and not mf["clique"] and not mf["forcado"] and not mf["tela"], "%s" % mf)
+    p.conta("visualização", "a build saiu igual", s.js("assinaturaDaBuild(build)") == antes)
+
+    # A aba Runas: a faixa leva à página da build, que aparece e não muda
+    rotulo = s.js("(document.getElementById('build-runas-abrir') || {}).textContent || ''")
+    s.clicar("#build-runas-abrir", 0.9)
+    runas_antes = s.js("JSON.stringify(build.runas)")
+    r = s.js("""(() => { const tela = document.getElementById('view-runas');
+      const so = tela.classList.contains('so-leitura'), dona = document.getElementById('runas-dona').textContent;
+      const lp = document.querySelector('#runas-corpo [data-limpar]');
+      const alvo = [...document.querySelectorAll('#runas-corpo [data-escolher]')].find(e => !e.classList.contains('escolhida'));
+      if (alvo) alvo.click();
+      const tr = [...document.querySelectorAll('#runas-trilhas [data-trilha]')].find(b => !b.classList.contains('ativa'));
+      if (tr) tr.click();
+      return { so, dona, limpar: !!lp && getComputedStyle(lp).display === 'none', alvo: !!alvo, montar: runasEstado.modo }; })()""")
+    p.conta("visualização", "sem o Editar a aba Runas mostra a página e não muda",
+            "ver" in rotulo and r["so"] and "só para ver" in r["dona"] and r["limpar"] and r["alvo"] and r["montar"] == "montar"
+            and s.js("JSON.stringify(build.runas)") == runas_antes, "faixa “%s” · %s" % (rotulo.strip(), r))
+
+    # O caminho de sempre continua: Ligar Editar ali mesmo, e a runa entra
+    s.clicar("#rd-ligar", 0.6)
+    ligada = s.js("""(() => { const so = document.getElementById('view-runas').classList.contains('so-leitura');
+      const alvo = [...document.querySelectorAll('#runas-corpo [data-escolher]')].find(e => !e.classList.contains('escolhida'));
+      if (alvo) alvo.click();
+      return { editando: build.editing, so, sujo: rascunho.sujo }; })()""")
+    p.conta("visualização", "o Ligar Editar da aba Runas libera a página",
+            ligada["editando"] and not ligada["so"] and ligada["sujo"] and s.js("JSON.stringify(build.runas)") != runas_antes, "%s" % ligada)
+
+    # E com o Editar, a barra volta a mexer: campeão pelo menu e modo pelo seletor
+    s.js("switchTab('build'); showBuildScreen('forja'); 'ok'")
+    time.sleep(0.6)
+    s.clicar("#build-champ-btn", 0.8)
+    abriu = not s.js("document.getElementById('champ-menu').hidden")
+    if abriu:
+        s.clicar("#champ-list .champ-row.todos", 0.6)
+    ed = s.js("""(() => { const sel = document.getElementById('build-mode');
+      const outro = [...sel.options].find(o => o.value !== sel.value);
+      sel.value = outro.value; sel.dispatchEvent(new Event('change', { bubbles: true }));
+      return { champ: build.champion, modo: build.mode, quer: outro.value, dis: sel.disabled }; })()""")
+    p.conta("visualização", "com o Editar campeão e modo trocam como antes",
+            abriu and ed["champ"] is None and ed["modo"] == ed["quer"] and not ed["dis"], "menu %s · %s" % ("abriu" if abriu else "não abriu", ed))
+    s.js("descartarAlteracoes(); 'ok'")
+    time.sleep(0.5)
+
+    # A tela de um jogador (Leo, 23/10/2026): retratos e nomes colados. As três
+    # colunas eram fixas e encolhiam junto com o menu (janela estreita, zoom
+    # alto). Em 1920 continuam três; com o menu apertado, perde coluna.
+    colunas_js = """(async () => { const m = document.getElementById('champ-menu');
+      if (m.hidden) document.getElementById('build-champ-btn').click();
+      await new Promise(r => setTimeout(r, 300));
+      const rows = [...document.querySelectorAll('#champ-list .champ-row:not(.todos)')].filter(r => !r.hidden).slice(0, 24);
+      const r = { cols: new Set(rows.map(e => e.offsetLeft)).size, menor: Math.min(...rows.map(e => e.getBoundingClientRect().width)) };
+      document.getElementById('champ-menu').hidden = true; return r; })()"""
+    s.tela(1920, 1080)
+    largo = s.js(colunas_js)
+    s.tela(420, 800)
+    estreito = s.js(colunas_js)
+    s.tela_normal()
+    time.sleep(0.4)
+    p.conta("visualização", "o seletor de campeão não espreme os nomes",
+            largo["cols"] == 3 and estreito["menor"] >= 130,
+            "1920: %d colunas · menu de 380 px: %d colunas, a menor com %d px" % (largo["cols"], estreito["cols"], estreito["menor"]))
 
 
 def garantir_build_editavel(s):
@@ -1792,8 +1906,13 @@ def checar_atualizacao(s, p):
     s.clicar('#bi-detail [data-act="publish"]', 0.8); s.js("fecharPub(); 'ok'")
     publicada = nota_do()
     s.js("showBuildScreen('forja'); 'ok'"); time.sleep(0.5)
+    # F13-T59: o Mestre Forjador só muda com o Editar (antes mudava na visualização e gravava na hora) —
+    # liga, troca, salva e desliga: a mesma gravação de antes, pelo caminho que restou
+    s.clicar("#edit-switch", 0.6)
     s.clicar("#mf-switch", 0.5)
-    mf = s.js("build.masterwork")
+    s.js("salvarAgora(); 'ok'"); time.sleep(0.3)
+    s.clicar("#edit-switch", 0.6)
+    mf = s.js("build.masterwork && !build.editing && !rascunho.sujo")
     depois_mf = nota_do()
     p.conta("atualização", "o Mestre Forjador não acende a nota da publicação", "Publicada na versão 2" in publicada and mf and "Publicada na versão 2" in depois_mf,
             "logo depois: %s · Mestre Forjador %s: %s" % (publicada[:26], "ligado" if mf else "?", depois_mf[:40]))
@@ -2886,13 +3005,17 @@ def checar_bigorna(s, p):
     forja = s.js("({ aba: !document.getElementById('view-build').classList.contains('hidden'), forja: !document.getElementById('build-editor').hidden, tela: buildScreen })")
     p.conta("bigorna", "o nome na plaqueta leva à forja", forja["aba"] and forja["forja"] and forja["tela"] == "forja", "%s" % forja)
     # renomear pelo campo de verdade: a plaqueta e a faixa mudam sem redesenhar a loja
+    # (F13-T59: o nome só muda com o Editar — o "parar de editar" acima o desligou)
     s.js("window.scrollTo(0, 0); 'ok'")
+    s.clicar("#edit-switch", 0.6)
     s.clicar("#build-name-input", 0.3)
     s.js("document.getElementById('build-name-input').select(); 'ok'")
     s.envia("Input.insertText", {"text": "Ezreal meio"})
     time.sleep(0.2)
     s.clicar('.tab-btn[data-tab="catalog"]', 0.6)
     renome = s.js("({ nome: build.name, plaqueta: document.getElementById('bg-nome').textContent, faixa: document.getElementById('cff-build').textContent })")
+    s.js("salvarAgora(); ligarEdicao(false); 'ok'")   # e volta ao estado de antes: gravado, sem o Editar
+    time.sleep(0.3)
     p.conta("bigorna", "renomear muda a plaqueta e a faixa na hora",
             renome["nome"] == "Ezreal meio" and renome["plaqueta"] == "Ezreal meio" and renome["faixa"] == "Ezreal meio", "%s" % renome)
     # a faixa da loja: sem caixa diz a build; com caixa, a caixa; e fica no topo ao rolar
@@ -3359,6 +3482,7 @@ def checar_resolucoes(s, p):
       const lend = CATALOG.items.filter(i => i.tier === 'Lendário').slice(0, 5);
       const c = build.cats[3];
       c.items = [porAttr, porNome, ...lend].map(it => ({ itemId: it.slug, note: 'observação de teste' }));
+      build.habilidades = normHabilidades(['Q', 'W', 'E']);   // sem ponto a grade some no modo leitura
       renderBuildAll();
       return porAttr === porNome ? porAttr.namePt : porAttr.namePt + ' / ' + porNome.namePt; })()""")
     # Runas no pior modo também: o Completo (etiquetas, notas, controle de grupo
@@ -3392,6 +3516,16 @@ def checar_resolucoes(s, p):
                     break
         p.conta("resoluções", "%dx%d sem nada fora da tela" % (largura, altura), not ruins,
                 ("catálogo, forja e runas (Completo, cinco trilhas), com Leitura calma e " + pior) if not ruins else "; ".join(ruins))
+        # Leo, 23/10/2026: a grade de habilidades dividia a linha com o nome e
+        # encolhia até 337 px — casas de 10 px em qualquer tela. Nos dois modos:
+        # o menor caso muda (2560 editando, 1280 lendo).
+        casas = s.js("""(async () => { switchTab('build'); showBuildScreen('forja');
+          const mede = async (ed) => { ligarEdicao(ed); await new Promise(r => setTimeout(r, 250));
+            const c = document.querySelector('#build-habs:not([hidden]) .bh-cel'); if (!c) return null;
+            const r = c.getBoundingClientRect(); return Math.round(Math.min(r.width, r.height)); };
+          const ler = await mede(false), editar = await mede(true); return { ler, editar }; })()""")
+        p.conta("resoluções", "%dx%d: a grade de habilidades com casas de 24 px ou mais" % (largura, altura),
+                all(v is not None and v >= 24 for v in casas.values()), "lendo %s px, editando %s px" % (casas["ler"], casas["editar"]))
     if not tinha_leitura:
         s.js("document.body.classList.remove('ac-leitura'); 'ok'")
     s.js("switchTab('catalog'); 'ok'")
@@ -3414,6 +3548,7 @@ GRUPOS = [
     ("catálogo", checar_catalogo),
     ("forja", checar_forja),
     ("marcadores", checar_marcadores),
+    ("visualização", checar_visualizacao),
     ("runas", checar_runas),
     ("habilidades", checar_habilidades),
     ("texto", checar_texto),
