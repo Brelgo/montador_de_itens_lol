@@ -92,6 +92,11 @@ escolher runa e trocar trilha não mudam nada (era o nº 29 numa pública); o "L
 Com o Editar, campeão e modo trocam como antes. E o seletor de campeão: em 1920 três colunas; com o menu
 apertado (janela estreita, zoom alto) ele perde coluna em vez de espremer — nenhuma com menos de 130 px.
 
+**Passiva do Ornn** (F13-T60; Leo, 23/10/2026) — o "Mestre Forjador" virou "Passiva do Ornn" na tela e a placa
+"MF" do item virou "Ornn": nenhum texto do app diz mais o nome velho — o HTML inteiro (inclusive o que está
+escondido, menos script e style), os `title` e os `placeholder`, com o item forjado na forja, o balão aberto e a
+ficha de um elegível aberta. O formato de texto continua escrevendo `MESTRE FORJADOR:` (escolha do Leo).
+
 **Runas** — a página fecha em 9 de 9 e a faixa aparece na forja.
 
 **Habilidades** — o nível 1 aceita clique (já ficou inalcançável uma vez), o

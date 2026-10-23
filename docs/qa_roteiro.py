@@ -1010,6 +1010,41 @@ def checar_visualizacao(s, p):
             "1920: %d colunas · menu de 380 px: %d colunas, a menor com %d px" % (largo["cols"], estreito["cols"], estreito["menor"]))
 
 
+def checar_passiva_do_ornn(s, p):
+    """F13-T60 (Leo, 23/10/2026): o "Mestre Forjador" virou "Passiva do Ornn" na
+    tela, e a placa MF virou "Ornn". O formato de texto continua escrevendo
+    MESTRE FORJADOR: — escolha do Leo; é o que o formato_de_importacao.md ensina.
+    Varre o HTML inteiro (menos script e style: o código pode falar do formato),
+    os title e os placeholder, com o item forjado na forja, o balão aberto e a
+    ficha de um elegível aberta."""
+    print("\n%sPASSIVA DO ORNN%s" % (AMARELO, FIM))
+    garantir_build_editavel(s)
+    slug = s.js("""(() => { const eleg = CATALOG.items.find(i => i.masterwork && i.masterwork.eligible === true);
+      build.cats[3].items = [{ itemId: eleg.slug, note: '', mf: true }]; build.masterwork = true;
+      switchTab('build'); showBuildScreen('forja'); renderBuildAll(); return eleg.slug; })()""")
+    time.sleep(0.6)
+    varre = """(() => { const c = document.body.cloneNode(true); c.querySelectorAll('script, style').forEach(e => e.remove());
+      const t = [c.textContent]; document.querySelectorAll('[title], [placeholder]').forEach(e => t.push(e.title || '', e.placeholder || ''));
+      const tudo = t.join(' '); const i = tudo.search(/mestre\\s+forjador/i);
+      return { velho: i < 0 ? '' : tudo.slice(Math.max(0, i - 40), i + 30), visivel: document.body.innerText.includes('Passiva do Ornn') }; })()"""
+    s.hover('.build-cat[data-cat-id="%s"] .item-tile' % s.js("build.cats[3].id"))
+    forja = s.js(varre)
+    placa = s.js("(document.querySelector('.item-tile.mf .mf-badge') || {}).textContent || ''")
+    s.js("switchTab('catalog'); openModal(%s); 'ok'" % json.dumps(slug))
+    time.sleep(0.8)
+    ficha = s.js(varre)
+    s.js("closeModal(); 'ok'")
+    texto = s.js("buildToText()")
+    s.js("descartarAlteracoes(); 'ok'")
+    time.sleep(0.4)
+    p.conta("passiva do Ornn", "nenhum texto do app diz mais “Mestre Forjador”",
+            not forja["velho"] and not ficha["velho"] and forja["visivel"] and ficha["visivel"] and placa == "Ornn",
+            "forja (com o balão) e ficha à vista com “Passiva do Ornn”; placa “%s”" % placa if not (forja["velho"] or ficha["velho"])
+            else "ainda: …%s…" % (forja["velho"] or ficha["velho"]))
+    p.conta("passiva do Ornn", "o formato de texto continua com MESTRE FORJADOR:", "MESTRE FORJADOR:" in texto,
+            "escolha do Leo, 23/10/2026")
+
+
 def garantir_build_editavel(s):
     """Runas, habilidades e texto são da build ativa, e a grade de habilidades só
     existe com o Editar ligado. Rodando um grupo sozinho (-k), nada disso existe
@@ -3549,6 +3584,7 @@ GRUPOS = [
     ("forja", checar_forja),
     ("marcadores", checar_marcadores),
     ("visualização", checar_visualizacao),
+    ("passiva do Ornn", checar_passiva_do_ornn),
     ("runas", checar_runas),
     ("habilidades", checar_habilidades),
     ("texto", checar_texto),

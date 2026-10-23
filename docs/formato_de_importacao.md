@@ -45,7 +45,7 @@ Vêm antes da primeira caixa, uma por linha, em qualquer ordem. Só `BUILD:` é 
 | `MARCADORES:` | até 3, separados por ` \| ` | ver [marcadores.md](marcadores.md) |
 | `DESCRIÇÃO:` | texto da build numa linha só | ` / ` (barra com espaço dos dois lados) separa parágrafos; ver a regra dos separadores |
 | `LAYOUT:` | como a build é exibida | `Tabuleiro` (padrão), `Núcleo + bandeja`, `Trilha por fases`, `Árvore de decisão` |
-| `MESTRE FORJADOR:` | liga o interruptor e escolhe o item forjado | nome de um item da build, ou `sim` |
+| `MESTRE FORJADOR:` | liga o interruptor **Passiva do Ornn** e escolhe o item forjado (na tela o nome mudou na F13-T60; a chave do texto continua esta) | nome de um item da build, ou `sim` |
 | `RUNAS:` | trilha primária: a de assinatura primeiro, depois os três slots | `Precisão > Pressione o Ataque \| Triunfo \| Lenda: Espontaneidade \| Golpe de Misericórdia` |
 | `RUNAS 2:` | trilha secundária: duas runas, de slots diferentes | `Dominação > Golpe Desleal \| Sexto Sentido` |
 | `FRAGMENTOS:` | um de cada slot, na ordem | `Força Adaptativa \| Velocidade de Movimento \| Vida` |

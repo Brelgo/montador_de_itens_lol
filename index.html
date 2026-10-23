@@ -5221,9 +5221,9 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
         <input type="checkbox" id="apex-toggle">
         <i></i><span>Ápice</span>
       </label>
-      <label class="sw" id="mf-switch" title="Aplica o Mestre Forjador aos Lendários elegíveis da build (masterwork.stats do catálogo)">
+      <label class="sw" id="mf-switch" title="Aplica a Passiva do Ornn aos Lendários elegíveis da build (masterwork.stats do catálogo)">
         <input type="checkbox" id="mf-toggle">
-        <i></i><span>Mestre Forjador</span>
+        <i></i><span>Passiva do Ornn</span>
       </label>
       <label class="sw" id="edit-switch" title="Visualização é o padrão; ligue para editar a build">
         <input type="checkbox" id="edit-toggle">
@@ -5301,7 +5301,7 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
         <button id="client-save-btn" class="btn ghost">Salvar arquivo .json</button>
         <p id="client-msg" class="io-msg"></p>
       </div>
-      <p class="io-hint wide">No cliente: <b>Coleção → Itens → Importar</b> e cole. Ou salve o arquivo em <code id="client-folder">League of Legends\Config\Global\Recommended\</code> <span id="client-folder-note">(vale para todos os campeões)</span>. Cada categoria vira um bloco com os itens na ordem da bancada; observações, Mestre Forjador, Ápice e Reembolso não existem no formato do cliente.</p>
+      <p class="io-hint wide">No cliente: <b>Coleção → Itens → Importar</b> e cole. Ou salve o arquivo em <code id="client-folder">League of Legends\Config\Global\Recommended\</code> <span id="client-folder-note">(vale para todos os campeões)</span>. Cada categoria vira um bloco com os itens na ordem da bancada; observações, Passiva do Ornn, Ápice e Reembolso não existem no formato do cliente.</p>
     </div>
   </div>
 
@@ -5884,7 +5884,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.59";
+const ATUALIZACAO = "13.60";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -7996,12 +7996,12 @@ function renderBuildTotals() {
   const totals = sumAttributes(all);
   const eff = goldEfficiency(all);
   const forjado = forgedEntry();
-  const flags = [state.applyCashback ? "Reembolso" : "", build.masterwork ? ("Mestre Forjador" + (forjado && byId[forjado.itemId] ? ` em ${byId[forjado.itemId].namePt}` : " (nenhum item forjado — na edição, clique no ícone de um Lendário elegível)")) : "", state.applyApex ? "Ápice" : ""].filter(Boolean);
+  const flags = [state.applyCashback ? "Reembolso" : "", build.masterwork ? ("Passiva do Ornn" + (forjado && byId[forjado.itemId] ? ` em ${byId[forjado.itemId].namePt}` : " (nenhum item forjado — na edição, clique no ícone de um Lendário elegível)")) : "", state.applyApex ? "Ápice" : ""].filter(Boolean);
   box.className = "build-totals show";
   box.innerHTML = `
     <div class="bt-head"><span class="bt-title">Atributos da build · ${all.length} ${all.length === 1 ? "item" : "itens"}</span>${effHtml(eff, "bt-eff")}</div>
     ${totals.length ? statsListHtml(totals) : `<div class="bt-note">Nenhum atributo numérico nos itens desta build.</div>`}
-    ${flags.length ? `<div class="bt-note">Com ${flags.join(" + ")}. Valores percentuais somados à parte; o valor em ouro da eficiência é o do catálogo (sem Mestre Forjador/Ápice).</div>` : ""}`;
+    ${flags.length ? `<div class="bt-note">Com ${flags.join(" + ")}. Valores percentuais somados à parte; o valor em ouro da eficiência é o do catálogo (sem a Passiva do Ornn e o Ápice).</div>` : ""}`;
 }
 
 // ---------------- render ----------------
@@ -8423,7 +8423,7 @@ function renderCategories() {
             <button type="button" class="ta-btn ta-nota" draggable="false" title="Observação (ou duplo clique)" aria-label="Escrever observação"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19h3.5L19.5 8 16 4.5 5 15.5V19z"/><path d="M14.5 6 18 9.5"/></svg></button>
             <button type="button" class="ta-btn ta-x" draggable="false" title="Tirar da caixa (ou botão direito)" aria-label="Tirar da caixa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
           </span>` : ""}
-          <span class="mf-badge" title="${build.masterwork && mfEligible(item) ? (entry.mf ? "Forjado pelo Mestre Forjador" : "Elegível ao Mestre Forjador") : ""}">MF</span>
+          <span class="mf-badge" title="${build.masterwork && mfEligible(item) ? (entry.mf ? "Forjado pela Passiva do Ornn" : "Elegível à Passiva do Ornn") : ""}">Ornn</span>
           <span class="apex-badge">ÁPICE</span>
           ${temFragmentos(item) ? (() => { const fr = fragmentoDe(item, entry);
             return `<span class="frag-badge ${fragClasse(fr)}" title="${fr ? esc("Fragmento: " + fr.tier + " · " + fragRotulo(fr)) : (build.editing ? "Nenhum fragmento escolhido — clique no ícone" : "Nenhum fragmento escolhido")}">${fr ? esc(fr.tier) : "?"}</span>`; })() : ""}
@@ -8946,7 +8946,7 @@ function showTooltip(tile) {
         ${(apexAttributes(item) || []).filter(a => a.changed).map(a => `<div><b>${esc(a.raw)}</b>${a.added ? " (só no ápice)" : ` <span style="opacity:.7">no lugar de ${esc(a.baseRaw)}</span>`}${a.note ? ` <span style="opacity:.7">· ${esc(a.note)}</span>` : ""}</div>`).join("") || `<div>${esc(item.apex)}</div>`}
       </div>` : ""}
     ${item.masterwork && item.masterwork.eligible === true && (item.masterwork.stats || []).length ? `
-      <div class="tt-mf${mfApplies(item, entry) ? "" : " off"}"><span class="k">Mestre Forjador${mfApplies(item, entry) ? " — forjado" : (build.masterwork ? (build.editing ? " — elegível, clique no ícone para forjar" : " — elegível (ligue Editar e clique no ícone)") : " (desligado)")}</span>
+      <div class="tt-mf${mfApplies(item, entry) ? "" : " off"}"><span class="k">Passiva do Ornn${mfApplies(item, entry) ? " — forjado" : (build.masterwork ? (build.editing ? " — elegível, clique no ícone para forjar" : " — elegível (ligue Editar e clique no ícone)") : " (desligado)")}</span>
         ${item.masterwork.stats.map(m => `<div>${esc(m.stat)}: ${fmtNum(m.base)} (+${fmtNum(m.bonus)}) = <b>${fmtNum(m.total)}</b></div>`).join("")}
       </div>` : ""}
     ${temFragmentos(item) ? (() => { const fr = fragmentoDe(item, entry);
@@ -11872,7 +11872,7 @@ function buildFilterPanel() {
   mfRow.innerHTML = `
     <input type="checkbox" data-rune="mf-yes">
     <span class="toggle-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>
-    <span>Só elegíveis ao Mestre Forjador</span>
+    <span>Só elegíveis à Passiva do Ornn</span>
     <span class="count">${mfCount}</span>`;
   mfRow.querySelector("input").addEventListener("change", (e) => {
     if (e.target.checked) state.runes.add("mf-yes");
@@ -12232,7 +12232,7 @@ function attrValuesHtml(item) {
 function runeMarksHtml(item) {
   const marks = [];
   if (masterworkState(item) === "yes") {
-    marks.push(`<span class="rune-mark mf" title="Elegível ao Mestre Forjador"><span class="dot"></span>Mestre Forjador</span>`);
+    marks.push(`<span class="rune-mark mf" title="Elegível à Passiva do Ornn"><span class="dot"></span>Passiva do Ornn</span>`);
   }
   return marks.length ? `<div class="rune-marks">${marks.join("")}</div>` : "";
 }
@@ -12744,7 +12744,7 @@ function cardFullHtml(item) {
   if (state.applyCashback && hasCashback(item) && itemEfficiency(item) !== null) kv.push(["Com Reembolso", fmtEff(itemEfficiency(item)), "cera"]);
   if (ca && ca.goldValue) kv.push(["Valor em ouro", ca.goldValue, ""]);
   if (hasCashback(item)) kv.push(["Reembolso", item.cashback.raw, ""]);
-  if (item.masterwork && item.masterwork.eligible === true) kv.push(["Mestre Forjador", item.masterwork.raw, ""]);
+  if (item.masterwork && item.masterwork.eligible === true) kv.push(["Passiva do Ornn", item.masterwork.raw, ""]);
   if (item.apex) kv.push(["Ápice", item.apex, state.applyApex && hasApex(item) ? "cera" : ""]);
   if (item.combineCost) kv.push(["Combinação", `${item.combineCost}g`, ""]);
   if ((item.gameModes || []).length) kv.push(["Modos", item.gameModes.join(", "), ""]);
@@ -12897,7 +12897,7 @@ function openModal(id) {
     : "";
   const bonusMF = item.masterwork && mfEligible(item) && typeof item.masterwork.bonusGold === "number" ? item.masterwork.bonusGold : null;
   const forjado = bonusMF !== null && ca && typeof ca.goldValueBase === "number" && item.priceGold > 0
-    ? `<div class="cost-line"><span class="k">Forjado</span><span class="v">${fmtEff((ca.goldValueBase + bonusMF) / item.priceGold * 100)} (${fmtOuro(ca.goldValueBase)} + ${fmtOuro(bonusMF)} do Mestre Forjador ÷ ${fmtOuro(item.priceGold)})</span></div>`
+    ? `<div class="cost-line"><span class="k">Forjado</span><span class="v">${fmtEff((ca.goldValueBase + bonusMF) / item.priceGold * 100)} (${fmtOuro(ca.goldValueBase)} + ${fmtOuro(bonusMF)} da Passiva do Ornn ÷ ${fmtOuro(item.priceGold)})</span></div>`
     : "";
   const costHtml = ca && (ca.goldValue || ca.efficiency) ? `
     <div class="modal-section">
@@ -12961,7 +12961,7 @@ function openModal(id) {
 
   const masterworkHtml = item.masterwork ? `
     <div class="modal-section">
-      <div class="modal-section-title">Mestre Forjador</div>
+      <div class="modal-section-title">Passiva do Ornn</div>
       ${item.masterwork.eligible === true
         ? `<div class="rune-marks" style="margin-top:0;margin-bottom:6px"><span class="rune-mark mf"><span class="dot"></span>Elegível</span></div>
            <div class="condition-note">${item.masterwork.raw}</div>`
