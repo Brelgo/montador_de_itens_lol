@@ -119,6 +119,12 @@ campeão também (sem internet o caso é pulado, não aprovado); importar um tex
 campeão nem Passiva do Ornn) mostra os dois na hora; e um clique parado no canto de uma caixa cuja grade gravada
 difere da vista não grava nem suja o rascunho — arrastar uma coluna para o lado ainda grava.
 
+**Importação** (F13-T66; nºs 54, 55 e 56 da caçada) — pelo botão de verdade: um texto com um link de markdown e um
+"[Dica]" no meio das caixas importa só as caixas de verdade (o colchete que não é tipo é texto, e os itens de
+baixo ficam na caixa certa), e `[ESCOLHA]` sem o 1 vale; um Arsenal.json com um bloco de 2 itens tem a mesma grade
+(6 colunas, como a caixa do texto importado sem grade) antes e depois do F5; e a régua abaixo do título com o cabeçalho depois dela é enfeite (o `BUILD:` repetido
+só renomeia), enquanto a régua do lote exportado (cercada de linhas em branco) ainda separa as builds.
+
 **Passiva do Ornn** (F13-T60; Leo, 23/10/2026) — o "Mestre Forjador" virou "Passiva do Ornn" na tela e a placa
 "MF" do item virou "Ornn": nenhum texto do app diz mais o nome velho — o HTML inteiro (inclusive o que está
 escondido, menos script e style), os `title` e os `placeholder`, com o item forjado na forja, o balão aberto e a

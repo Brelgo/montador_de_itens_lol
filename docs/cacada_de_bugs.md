@@ -481,17 +481,23 @@ A janela grava com "conteúdo mudou" a cada escolha (e a cada tecla no nome e na
 
 ### 54. Linha que começa com colchete vira caixa: link de markdown e "[Dica]" de texto de IA
 
+**CONSERTADO na F13-T66 (23/10/2026).** Só os quatro tipos (e o OBRIGATÓRIA antigo) abrem caixa; o resto é texto e é ignorado como as outras linhas soltas. `[ESCOLHA]` sem o 1 passou a valer. O formato_de_importacao.md diz isso.
+
 `index.html` (`textToBuild`, o ramo da caixa) · **baixa** · achado na F13-T36b · reproduzido no Chrome do roteiro
 
 O leitor abre caixa em toda linha `[qualquer coisa] texto`, e o tipo que não é um dos quatro vira COMUM calado. Um link de markdown numa linha (`[Guia completo](https://exemplo.com/guia)`, comum em resposta de IA) vira uma caixa vazia chamada "(https://exemplo.com/guia)"; `[Dica] comprar o Gume cedo` vira uma caixa "comprar o Gume cedo" que leva os itens de baixo para ela. O documento lista os quatro tipos e não diz o que acontece com os outros. Mesma família dos tópicos `*`/`•` da F13-T36b; o conserto natural é só abrir caixa com tipo conhecido (os quatro e o `OBRIGATÓRIA` antigo) e mandar o resto para o aviso.
 
 ### 55. As caixas do Arsenal.json importado mudam de grade depois do F5
 
+**CONSERTADO na F13-T66 (23/10/2026).** O `itemSetToBuild` grava `cols` e `rows`: as 6 colunas que já apareciam na hora (como a caixa do texto importado sem grade, escolha B do Leo de 17/10/2026), e a grade é a mesma antes e depois do F5.
+
 `index.html` (`itemSetToBuild`, `catCols`, `normalizeCats`) · **baixa** · achado na revisão da F13-T36b (17/10/2026) · reproduzido em node, não consertado
 
 O `itemSetToBuild` cria cada caixa sem `cols` e sem `rows`. Na sessão, o `catCols` cai na largura ½ e mostra 6 colunas; depois do F5, o `normalizeCats` grava `min(itens, 6)`. Um bloco de 2 itens aparece 6×1 logo depois de importar e 2×1 depois de recarregar, e o "Copiar esta build" escreve `| 6×1` antes e `| 2×1` depois. É o mesmo defeito que a F13-T36b consertou na caixa "Importados" do texto; o caminho do JSON do cliente ficou como estava.
 
 ### 56. Régua logo abaixo do `BUILD:` seguida de um `BUILD:` repetido cria uma build fantasma
+
+**CONSERTADO na F13-T66 (23/10/2026).** Decidido: a régua só é fronteira quando entre ela e o `BUILD:` seguinte só há linhas em branco (como o lote exportado). Com o cabeçalho escrito depois dela, é enfeite e o `BUILD:` repetido só renomeia.
 
 `index.html` (`dividirBuilds`) · **baixa** · achado na reconferência da F13-T36b (17/10/2026) · reproduzido em node, igual no código de antes · não consertado
 

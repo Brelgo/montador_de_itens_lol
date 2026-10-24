@@ -1316,6 +1316,44 @@ def checar_redesenho(s, p):
     s.js("descartarAlteracoes(); 'ok'")
 
 
+def checar_importacao(s, p):
+    """F13-T66: três furos da importação. nº 54: linha com colchete virava caixa
+    (link de markdown, "[Dica]" de texto de IA); nº 55: o Arsenal.json nascia com
+    uma grade e voltava com outra depois do F5; nº 56: régua abaixo do BUILD:
+    seguida de um BUILD: repetido criava uma build fantasma. Pelo botão de verdade."""
+    print("\n%sIMPORTAÇÃO%s" % (AMARELO, FIM))
+    garantir_build_editavel(s)
+    importa = lambda texto: s.js("""(() => { if (rascunho.sujo) descartarAlteracoes(); switchTab('build'); showBuildScreen('forja');
+      document.getElementById('io-panel').classList.add('show'); document.getElementById('import-text').value = %s; return 'ok'; })()""" % json.dumps(texto))
+    importa("\n".join(["BUILD: Texto de IA", "[Guia completo](https://exemplo.com/guia)", "[COMUM] Início", "- Espada Longa",
+                       "[Dica] comprar o Gume cedo", "- Gume do Infinito", "[ESCOLHA] Botas", "- Botas"]))
+    s.clicar("#import-btn", 1.0)
+    caixas = s.js("build.cats.map(c => [c.name, c.kind, c.items.map(e => byId[e.itemId].namePt)])")
+    p.conta("importação", "colchete que não é tipo de caixa é texto (e ESCOLHA sem o 1 vale)",
+            caixas == [["Início", "comum", ["Espada Longa", "Gume do Infinito"]], ["Botas", "escolha", ["Botas"]]], "%s" % caixas)
+
+    # nº 55: o Arsenal.json com um bloco de 2 itens tem a mesma grade antes e depois do F5
+    arsenal = {"title": "Arsenal de teste", "associatedMaps": [], "associatedChampions": [],
+               "blocks": [{"type": "Início", "items": [{"id": "1036", "count": 1}, {"id": "1001", "count": 1}]}]}
+    importa(json.dumps(arsenal))
+    s.clicar("#import-btn", 1.0)
+    antes = s.js("({ id: build.id, cols: catCols(build.cats[0]), rows: catRows(build.cats[0]), n: build.cats[0].items.length })")
+    s.js("salvarAgora(); 'ok'")
+    s.abrir(); time.sleep(0.8); s.entrar()
+    depois = s.js("(() => { const b = library.builds.find(x => x.id === %s); return b ? { cols: catCols(b.cats[0]), rows: catRows(b.cats[0]) } : null; })()" % json.dumps(antes["id"]))
+    # 6 colunas, como a caixa do texto importado sem grade (Leo, 17/10/2026, escolha B)
+    p.conta("importação", "o Arsenal.json tem a mesma grade antes e depois do F5",
+            antes["n"] == 2 and depois and antes["cols"] == depois["cols"] == 6 and antes["rows"] == depois["rows"], "antes %s · depois do F5 %s" % (antes, depois))
+
+    # nº 56: a régua abaixo do título com o cabeçalho depois é enfeite; a do lote exportado separa
+    partes = s.js("""(() => { const N = String.fromCharCode(10), R = '='.repeat(40);
+      const mao = dividirBuilds(['BUILD: Jinx', '=====', 'MODO: ARAM', 'BUILD: Jinx (ARAM)', '[COMUM] Core', '- Gume do Infinito'].join(N)).map(textToBuild);
+      const lote = dividirBuilds(['BUILD: Sem caixa', 'MODO: ARAM', '', R, '', 'BUILD: Com caixa', '[COMUM] Core', '- Espada Longa'].join(N)).map(textToBuild);
+      return { mao: mao.map(r => [r.name, r.mode, r.cats.length]), lote: lote.map(r => [r.name, r.cats.length]) }; })()""")
+    p.conta("importação", "BUILD: repetido depois de régua e cabeçalho só renomeia; o lote exportado ainda separa",
+            partes["mao"] == [["Jinx (ARAM)", "ARAM", 1]] and partes["lote"] == [["Sem caixa", 0], ["Com caixa", 1]], "%s" % partes)
+
+
 def checar_passiva_do_ornn(s, p):
     """F13-T60 (Leo, 23/10/2026): o "Mestre Forjador" virou "Passiva do Ornn" na
     tela, e a placa MF virou "Ornn". O formato de texto continua escrevendo
@@ -4013,6 +4051,7 @@ GRUPOS = [
     ("passiva do Ornn", checar_passiva_do_ornn),
     ("teclado", checar_teclado),
     ("redesenho", checar_redesenho),
+    ("importação", checar_importacao),
     ("runas", checar_runas),
     ("habilidades", checar_habilidades),
     ("texto", checar_texto),

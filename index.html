@@ -5963,7 +5963,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.65";
+const ATUALIZACAO = "13.66";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -7365,9 +7365,12 @@ function dividirBuilds(text) {
   String(text || "").split(/\r\n?|\n/).forEach(l => {
     const atual = blocos[blocos.length - 1];
     if (/^\s*={3,}\s*$/.test(l)) { regua = atual.length; return; }
-    // a régua só é fronteira se nenhuma caixa ou item veio depois dela (uma régua
-    // à mão logo abaixo do BUILD: ou entre duas caixas é só enfeite)
-    const reguaVale = regua >= 0 && !atual.slice(regua).some(x => CORPO.test(x));
+    // a régua só é fronteira se depois dela vieram só linhas em branco — como o lote
+    // que o próprio Montador exporta. Uma régua à mão abaixo do BUILD: (com o
+    // cabeçalho depois dela) ou entre duas caixas é só enfeite. F13-T66 (nº 56): antes
+    // bastava não ter caixa depois, e "BUILD: Jinx / ===== / MODO: ARAM / BUILD: Jinx
+    // (ARAM)" partia em duas, com a "Jinx" de fora como build sem caixa.
+    const reguaVale = regua >= 0 && atual.slice(regua).every(x => !x.trim());
     // um BUILD: repetido no cabeçalho (sem caixa no meio) só renomeia, como sempre;
     // build nova é a que vem depois de uma caixa ou item, ou de uma régua que vale
     if (BUILD.test(l) && atual.some(x => BUILD.test(x)) && (reguaVale || atual.some(x => CORPO.test(x)))) {
@@ -7449,7 +7452,11 @@ function itemSetToBuild(obj) {
       for (let k = 0; k < n; k++) items.push({ itemId: slug, note: "" });
     });
     result.total += items.length;
-    result.cats.push({ id: "cat-" + (i + 1), name, desc: "", kind, span: build.defaultSpan || 2, items });
+    // F13-T66 (nº 55): a grade vai gravada — sem cols, um bloco de 2 itens aparecia
+    // 6×1 e virava 2×1 depois do F5. Fica a de 6 colunas que já aparecia, como a
+    // caixa do texto importado sem grade (Leo, 17/10/2026, escolha B; F13-T36b)
+    const span = build.defaultSpan || 2;
+    result.cats.push({ id: "cat-" + (i + 1), name, desc: "", kind, span, cols: SPAN_COLS[span] || 3, rows: 0, items });
   });
   return result;
 }
@@ -7915,8 +7922,13 @@ function textToBuild(text) {
     const mCat = line.match(/^\[([^\]]+)\]\s*(.+)$/);
     if (mCat) {
       const kindRaw = norm(mCat[1]);
-      const kind = KINDS.find(k => norm(KIND_LABEL[k]) === kindRaw)
-        || (/^obrigat/.test(kindRaw) ? "prioridade" : "comum");
+      // F13-T66 (nº 54): só os quatro tipos (e o OBRIGATÓRIA antigo) abrem caixa — um
+      // link de markdown ("[Guia](https://…)") ou um "[Dica] …" de texto de IA viravam
+      // caixa COMUM calados e levavam os itens de baixo. Agora são texto, como as
+      // outras linhas soltas. "ESCOLHA" sem o 1 também vale.
+      const kind = KINDS.find(k => kindRaw.startsWith(norm(KIND_LABEL[k]).replace(/ 1$/, "")))
+        || (/^obrigat/.test(kindRaw) ? "prioridade" : null);
+      if (!kind) { result.ignored++; return; }
       let rest = mCat[2].trim();
       let span = 2, cols = 0, rows = 0;
       const mSpan = rest.match(/\|\s*([^|]+)$/);

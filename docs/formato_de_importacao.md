@@ -66,7 +66,9 @@ Uma caixa começa com `[TIPO] Nome | colunas×linhas`. A grade é opcional; sem 
 | `[COMUM]` | caixa normal, conta nos totais |
 | `[PRIORIDADE]` | conta nos totais e vira "- PRIORIDADE" no arsenal do cliente |
 | `[OPCIONAL]` | fica fora dos totais e do resumo das listas |
-| `[ESCOLHA 1]` | pilha de alternativas para o mesmo espaço: só o primeiro item conta |
+| `[ESCOLHA 1]` | pilha de alternativas para o mesmo espaço: só o primeiro item conta (`[ESCOLHA]` sem o 1 também vale) |
+
+Só esses quatro tipos (e o `[OBRIGATÓRIA]` antigo, que vira Prioridade) abrem caixa. Uma linha que começa com colchete e não é um deles — um link de markdown (`[Guia completo](https://…)`), um `[Dica] comprar o Gume cedo` de texto de IA — é texto como qualquer outro: é ignorada, não vira caixa e não leva os itens de baixo (F13-T66).
 
 Dentro da caixa:
 
@@ -89,7 +91,7 @@ Dentro da caixa:
 
 ## Várias builds num texto só
 
-Em **Builds → Selecionar → Copiar como texto**, o Montador põe várias builds num texto só, uma depois da outra, separadas por uma régua de `=`. A importação lê do mesmo jeito: cada `BUILD:` começa uma build nova, e a régua (uma linha só de `=`, de três para cima) separa uma da outra — dentro de uma build (abaixo do título ou entre caixas), ela é só enfeite. O cabeçalho de cada build (`MODO:`, `CAMPEÃO:`, `RUNAS:`...) vem antes da primeira caixa dela — antes ou depois do `BUILD:`; um `BUILD:` repetido antes de qualquer caixa só renomeia. **Importar como nova build** cria todas de uma vez e diz quantas entraram. Uma build sem nenhuma caixa fica de fora, e a mensagem diz qual.
+Em **Builds → Selecionar → Copiar como texto**, o Montador põe várias builds num texto só, uma depois da outra, separadas por uma régua de `=`. A importação lê do mesmo jeito: cada `BUILD:` começa uma build nova, e a régua (uma linha só de `=`, de três para cima) separa uma da outra quando entre ela e o `BUILD:` seguinte só há linhas em branco — como o Montador exporta. Com qualquer outra linha no meio (o cabeçalho escrito abaixo da régua, uma caixa), ela é só enfeite: `BUILD: Jinx` / `=====` / `MODO: ARAM` / `BUILD: Jinx (ARAM)` é uma build só, chamada "Jinx (ARAM)" (F13-T66). O cabeçalho de cada build (`MODO:`, `CAMPEÃO:`, `RUNAS:`...) vem antes da primeira caixa dela — antes ou depois do `BUILD:`; um `BUILD:` repetido antes de qualquer caixa só renomeia. **Importar como nova build** cria todas de uma vez e diz quantas entraram. Uma build sem nenhuma caixa fica de fora, e a mensagem diz qual.
 
 ## Prompt pronto para uma IA
 
