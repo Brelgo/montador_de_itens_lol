@@ -144,6 +144,16 @@ trava decide. O "Aberto em outra aba" segue no centro (grupo "duas abas").
 pelo botão, duplicar e "Copiar e editar" uma pública levam a rota; e publicar manda `p_rota` — com o servidor sem a
 coluna (o `fetch` simulado recusa como o PostgREST recusa), publica de novo sem ela e com as runas.
 
+**Cadeado** (F13-T70; Leo, 15/10 e 24/10/2026: o cadeado impede nas caixas que contam — Comum, Prioridade e o
+padrão da Escolha 1; a Opcional e as alternativas aceitam) — o que o cadeado lê do catálogo bate (3 itens de Selva, 7
+botas da Missão do Meio, 8 da linha do Atlas, 5 itens que pedem runa, 24 grupos, as Botas Levemente Mágicas no lugar
+das Botas); pela bandeja, com cliques de verdade: com a rota Top, o item de selva fica com o cadeado e não entra na
+Prioridade (o aviso diz "só na rota Selva"), e entra na Opcional; com uma Hidra numa caixa que conta, a segunda fica
+trancada na Prioridade, entra como alternativa da Escolha 1 e não sobe a padrão; as Botas Levemente Mágicas pedem a
+Calçados Mágicos e, com ela na página de runas, entram — e as Botas comuns ficam trancadas; o item de selva que já
+estava numa caixa que conta ganha o cadeado quando a rota muda; e na loja o card trancado mostra o cadeado (também
+depois de a busca redesenhar a grade) e o clique não entra.
+
 **Passiva do Ornn** (F13-T60; Leo, 23/10/2026) — o "Mestre Forjador" virou "Passiva do Ornn" na tela e a placa
 "MF" do item virou "Ornn": nenhum texto do app diz mais o nome velho — o HTML inteiro (inclusive o que está
 escondido, menos script e style), os `title` e os `placeholder`, com o item forjado na forja, o balão aberto e a

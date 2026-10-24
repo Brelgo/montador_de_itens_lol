@@ -1510,6 +1510,95 @@ def checar_rota(s, p):
     s.js("descartarAlteracoes && rascunho.sujo && descartarAlteracoes(); 'ok'")
 
 
+def checar_cadeado(s, p):
+    """F13-T70 (Leo, 15/10 e 24/10/2026): o cadeado impede o item trancado nas
+    caixas que contam (Comum, Prioridade e o padrão da Escolha 1); a Opcional e as
+    alternativas aceitam. Lido do catálogo: a rota (Selva, Meio, a linha do Atlas),
+    o grupo "Limitado a 1", a runa exigida e o "Substitui as Botas"."""
+    print("\n%sCADEADO%s" % (AMARELO, FIM))
+    garantir_build_editavel(s)
+    dado = s.js("""(() => { const t = travas(), conta = (r) => Object.values(t.rota).filter(x => x === r).length;
+      return { selva: conta('selva'), meio: conta('meio'), suporte: conta('suporte'), runas: Object.keys(t.runa).length,
+               grupos: new Set(Object.values(t.grupos).flat()).size, sub: Object.entries(t.substitui).map(([a, b]) => byId[a].namePt + '>' + byId[b].namePt) }; })()""")
+    p.conta("cadeado", "o cadeado lê do catálogo a rota, os grupos, as runas e a substituição",
+            dado["selva"] == 3 and dado["meio"] == 7 and dado["suporte"] == 8 and dado["runas"] == 5 and dado["grupos"] == 24
+            and dado["sub"] == ["Botas Levemente Mágicas>Botas"], "%s" % dado)
+
+    # cenário: rota Top; caixas Comum (0), Prioridade (1), Opcional (2), Escolha 1 (3)
+    s.js("""(() => { if (rascunho.sujo) descartarAlteracoes(); ligarEdicao(true);
+      const por = (n) => CATALOG.items.find(i => i.namePt === n).slug;
+      build.mode = "Summoner's Rift"; build.rota = 'top'; build.runas = normRunas(null);
+      // a build aberta pode ter vindo de outro grupo com menos caixas (uma importada, por exemplo)
+      while (build.cats.length < 4) build.cats.push({ id: 'cat-qa-' + build.cats.length + '-' + Date.now(), name: 'Caixa', desc: '', kind: 'comum', span: 2, cols: 3, rows: 0, items: [] });
+      build.cats = build.cats.slice(0, 4);
+      ['comum', 'prioridade', 'opcional', 'escolha'].forEach((k, i) => { build.cats[i].kind = k; build.cats[i].items = []; });
+      build.cats[0].items = [{ itemId: por('Hidra Raivosa'), note: '' }];
+      build.cats[3].items = [{ itemId: por('Gume do Infinito'), note: '' }];
+      build.selectedCatId = build.cats[1].id; build.pickerQuery = ''; switchTab('build'); showBuildScreen('forja'); renderBuildAll();
+      window.__por = por; return 'ok'; })()""")
+    time.sleep(0.8)
+    def poe_pela_bandeja(nome, caixa):
+        s.js("""(() => { build.selectedCatId = build.cats[%d].id; build.pickerQuery = %s; document.getElementById('picker-search').value = %s; renderBuildAll(); return 1; })()"""
+             % (caixa, json.dumps(nome), json.dumps(nome)))
+        time.sleep(0.3)
+        sel = '#picker-list .picker-row[data-item-id="%s"]' % s.js("__por(%s)" % json.dumps(nome))
+        trancada = s.js("(() => { const r = document.querySelector(%s); return r ? r.classList.contains('trancado') : null; })()" % json.dumps(sel))
+        antes = s.js("build.cats[%d].items.length" % caixa)
+        s.clicar(sel, 0.5)
+        depois = s.js("build.cats[%d].items.length" % caixa)
+        aviso = s.js("document.getElementById('edit-hint').textContent")
+        return {"trancada": trancada, "entrou": depois > antes, "aviso": aviso}
+    selva_prio = poe_pela_bandeja("Cria de Andabrisas", 1)
+    selva_opc = poe_pela_bandeja("Cria de Andabrisas", 2)
+    p.conta("cadeado", "fora da Selva, o item de selva não entra na caixa que conta (a Opcional aceita)",
+            selva_prio["trancada"] and not selva_prio["entrou"] and "só na rota Selva" in selva_prio["aviso"]
+            and selva_opc["trancada"] is False and selva_opc["entrou"], "Prioridade %s · Opcional %s" % (selva_prio, selva_opc))
+    hidra = poe_pela_bandeja("Hidra Titânica", 1)
+    alternativa = poe_pela_bandeja("Hidra Titânica", 3)
+    sobe = s.js("""(() => { const c = build.cats[3]; const antes = c.items[0].itemId; moveItem(c.id, c.items.length - 1, c.id, 0);
+      return { ficou: c.items[0].itemId === antes, aviso: document.getElementById('edit-hint').textContent }; })()""")
+    p.conta("cadeado", "o grupo “Limitado a 1”: a segunda Hidra não conta junto (como alternativa da Escolha 1, entra — e não sobe a padrão)",
+            hidra["trancada"] and not hidra["entrou"] and "grupo Hidra" in hidra["aviso"] and "Hidra Raivosa" in hidra["aviso"]
+            and alternativa["entrou"] and sobe["ficou"] and "grupo Hidra" in sobe["aviso"], "Prioridade %s · alternativa %s · subir %s" % (hidra, alternativa, sobe))
+
+    # a runa: Botas Levemente Mágicas pedem Calçados Mágicos; com a runa, as Botas comuns ficam trancadas
+    sem_runa = poe_pela_bandeja("Botas Levemente Mágicas", 1)
+    s.js("""(() => { const id = 'calcados-magicos'; let tr, si;
+      RUNAS.trilhas.forEach(t => t.slots.forEach((sl, i) => { if (sl.runas.some(r => r.id === id)) { tr = t.id; si = i; } }));
+      const slots = ['', '', '']; slots[si - 1] = id;
+      build.runas = normRunas({ primaria: tr, assinatura: '', slots }); renderBuildAll(); return [tr, si]; })()""")
+    com_runa = poe_pela_bandeja("Botas Levemente Mágicas", 1)
+    botas = poe_pela_bandeja("Botas", 0)
+    p.conta("cadeado", "a runa: as Botas Levemente Mágicas pedem a Calçados Mágicos; com ela, as Botas ficam trancadas",
+            sem_runa["trancada"] and not sem_runa["entrou"] and "pede a runa Calçados Mágicos" in sem_runa["aviso"]
+            and com_runa["entrou"] and botas["trancada"] and not botas["entrou"] and "Botas Levemente Mágicas vem no lugar" in botas["aviso"],
+            "sem a runa %s · com a runa %s · Botas %s" % (sem_runa, com_runa, botas))
+
+    # o que já está na build: trocar a rota tranca o item de selva que estava numa caixa que conta
+    marca = s.js("""(() => { build.rota = ''; build.cats[0].items.push({ itemId: __por('Filhote de Garrabrasa'), note: '' }); renderBuildAll();
+      const livre = !!document.querySelector('.build-cat[data-cat-id="' + build.cats[0].id + '"] .item-tile.trancado');
+      build.rota = 'meio'; renderBuildAll();
+      const t = [...document.querySelectorAll('.build-cat[data-cat-id="' + build.cats[0].id + '"] .item-tile.trancado')];
+      return { livre, trancados: t.map(x => byId[build.cats[0].items[Number(x.dataset.index)].itemId].namePt), motivo: t[0] && t[0].dataset.cadeado }; })()""")
+    p.conta("cadeado", "o item que já estava na build ganha o cadeado quando a rota muda",
+            not marca["livre"] and marca["trancados"] == ["Filhote de Garrabrasa"] and "só na rota Selva" in (marca["motivo"] or ""), "%s" % marca)
+
+    # a loja: o card trancado e o clique que não entra
+    s.js("""(() => { build.cats[0].items = build.cats[0].items.filter(e => e.itemId !== __por('Filhote de Garrabrasa')); build.selectedCatId = build.cats[1].id;
+      renderBuildAll(); switchTab('catalog'); document.getElementById('search-input').value = 'Broto de Esmagamusgo';
+      document.getElementById('search-input').dispatchEvent(new Event('input', { bubbles: true })); return 1; })()""")
+    time.sleep(0.8)
+    card = '#grid .card[data-slug="%s"]' % s.js("__por('Broto de Esmagamusgo')")
+    trancado = s.js("(() => { const c = document.querySelector(%s); return c ? c.classList.contains('trancado') : null; })()" % json.dumps(card))
+    antes = s.js("build.cats[1].items.length")
+    s.clicar(card + " .card-name, " + card, 0.8)
+    loja = s.js("({ entrou: build.cats[1].items.length > %d, aviso: (document.getElementById('catalog-mode-hint') || {}).textContent || '' })" % antes)
+    p.conta("cadeado", "na loja, o card trancado mostra o cadeado e o clique não entra",
+            trancado and not loja["entrou"] and "só na rota Selva" in loja["aviso"], "card trancado %s · %s" % (trancado, loja))
+    s.js("""(() => { document.getElementById('search-input').value = ''; document.getElementById('search-input').dispatchEvent(new Event('input', { bubbles: true }));
+      descartarAlteracoes(); return 1; })()""")
+
+
 def checar_passiva_do_ornn(s, p):
     """F13-T60 (Leo, 23/10/2026): o "Mestre Forjador" virou "Passiva do Ornn" na
     tela, e a placa MF virou "Ornn". O formato de texto continua escrevendo
@@ -4211,6 +4300,7 @@ GRUPOS = [
     ("lote e ornn", checar_lote_e_ornn),
     ("conferência", checar_conferencia),
     ("rota", checar_rota),
+    ("cadeado", checar_cadeado),
     ("runas", checar_runas),
     ("habilidades", checar_habilidades),
     ("texto", checar_texto),

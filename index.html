@@ -4227,6 +4227,15 @@ body:not(.editando) .build-empty::after { content: "Esta build ainda não tem ne
 .item-tile.mudou .item-icon { border-color: #e0503c !important; box-shadow: 0 0 0 2px #c8503c, 0 0 12px rgba(224,80,60,.65) !important; }
 .lc.mudou { box-shadow: 0 0 0 2px #c8503c, 0 0 12px rgba(224,80,60,.55); }
 .bd-items img.mudou { outline: 2px solid #e0503c; outline-offset: 1px; box-shadow: 0 0 10px rgba(224,80,60,.6); }
+/* F13-T70: o cadeado — trancado nesta build (a rota, o grupo "Limitado a 1", a runa) */
+.picker-row.trancado .pk-abbr, .card.trancado .card-icon, .item-tile.trancado .item-icon { position: relative; }
+.picker-row.trancado .pk-abbr::after, .card.trancado .card-icon::after, .item-tile.trancado .item-icon::after {
+  content: ""; position: absolute; right: 2px; bottom: 2px; width: 17px; height: 17px; z-index: 4; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%231b120a'/%3E%3Cpath d='M5.5 7.2V5.6a2.5 2.5 0 0 1 5 0v1.6' fill='none' stroke='%23e7c46f' stroke-width='1.4'/%3E%3Crect x='4.3' y='7.1' width='7.4' height='5.3' rx='1' fill='%23e7c46f'/%3E%3C/svg%3E") center/contain no-repeat;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.85));
+}
+.picker-row.trancado .pk-abbr img, .card.trancado .card-icon img, .item-tile.trancado .item-icon img { filter: grayscale(.75) brightness(.6); }
+.picker-row.trancado { cursor: not-allowed; }
 .item-tile.mf-elegivel .mf-badge { display: block; }
 body.editando .item-tile.mf-elegivel .item-icon { cursor: pointer; }
 body.editando .item-tile.mf-elegivel:not(.mf):hover .item-icon { border-color: #e7c46f; box-shadow: 0 0 12px rgba(231,196,111,.6); }
@@ -5960,6 +5969,103 @@ function rotaDoTexto(t) {
   return Object.keys(ROTAS).find(k => k === n || norm(ROTAS[k]) === n) || ROTA_APELIDOS[n] || "";
 }
 
+// ---------------- F13-T70: o cadeado ----------------
+// Leo (15/10/2026: "o ícone do item ganha um cadeado quando ele fica bloqueado
+// pela build"; 24/10/2026: o cadeado IMPEDE nas caixas que contam — Comum,
+// Prioridade e o padrão da Escolha 1; a Opcional e as alternativas aceitam).
+// Tudo lido do catálogo, uma vez: o grupo de "Limitado a 1…", a runa de "Requer
+// a runa…"/"Só disponível com a runa…", o "Substitui as Botas" (Calçados
+// Mágicos), e a rota de "Requer Golpear" (Selva), da "Missão do Meio" (Meio) e
+// da linha do Atlas (Suporte: o item "escolhido como Suporte" e o que vem dele).
+let travasProntas = null;
+function travas() {
+  if (travasProntas) return travasProntas;
+  const t = { grupos: {}, runa: {}, substitui: {}, rota: {} };
+  const poe = (slug, g) => { const l = t.grupos[slug] = t.grupos[slug] || []; if (!l.includes(g)) l.push(g); };
+  const porNome = {};
+  CATALOG.items.forEach(i => { porNome[norm(i.namePt)] = i.slug; });
+  CATALOG.items.forEach(it => {
+    const c = it.condition || "";
+    for (const m of c.matchAll(/Limitado a 1 item do grupo ([^.;(]+)/g)) poe(it.slug, m[1].trim());
+    if (/Limitado a 1 item de Botas/.test(c)) poe(it.slug, "Botas");
+    if (/Limitado a 1 item Trinket/.test(c)) poe(it.slug, "Trinket");
+    if (/Limitado a 1 tipo de Poção/.test(c)) poe(it.slug, "Poção");
+    // "Limitado a 1 Manamune": a evolução e o item de que ela vem são um só
+    for (const m of c.matchAll(/Limitado a 1 ([^.;]+)/g)) {
+      const outro = porNome[norm(m[1].trim())];
+      if (outro) { poe(it.slug, "=" + outro); poe(outro, "=" + outro); }
+    }
+    const mRuna = c.match(/(?:Requer a runa|Só disponível com a runa) ([^(.]+?)\s*\(/);
+    if (mRuna) t.runa[it.slug] = mRuna[1].trim();
+    const mSub = c.match(/Substitui as? ([^.]+?) e /);
+    if (mSub && porNome[norm(mSub[1])]) t.substitui[it.slug] = porNome[norm(mSub[1])];
+    if (/Requer Golpear/.test(c)) t.rota[it.slug] = "selva";
+    if (/Missão do Meio/.test(c)) t.rota[it.slug] = "meio";
+  });
+  const desce = (slug) => { t.rota[slug] = "suporte"; ((byId[slug] || {}).buildsIntoIds || []).forEach(x => { if (t.rota[x] !== "suporte") desce(x); }); };
+  CATALOG.items.filter(i => /escolhido como Suporte/.test(i.notes || "")).forEach(i => desce(i.slug));
+  return (travasProntas = t);
+}
+// Conta na build: fora da Opcional e, na Escolha 1, só o padrão (o de cima).
+function contaNaBuild(cat, index) { return cat.kind !== "opcional" && (cat.kind !== "escolha" || index === 0); }
+function runaIdPorNome(nome) {
+  if (!nome || !runasOk()) return null;
+  for (const tr of RUNAS.trilhas) for (const s of tr.slots) for (const r of s.runas) if (norm(r.nome) === norm(nome)) return r.id;
+  return null;
+}
+function contextoDoCadeado() {
+  const contam = [];
+  (build.cats || []).forEach(c => c.items.forEach((e, i) => { if (contaNaBuild(c, i)) contam.push(e); }));
+  const p = normRunas(build.runas);
+  return { contam, runas: new Set([p.assinatura, ...p.slots, ...p.secundarios, ...p.fragmentos].filter(Boolean)),
+           rota: rotaPossivel(build.mode) ? rotaValida(build.rota) : "" };
+}
+// Por que o item fica trancado numa posição que conta ("" = livre). `ignorar`:
+// as entradas que não contam contra ele (ele mesmo, quando já está na build).
+function motivoDoCadeado(item, ctx, ignorar = []) {
+  const t = travas(), out = [];
+  const r = t.rota[item.slug];
+  if (r && ctx.rota && r !== ctx.rota) out.push(`só na rota ${ROTAS[r]}`);
+  const runa = t.runa[item.slug];
+  if (runa && !ctx.runas.has(runaIdPorNome(runa))) out.push(`pede a runa ${runa}`);
+  Object.entries(t.substitui).forEach(([quem, alvo]) => {
+    if (alvo === item.slug && ctx.runas.has(runaIdPorNome(t.runa[quem]))) out.push(`com a runa ${t.runa[quem]}, ${byId[quem].namePt} vem no lugar`);
+  });
+  const gs = t.grupos[item.slug] || [];
+  if (gs.length) {
+    const outro = ctx.contam.find(e => !ignorar.includes(e) && (t.grupos[e.itemId] || []).some(g => gs.includes(g)));
+    if (outro) {
+      const g = t.grupos[outro.itemId].find(x => gs.includes(x));
+      out.push(`${g.startsWith("=") ? "limitado a 1" : "limitado a 1 do grupo " + g} — a build já tem ${byId[outro.itemId].namePt}`);
+    }
+  }
+  return out.join("; ");
+}
+// Depois de pôr: a entrada numa posição que conta não pode ficar trancada.
+function cadeadoDepoisDePor(cat, entry) {
+  const i = cat.items.indexOf(entry);
+  if (i < 0 || !contaNaBuild(cat, i) || !byId[entry.itemId]) return "";
+  return motivoDoCadeado(byId[entry.itemId], contextoDoCadeado(), [entry]);
+}
+// O cadeado da bandeja e do Catálogo: o que aconteceria com o item posto na caixa
+// escolhida (sem caixa, como se contasse). Numa Opcional, ou numa Escolha 1 que já
+// tem o padrão (o item entra como alternativa), nada tranca.
+function motivoNaCaixaEscolhida(item, ctx) {
+  const alvo = getCat(build.selectedCatId);
+  if (alvo && (alvo.kind === "opcional" || (alvo.kind === "escolha" && alvo.items.length))) return "";
+  return motivoDoCadeado(item, ctx);
+}
+function avisarCadeado(item, motivo) {
+  const html = `<b>${esc(item.namePt)}</b> está trancado nesta build: ${esc(motivo)}. Numa caixa Opcional ele entra.`;
+  if (!document.getElementById("view-catalog").classList.contains("hidden")) { showCatalogModeHint(html); return; }
+  const h = document.getElementById("edit-hint");
+  if (!h) return;
+  h.innerHTML = html;
+  h.classList.add("show");
+  clearTimeout(editHintTimer);
+  editHintTimer = setTimeout(() => h.classList.remove("show"), 4500);
+}
+
 // Três estados, alternados clicando no rótulo do cabeçalho da categoria.
 // Toda categoria nasce Comum; Prioridade e Opcional são marcações opcionais.
 // Tipos de caixa. "Escolha 1" (Leo, 15/09/2026, gramática do tabuleiro): pilha vertical de
@@ -5994,7 +6100,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.69";
+const ATUALIZACAO = "13.70";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -7200,7 +7306,11 @@ function addItemToCategory(itemId, catId, index) {
   const cat = getCat(catId || build.selectedCatId);
   if (!cat) return false;
   const pos = Number.isInteger(index) ? Math.max(0, Math.min(cat.items.length, index)) : cat.items.length;
-  cat.items.splice(pos, 0, { itemId, note: "" });
+  const novo = { itemId, note: "" };
+  cat.items.splice(pos, 0, novo);
+  // F13-T70: numa posição que conta, o item trancado não entra (e a caixa volta a ser o que era)
+  const trava = cadeadoDepoisDePor(cat, novo);
+  if (trava) { cat.items.splice(cat.items.indexOf(novo), 1); avisarCadeado(byId[itemId], trava); return false; }
   lastDrop = { catId: cat.id, index: pos };
   Som.play("build:item_add", { item: byId[itemId] });   // genérico, ou Lendário por núcleo + fala rara
   renderBuild();
@@ -7257,6 +7367,9 @@ function moveItem(fromCatId, fromIndex, toCatId, toIndex) {
   if (!entry) return;
   pos = Math.max(0, Math.min(to.items.length, pos));
   to.items.splice(pos, 0, entry);
+  // F13-T70: chegar numa posição que conta trancado não vale — volta para onde estava
+  const trava = cadeadoDepoisDePor(to, entry);
+  if (trava) { to.items.splice(to.items.indexOf(entry), 1); from.items.splice(fromIndex, 0, entry); avisarCadeado(byId[entry.itemId], trava); renderBuild(); return; }
   lastDrop = { catId: to.id, index: pos };
   Som.play("build:item_move", { item: byId[entry.itemId] });   // a placa cai; o lojista não comenta
   renderBuild();
@@ -8560,6 +8673,7 @@ function renderCategories() {
   }
 
   const mudados = itensMudadosDaBuild();   // F13-T61: a borda vermelha
+  const ctxCadeado = contextoDoCadeado();   // F13-T70: o cadeado do que já está na build
   build.cats.forEach(cat => {
     const el = document.createElement("section");
     el.className = `build-cat ${cat.kind}` +
@@ -8595,6 +8709,9 @@ function renderCategories() {
         // O modo (compacto x nomeado) é decidido depois, medindo a largura real.
         tile.className = "item-tile named" + (itensSaindo.has(entry) ? " tile-saindo" : "") + (entry.note ? " has-note" : "") + (offMode ? " off-mode" : "") + (mfApplies(item, entry) ? " mf" : "") + (build.masterwork && mfEligible(item) ? " mf-elegivel" : "") + (state.applyApex && hasApex(item) ? " apex" : "")
           + (cat.kind !== "opcional" && mudados.includes(entry.itemId) ? " mudou" : "");
+        // F13-T70: já na build numa posição que conta e trancado (a rota ou as runas mudaram depois)
+        const trava = contaNaBuild(cat, index) ? motivoDoCadeado(item, ctxCadeado, [entry]) : "";
+        if (trava) { tile.classList.add("trancado"); tile.dataset.cadeado = trava; }
         if (offMode) tile.title = `${item.namePt} não existe em ${build.mode}`;
         tile.draggable = build.editing;
         tile.style.setProperty("--tier-color", TIER_CSS[item.tier] || "");
@@ -8708,6 +8825,7 @@ function renderPicker() {
 
   list.innerHTML = "";
   const frag = document.createDocumentFragment();
+  const ctxCadeado = contextoDoCadeado();   // F13-T70
   items.forEach(item => {
     const row = document.createElement("div");
     row.className = "picker-row";
@@ -8716,6 +8834,9 @@ function renderPicker() {
     row.style.setProperty("--tier-color", TIER_CSS[item.tier] || "");
     // título com o mesmo que a linha mostra: no modo Ícones é o que resta para ler
     row.title = `${item.namePt} · ${TIER_LABEL[item.tier] || item.tier} · ${fmtG(effectivePrice(item))}`;
+    // F13-T70: o cadeado para a caixa escolhida (sem caixa, como se contasse)
+    const trava = build.id ? motivoNaCaixaEscolhida(item, ctxCadeado) : "";
+    if (trava) { row.classList.add("trancado"); row.title += ` · trancado: ${trava}`; }
     row.innerHTML = `
       <span class="pk-abbr">${iconInner(item)}</span>
       <span class="pk-name">${item.namePt}<span class="pk-tier">${TIER_LABEL[item.tier] || item.tier}</span></span>
@@ -9136,6 +9257,7 @@ function showTooltip(tile) {
     ${build.mode && !itemAvailableIn(item, build.mode)
       ? `<div class="tt-offmode">Não disponível em ${build.mode}</div>` : ""}
     ${tile.classList.contains("mudou") ? `<div class="tt-offmode">Mudou no jogo depois do patch desta build</div>` : ""}
+    ${tile.dataset.cadeado ? `<div class="tt-offmode">Trancado nesta build: ${esc(tile.dataset.cadeado)}</div>` : ""}
     ${state.applyApex && hasApex(item) ? `
       <div class="tt-apex"><span class="k">Ápice</span>
         ${(apexAttributes(item) || []).filter(a => a.changed).map(a => `<div><b>${esc(a.raw)}</b>${a.added ? " (só no ápice)" : ` <span style="opacity:.7">no lugar de ${esc(a.baseRaw)}</span>`}${a.note ? ` <span style="opacity:.7">· ${esc(a.note)}</span>` : ""}</div>`).join("") || `<div>${esc(item.apex)}</div>`}
@@ -9467,6 +9589,7 @@ function gravarPagina() {
   build.runas = normRunas(build.runas);
   saveBuild();
   renderRunas();
+  renderBuildAll();   // F13-T70: as runas mexem no cadeado (Calçados Mágicos, Tônico Triplo…) — a forja e a loja acompanham
   Som.play("catalog:tag_select");
 }
 
@@ -12733,6 +12856,10 @@ function renderCard(item, attrSorting) {
   }
 
   if (findInBuild(item.slug)) card.classList.add("in-build");
+  else if (build.id) {   // F13-T70: o cadeado também no card que nasce (a busca e os filtros redesenham a grade)
+    const trava = motivoNaCaixaEscolhida(item, contextoDoCadeado());
+    if (trava) { card.classList.add("trancado"); card.dataset.cadeado = trava; }
+  }
   if (state.applyApex && hasApex(item)) card.classList.add("apex-on");
   const regiaoHtml = vestirDeRegiao(card, item);
   ligarFxDeNucleo(card, item);
@@ -12918,7 +13045,11 @@ function toggleItemInBuild(slug) {
     // Nada automático (Leo, 13/09/2026): só entra na categoria escolhida à mão.
     const cat = getCat(build.selectedCatId);
     if (!cat) return;
-    cat.items.push({ itemId: slug, note: "" });
+    const novo = { itemId: slug, note: "" };
+    cat.items.push(novo);
+    // F13-T70: o mesmo cadeado da forja, no clique da loja
+    const trava = cadeadoDepoisDePor(cat, novo);
+    if (trava) { cat.items.pop(); avisarCadeado(byId[slug], trava); return; }
     const it = byId[slug];
     Som.play("build:item_add", { item: it });   // mesmos sons e falas da forja (F10-T4)
     // Aviso por modo de jogo (Fase 5, T3): a build tem modo e o item não existe nele.
@@ -12979,8 +13110,13 @@ function refreshCatalogCatSelect() {
 // contagem na aba Build e o seletor de categoria. Chamada pelo renderBuild().
 function refreshInBuildMarks() {
   refreshCatalogCatSelect();
+  const ctxCadeado = contextoDoCadeado();   // F13-T70: o cadeado na loja, para o que ainda não está na build
   document.querySelectorAll("#grid .card").forEach(card => {
-    card.classList.toggle("in-build", !!findInBuild(card.dataset.slug));
+    const naBuild = !!findInBuild(card.dataset.slug);
+    card.classList.toggle("in-build", naBuild);
+    const trava = build.id && !naBuild && byId[card.dataset.slug] ? motivoNaCaixaEscolhida(byId[card.dataset.slug], ctxCadeado) : "";
+    card.classList.toggle("trancado", !!trava);
+    if (trava) card.dataset.cadeado = trava; else delete card.dataset.cadeado;
   });
   const n = (build.cats || []).reduce((s, c) => s + c.items.length, 0);
   const badge = document.getElementById("build-tab-count");
