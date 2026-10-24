@@ -9,6 +9,7 @@ Os nomes válidos de item e de marcador estão em [marcadores.md](marcadores.md)
 ```
 BUILD: Jinx crítico
 MODO: Summoner's Rift
+ROTA: Atirador
 CAMPEÃO: Jinx
 MARCADORES: AD | Habilidade Q | Gume do Infinito
 DESCRIÇÃO: Crítico puro para a rota inferior. / A Coletora primeiro contra times frágeis.
@@ -41,6 +42,7 @@ Vêm antes da primeira caixa, uma por linha, em qualquer ordem. Só `BUILD:` é 
 |---|---|---|
 | `BUILD:` | nome da build | texto livre |
 | `MODO:` | modo de jogo, usado no aviso de item indisponível | `Summoner's Rift`, `ARAM`, `ARAM: Mayhem` |
+| `ROTA:` | a rota da build, que o cadeado lê (itens de selva, a linha do Atlas); só vale em Summoner's Rift | `Top`, `Selva`, `Meio`, `Atirador`, `Suporte` (também `Topo`, `Jungle`, `Mid`, `ADC`, `Bot`, `Sup`) |
 | `CAMPEÃO:` | campeão em pt-BR, como no cliente | nome do Data Dragon, ex.: `Jinx`, `K'Sante`, `Lee Sin` |
 | `MARCADORES:` | até 3, separados por ` \| ` | ver [marcadores.md](marcadores.md) |
 | `DESCRIÇÃO:` | texto da build numa linha só | ` / ` (barra com espaço dos dois lados) separa parágrafos; ver a regra dos separadores |
@@ -101,6 +103,7 @@ só com o bloco de texto, sem comentários.
 
 BUILD: <nome>
 MODO: Summoner's Rift
+ROTA: <Top, Selva, Meio, Atirador ou Suporte>
 CAMPEÃO: <campeão>
 MARCADORES: <até 3 da lista permitida>
 DESCRIÇÃO: <uma linha; use " / " para separar parágrafos>

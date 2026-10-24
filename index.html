@@ -1867,6 +1867,9 @@ select.sort-select {
 }
 
 .mode-select { min-width: 150px; max-width: 200px; }
+.rota-pick { display: inline-flex; align-items: center; gap: inherit; }
+.rota-pick[hidden] { display: none; }
+.rota-select { min-width: 110px; }
 
 .mode-warning {
   display: none;
@@ -4191,7 +4194,7 @@ body:not(.editando) #build-marks .mark-slot { cursor: default; }
 body:not(.editando) #build-marks .mark-slot:hover { border-color: #c9973f; color: inherit; }
 body:not(.editando) .build-name { pointer-events: none; }
 body:not(.editando) .library-bar .build-select:disabled { opacity: 1; cursor: default; }
-body:not(.editando) #build-mode:disabled { appearance: none; -webkit-appearance: none; }
+body:not(.editando) #build-mode:disabled, body:not(.editando) #build-rota:disabled { appearance: none; -webkit-appearance: none; }
 body:not(.editando) .champ-btn:disabled .champ-caret { display: none; }
 body:not(.editando) #mf-switch { cursor: default; }
 body:not(.editando) .build-workspace { grid-template-columns: 1fr; }
@@ -5348,6 +5351,10 @@ body.forja .build-cat.drop-after  { transform: translateX(-5px); box-shadow: ins
   <div class="library-bar">
     <span class="library-label">Modo</span>
     <select id="build-mode" class="build-select mode-select" title="Limita a build a um modo de jogo"></select>
+    <span class="rota-pick" id="rota-pick">
+      <span class="library-label">Rota</span>
+      <select id="build-rota" class="build-select rota-select" title="A rota da build — o cadeado tranca os itens que ela não usa (só em Summoner's Rift; o ARAM não tem rota)"></select>
+    </span>
     <span class="library-label">Campeão</span>
     <div class="champ-pick" id="champ-pick">
       <button type="button" id="build-champ-btn" class="build-select champ-btn" title="Associa a build a um campeão: vale para o conjunto de itens do cliente e para os filtros" aria-haspopup="listbox" aria-expanded="false">
@@ -5937,9 +5944,21 @@ const build = {
   pickerQuery: "",
   defaultSpan: 2,      // largura geral aplicada às novas categorias
   mode: "",            // modo de jogo desta build ("" = sem restrição)
+  rota: "",            // F13-T69: rota da build ("" = qualquer); só vale em Summoner's Rift
   masterwork: false,   // Fase 3, T7: Mestre Forjador aplicado aos Lendários elegíveis (salvo na build)
   editing: false,      // Fase 3, T3: visualização (padrão) | edição — não persiste
 };
+
+// F13-T69 (Leo, 24/10/2026: a rota num seletor da barra da build): a rota é o que
+// o cadeado vai ler (itens de selva, a linha do Atlas). ARAM não tem rota.
+const ROTAS = { top: "Top", selva: "Selva", meio: "Meio", atirador: "Atirador", suporte: "Suporte" };
+const ROTA_APELIDOS = { topo: "top", jungle: "selva", jg: "selva", mid: "meio", adc: "atirador", bot: "atirador", sup: "suporte", support: "suporte" };
+function rotaValida(r) { return Object.prototype.hasOwnProperty.call(ROTAS, r) ? r : ""; }
+function rotaPossivel(mode) { return !mode || mode === "Summoner's Rift"; }
+function rotaDoTexto(t) {
+  const n = norm(String(t || "").trim());
+  return Object.keys(ROTAS).find(k => k === n || norm(ROTAS[k]) === n) || ROTA_APELIDOS[n] || "";
+}
 
 // Três estados, alternados clicando no rótulo do cabeçalho da categoria.
 // Toda categoria nasce Comum; Prioridade e Opcional são marcações opcionais.
@@ -5975,7 +5994,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.68";
+const ATUALIZACAO = "13.69";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -6116,7 +6135,7 @@ function newBuildId() {
 }
 
 function snapshotActive() {
-  return { id: build.id, name: build.name, cats: comNomes(build.cats), patch: build.patch || CATALOG.meta.patch, revisao: build.revisao || null, temp: !!build.temp, pubOrigem: build.pubOrigem || null, layout: layoutValido(build.layout), seq: build.seq, mode: build.mode, masterwork: !!build.masterwork, champion: build.champion || null, markers: normMarkers(build.markers), desc: build.desc || "", runas: normRunas(build.runas), habilidades: normHabilidades(build.habilidades), fav: !!build.fav, updatedAt: build.updatedAt || 0, pubId: build.pubId || null, pubVersao: build.pubVersao || 0, pubEm: build.pubEm || 0, pubPatch: build.pubPatch || "", pubAssinatura: build.pubAssinatura || "" };
+  return { id: build.id, name: build.name, cats: comNomes(build.cats), patch: build.patch || CATALOG.meta.patch, revisao: build.revisao || null, temp: !!build.temp, pubOrigem: build.pubOrigem || null, layout: layoutValido(build.layout), seq: build.seq, mode: build.mode, rota: rotaValida(build.rota), masterwork: !!build.masterwork, champion: build.champion || null, markers: normMarkers(build.markers), desc: build.desc || "", runas: normRunas(build.runas), habilidades: normHabilidades(build.habilidades), fav: !!build.fav, updatedAt: build.updatedAt || 0, pubId: build.pubId || null, pubVersao: build.pubVersao || 0, pubEm: build.pubEm || 0, pubPatch: build.pubPatch || "", pubAssinatura: build.pubAssinatura || "" };
 }
 
 // Em modo Editar as alterações ficam em rascunho (Leo, 14/09/2026): saveBuild() só
@@ -6250,7 +6269,7 @@ function assinaturaDaBuild(b) {
   const ordena = (v) => Array.isArray(v) ? v.map(ordena)
     : (v && typeof v === "object") ? Object.keys(v).sort().reduce((o, k) => { o[k] = ordena(v[k]); return o; }, {}) : v;
   return JSON.stringify(ordena({
-    name: b.name || "", desc: b.desc || "", mode: b.mode || "", masterwork: !!b.masterwork,
+    name: b.name || "", desc: b.desc || "", mode: b.mode || "", rota: rotaValida(b.rota), masterwork: !!b.masterwork,
     champion: b.champion && b.champion.key ? String(b.champion.key) : null,
     markers: normMarkers(b.markers), runas: normRunas(b.runas), habilidades: normHabilidades(b.habilidades),
     layout: layoutValido(b.layout), cats: comNomes(b.cats || []),
@@ -6267,6 +6286,9 @@ function assinaturaPublicada(d) {
     : (v && typeof v === "object") ? Object.keys(v).sort().reduce((o, k) => { o[k] = ordena(v[k]); return o; }, {}) : v;
   return JSON.stringify(ordena({
     nome: d.name || "", descricao: d.desc || "", modo: d.mode || "",
+    // F13-T69: a rota só entra quando existe — a assinatura guardada das publicações
+    // de antes não tem o campo, e elas passariam a dizer "Há alterações"
+    ...(rotaValida(d.rota) ? { rota: rotaValida(d.rota) } : {}),
     campeao: d.champ && d.champ.key ? String(d.champ.key) : null, marcadores: normMarkers(d.markers),
     caixas: caixasParaServidor(d.cats || []), layout: layoutValido(d.layout),
     runas: normRunas(d.runas), habilidades: normHabilidades(d.habilidades),
@@ -6829,6 +6851,7 @@ function loadBuild() {
           name: b.name || "Build sem nome",
           seq: b.seq || 1,
           mode: ALL_MODES.includes(b.mode) ? b.mode : "",
+          rota: rotaValida(b.rota),
           masterwork: !!b.masterwork,
           // Campeão (Fase 7, T2): sem esta linha o campo se perdia a cada recarga.
           champion: b.champion && b.champion.key && b.champion.id ? { key: String(b.champion.key), id: String(b.champion.id), name: String(b.champion.name || b.champion.id) } : null,
@@ -6890,6 +6913,7 @@ function activateBuild(id, skipSave) {
   build.cats = JSON.parse(JSON.stringify(b.cats || []));   // cópia própria: a da biblioteca só muda ao gravar
   build.seq = b.seq;
   build.mode = ALL_MODES.includes(b.mode) ? b.mode : "";
+  build.rota = rotaValida(b.rota);
   build.masterwork = !!b.masterwork;
   build.champion = b.champion && b.champion.key ? { key: String(b.champion.key), id: String(b.champion.id), name: String(b.champion.name) } : null;
   build.markers = normMarkers(b.markers);
@@ -6923,7 +6947,7 @@ function activateBuild(id, skipSave) {
 // fechada viraria build fantasma. A biblioteca não muda: a build continua salva.
 function zerarBuild() {
   Object.assign(build, {
-    id: null, name: "", cats: [], seq: 1, mode: "", masterwork: false, champion: null,
+    id: null, name: "", cats: [], seq: 1, mode: "", rota: "", masterwork: false, champion: null,
     markers: normMarkers(null), desc: "", runas: normRunas(null), habilidades: normHabilidades(null),
     fav: false, updatedAt: 0, pubId: null, pubVersao: 0, pubEm: 0, pubPatch: "", pubAssinatura: "",
     patch: CATALOG.meta.patch, revisao: null, temp: false, pubOrigem: null, layout: "tabuleiro", selectedCatId: null,
@@ -6967,6 +6991,7 @@ function createNewBuild(name, cats, mode, champion, markers) {
     name: name || `Build ${buildsProprias().length + 1}`,
     seq: (cats ? cats.length : 0) + 1,
     mode: mode || "",
+    rota: "",   // F13-T69: quem copia ou importa grava a rota depois
     champion: champion || null,
     markers: normMarkers(markers),
     desc: "",
@@ -7246,6 +7271,7 @@ function moveItem(fromCatId, fromIndex, toCatId, toIndex) {
 //
 //   BUILD: Jinx padrão
 //   MODO: ARAM                    (opcional)
+//   ROTA: Atirador                (opcional; Top, Selva, Meio, Atirador ou Suporte — F13-T69)
 //   CAMPEÃO: Jinx                 (opcional; nome do Data Dragon em pt-BR)
 //   MARCADORES: AD | Habilidade Q | Gume do Infinito   (opcional; até 3)
 //   DESCRIÇÃO: texto numa linha (" / " separa parágrafos) (opcional)
@@ -7334,6 +7360,7 @@ function linhaDoItem(e, it) {
 function textoDaBuild(d) {
   const lines = [`BUILD: ${umaLinha(d.name)}`];
   if (ALL_MODES.includes(d.mode)) lines.push(`MODO: ${d.mode}`);   // F13-T36: o da pública vem cru do servidor
+  if (rotaValida(d.rota) && rotaPossivel(d.mode)) lines.push(`ROTA: ${ROTAS[d.rota]}`);   // F13-T69
   if (d.champ) lines.push(`CAMPEÃO: ${umaLinha(d.champ.name)}`);
   if (d.desc) lines.push(`DESCRIÇÃO: ${linhasParaTexto(d.desc)}`);
   if (d.layout && d.layout !== "tabuleiro") lines.push(`LAYOUT: ${LAYOUTS[d.layout]}`);
@@ -7498,6 +7525,7 @@ function buildParaLink(b) {
   const d = buildResumo(b);
   const compacto = {
     v: 1, n: d.name, m: d.mode || "", d: d.desc || "",
+    ...(rotaValida(d.rota) ? { r: d.rota } : {}),   // F13-T69: só quando tem — o link continua curto
     c: d.champ ? { k: d.champ.key, i: d.champ.id, n: d.champ.name } : null,
     k: d.markers,
     cats: d.cats.map(c => ({ n: c.name, d: c.desc || "", m: c.marco || "", k: c.kind, s: c.span, w: catCols(c), h: catRows(c), i: c.items.map(e => e.frag ? [e.itemId, e.note || "", e.mf ? 1 : 0, e.frag] : (e.note ? [e.itemId, e.note, e.mf ? 1 : 0] : (e.mf ? [e.itemId, "", 1] : [e.itemId]))) })),
@@ -7528,7 +7556,7 @@ function linkParaBuild(hash) {
     items: (Array.isArray(c.i) ? c.i : []).map(x => Array.isArray(x) ? { itemId: x[0], note: String(x[1] || ""), ...(x[2] ? { mf: true } : {}), ...(x[3] ? { frag: String(x[3]) } : {}) } : { itemId: x, note: "" }),
   }));
   return {
-    id, name: String(o.n || "Build recebida"), mode: ALL_MODES.includes(o.m) ? o.m : "", desc: String(o.d || ""),
+    id, name: String(o.n || "Build recebida"), mode: ALL_MODES.includes(o.m) ? o.m : "", rota: rotaValida(o.r), desc: String(o.d || ""),
     champion: o.c && o.c.k ? { key: String(o.c.k), id: String(o.c.i || ""), name: String(o.c.n || o.c.i || "") } : null,
     markers: normMarkers(o.k), cats: normalizeCats(cats),
     // F13-T13: os campos novos, todos opcionais e todos normalizados — link
@@ -7545,7 +7573,7 @@ function receberBuildDoLink(hash) {
   if (!r) return false;
   if (!library.builds.some(b => b.id === r.id)) {
     gravarBuild();
-    library.builds.push({ id: r.id, name: r.name, seq: r.cats.length + 1, mode: r.mode, masterwork: r.masterwork, champion: r.champion, markers: r.markers, desc: r.desc,
+    library.builds.push({ id: r.id, name: r.name, seq: r.cats.length + 1, mode: r.mode, rota: r.rota, masterwork: r.masterwork, champion: r.champion, markers: r.markers, desc: r.desc,
       runas: r.runas, habilidades: r.habilidades, layout: r.layout, fav: false, updatedAt: Date.now(), cats: r.cats });
     if (!souDona) linkPendente = r.name;   // F13-T35: se esta ficar parada, a build do link não chega ao disco
   }
@@ -7672,11 +7700,16 @@ async function publicarBuild(id) {
       // ordem de habilidades. Servidor ainda sem as colunas? O catch abaixo
       // republica sem elas, como já era feito com o layout.
       p_runas: normRunas(d.runas), p_habilidades: normHabilidades(d.habilidades),
+      p_rota: rotaValida(d.rota),   // F13-T69 (docs/servidor/rota.sql)
     };
     let r;
     const publicar = async (ps) => {
       try { return await Servidor.rpc("publicar_build", ps); }
       catch (e) {
+        // F13-T69: servidor ainda sem a rota (rota.sql não rodado) — manda sem ela.
+        // Vem antes das runas: o erro de função não achada lista todos os
+        // parâmetros mandados, p_runas inclusive.
+        if ("p_rota" in ps && /p_rota/i.test(e.message)) { const { p_rota, ...semRota } = ps; return await publicar(semRota); }
         // Servidor ainda sem as colunas novas (SQL runas_e_habilidades.sql não
         // rodado): manda sem elas em vez de falhar a publicação inteira.
         if (/p_runas|p_habilidades/i.test(e.message)) {
@@ -7809,7 +7842,7 @@ function getItemNameIndex() {
 
 function textToBuild(text) {
   const index = getItemNameIndex();
-  const result = { name: null, mode: "", masterwork: false, forgedId: null, championName: null, markers: [], desc: "", layout: "tabuleiro", cats: [], runas: null, habilidades: null, unknown: [], ignored: 0 };
+  const result = { name: null, mode: "", rota: "", masterwork: false, forgedId: null, championName: null, markers: [], desc: "", layout: "tabuleiro", cats: [], runas: null, habilidades: null, unknown: [], ignored: 0 };
   let current = null;
 
   // F13-T36: U+2028/U+2029 no meio de uma linha de texto antigo viram espaço — partir
@@ -7926,6 +7959,8 @@ function textToBuild(text) {
     }
     const mChamp = line.match(/^CAMPE[ÃA]O\s*:\s*(.+)$/i);
     if (mChamp) { result.championName = mChamp[1].trim(); return; }
+    const mRota = line.match(/^ROTA\s*:\s*(.+)$/i);   // F13-T69
+    if (mRota) { result.rota = rotaDoTexto(mRota[1]); return; }
     const mMode = line.match(/^MODO\s*:\s*(.+)$/i);
     if (mMode) {
       const wanted = norm(mMode[1]);
@@ -10119,6 +10154,14 @@ function renderModeSelect() {
     });
   }
   sel.value = build.mode || "";
+  // F13-T69: a rota, ao lado — some no ARAM (lá não tem rota) e, como o modo, só muda com o Editar
+  const rs = document.getElementById("build-rota");
+  if (rs) {
+    if (!rs.options.length) [["", "Qualquer"], ...Object.entries(ROTAS)].forEach(([v, n]) => { const o = document.createElement("option"); o.value = v; o.textContent = n; rs.appendChild(o); });
+    rs.value = rotaValida(build.rota);
+    rs.disabled = !build.editing;
+    document.getElementById("rota-pick").hidden = !rotaPossivel(build.mode);
+  }
 }
 
 // ---------------- Lista de arsenais + troca pelo nome (Fase 7, T3) ----------------
@@ -10142,6 +10185,7 @@ function buildResumo(b) {
     id: b.id, isActive,
     name: isActive ? build.name : b.name,
     mode: isActive ? build.mode : (b.mode || ""),
+    rota: rotaValida(isActive ? build.rota : b.rota),
     champ: isActive ? build.champion : (b.champion || null),
     markers: normMarkers(isActive ? build.markers : b.markers),
     desc: isActive ? (build.desc || "") : (b.desc || ""),
@@ -10236,7 +10280,7 @@ function publicaResumo(p) {
   const cats = caixasDoServidor(p.caixas);
   return {
     id: "pub:" + p.id, pubId: p.id, isActive: false, publica: true, name: p.nome, desc: p.descricao || "",
-    champ: p.campeao && p.campeao.key ? p.campeao : null, mode: p.modo || "", markers: normMarkers(p.marcadores), cats,
+    champ: p.campeao && p.campeao.key ? p.campeao : null, mode: p.modo || "", rota: rotaValida(p.rota), markers: normMarkers(p.marcadores), cats,
     n: cats.reduce((s, c) => s + c.items.length, 0), pubVersao: p.versao || 0, updatedAt: Date.parse(p.atualizado_em) || 0,
     pubEm: Date.parse(p.atualizado_em) || 0, pubPatch: p.patch || "", autor: p.autor || "",
     // F10-T15: só o engajamento aparece; o resto alimenta a popularidade e fica oculto.
@@ -10362,7 +10406,7 @@ function renderPublicasIndex(rows) {
 function renderPublicDetail(box, d) {
   const minha = library.builds.some(b => b.pubId === d.pubId);
   box.innerHTML = detalheHtml(d, {
-    meta: `Versão: <b>${d.pubVersao}</b> · ID: <b class="pub-id">${esc(d.pubId)}</b><br>Última atualização: <b>${esc(fmtData(d.updatedAt))}</b>${d.mode ? `<br>Modo: <b>${esc(d.mode)}</b>` : ""}${d.desatualizada ? `<br><b class="pub-id">Desatualizada</b> — publicada no catálogo ${esc(d.pubPatch)}` : ""}`,
+    meta: `Versão: <b>${d.pubVersao}</b> · ID: <b class="pub-id">${esc(d.pubId)}</b><br>Última atualização: <b>${esc(fmtData(d.updatedAt))}</b>${d.mode ? `<br>Modo: <b>${esc(d.mode)}</b>` : ""}${d.rota && rotaPossivel(d.mode) ? `<br>Rota: <b>${esc(ROTAS[d.rota])}</b>` : ""}${d.desatualizada ? `<br><b class="pub-id">Desatualizada</b> — publicada no catálogo ${esc(d.pubPatch)}` : ""}`,
     numeros: `<p class="bd-stats"><b>${d.engajamentos}</b> ${d.engajamentos === 1 ? "engajamento" : "engajamentos"}</p>${d.autor ? `<p class="bd-autor">por ${esc(d.autor)}</p>` : ""}`,
     semDesc: "Sem descrição.",
     botoes: `
@@ -10378,7 +10422,7 @@ function abrirPublicaTemporaria(d) {
   const id = "tmp:" + d.pubId;
   confirmarTroca(id, () => {
     if (!library.builds.some(b => b.id === id)) {
-      library.builds.push({ id, name: d.name, seq: d.cats.length + 1, mode: d.mode, masterwork: false,
+      library.builds.push({ id, name: d.name, seq: d.cats.length + 1, mode: d.mode, rota: rotaValida(d.rota), masterwork: false,
         champion: d.champ ? { key: String(d.champ.key), id: String(d.champ.id), name: String(d.champ.name) } : null,
         markers: d.markers, desc: d.desc, runas: normRunas(d.runas), habilidades: normHabilidades(d.habilidades),
         fav: false, updatedAt: Date.now(), temp: true, pubOrigem: d.pubId,
@@ -10403,7 +10447,7 @@ function copiarPublica(d) {
   const cats = p ? caixasDoServidor(p.caixas, removidos) : JSON.parse(JSON.stringify(d.cats));
   if (removidos.length) setTimeout(() => mostrarPub("Build copiada com itens de fora", `Publicada no catálogo ${esc(d.pubPatch)}. Estes itens não existem mais e ficaram de fora: <b>${esc(removidos.map(x => x.nome).join(", "))}</b>. O resto já vem com os atributos atuais.`, "erro"), 300);
   createNewBuild(d.name, cats, d.mode, d.champ ? { key: String(d.champ.key), id: String(d.champ.id), name: String(d.champ.name) } : null, d.markers);
-  build.desc = d.desc; build.layout = layoutValido(d.layout);
+  build.desc = d.desc; build.layout = layoutValido(d.layout); build.rota = rotaValida(d.rota);   // F13-T69
   // F13-T8: "abrir para ver" MOSTRAVA as runas e a ordem, e "Copiar e editar"
   // entregava a cópia sem elas.
   build.runas = normRunas(d.runas);
@@ -10542,7 +10586,7 @@ function guardarPublicaNaBiblioteca(d) {
   const cats = p ? caixasDoServidor(p.caixas, removidos) : JSON.parse(JSON.stringify(d.cats));
   registrarEvento(d.pubId, "copia");
   library.builds.push({
-    id: newBuildId(), name: d.name, seq: cats.length + 1, mode: d.mode, masterwork: false,
+    id: newBuildId(), name: d.name, seq: cats.length + 1, mode: d.mode, rota: rotaValida(d.rota), masterwork: false,
     champion: d.champ ? { key: String(d.champ.key), id: String(d.champ.id), name: String(d.champ.name) } : null,
     markers: d.markers, desc: d.desc, runas: normRunas(d.runas), habilidades: normHabilidades(d.habilidades),
     fav: false, updatedAt: Date.now(),
@@ -10641,7 +10685,7 @@ function renderBuildDetail() {
     return;
   }
   box.innerHTML = detalheHtml(d, {
-    meta: `Versão: <b>${d.pubVersao || 0}</b> · ID: ${d.pubId ? `<b class="pub-id">${esc(d.pubId)}</b>` : `<b>não publicada</b>`}<br>Última atualização: <b>${esc(fmtData(d.updatedAt))}</b>${d.pubEm ? `<br>Publicada: <b>${esc(fmtData(d.pubEm))}</b>${d.pubPatch && d.pubPatch !== CATALOG.meta.patch ? ` · <b class="pub-id">desatualizada (${esc(d.pubPatch)})</b>` : ""}` : ""}${d.mode ? `<br>Modo: <b>${esc(d.mode)}</b>` : ""}`,
+    meta: `Versão: <b>${d.pubVersao || 0}</b> · ID: ${d.pubId ? `<b class="pub-id">${esc(d.pubId)}</b>` : `<b>não publicada</b>`}<br>Última atualização: <b>${esc(fmtData(d.updatedAt))}</b>${d.pubEm ? `<br>Publicada: <b>${esc(fmtData(d.pubEm))}</b>${d.pubPatch && d.pubPatch !== CATALOG.meta.patch ? ` · <b class="pub-id">desatualizada (${esc(d.pubPatch)})</b>` : ""}` : ""}${d.mode ? `<br>Modo: <b>${esc(d.mode)}</b>` : ""}${d.rota && rotaPossivel(d.mode) ? `<br>Rota: <b>${esc(ROTAS[d.rota])}</b>` : ""}`,
     aviso: revisaoHtml(d),
     semDesc: "Sem descrição — escreva uma na forja (obrigatória para publicar).",
     botoes: `
@@ -10742,7 +10786,7 @@ function duplicateBuild(id) {
   // Cópia profunda: a duplicata não pode compartilhar itens com a original.
   const cats = JSON.parse(JSON.stringify(d.isActive ? build.cats : (b.cats || [])));
   createNewBuild(d.temp ? d.name : d.name + " (cópia)", cats, d.mode, d.champ ? { ...d.champ } : null, d.markers);
-  build.desc = d.desc || ""; build.layout = layoutValido(d.layout);
+  build.desc = d.desc || ""; build.layout = layoutValido(d.layout); build.rota = rotaValida(d.rota);   // F13-T69
   // F13-T8 (22/09/2026): a cópia nascia sem runas, sem ordem de habilidades e
   // com o Mestre Forjador desligado — createNewBuild começa tudo vazio e só a
   // descrição e o layout eram copiados. Achado pela caçada de bugs.
@@ -11002,6 +11046,13 @@ function showIoMsg(text, isError) {
 }
 
 function initLibrary() {
+  // F13-T69: a rota, como o modo — só com o Editar
+  document.getElementById("build-rota").addEventListener("change", (e) => {
+    if (!build.editing) { e.target.value = rotaValida(build.rota); return; }
+    build.rota = rotaValida(e.target.value);
+    saveBuild();
+    renderBuildAll();
+  });
   document.getElementById("build-mode").addEventListener("change", (e) => {
     if (!build.editing) { e.target.value = build.mode || ""; return; }   // Leo, 23/10/2026
     build.mode = e.target.value;
@@ -11131,13 +11182,14 @@ function initLibrary() {
   // A outra metade do Importar, depois da pergunta pelo rascunho (F13-T25).
   function importarTexto(r, emLote, fora = []) {
     createNewBuild(r.name || "Build importada", r.cats, r.mode, null, r.markers);
+    if (r.rota) build.rota = r.rota;   // F13-T69: grava junto com a descrição e o layout, logo abaixo
     if (r.desc) { build.desc = r.desc; }
     if (r.layout) { build.layout = r.layout; }
     if (r.runas) { build.runas = normRunas(r.runas); renderRunasDaForja(); }
     if (r.habilidades) { build.habilidades = normHabilidades(r.habilidades); renderHabilidades(); }
     // F13-T65 (nº 30): a forja já tinha sido desenhada pelo createNewBuild — sem
     // redesenhar, a descrição e o layout importados só apareciam ao sair e voltar
-    if (r.desc || r.layout || r.runas || r.habilidades) { gravarBuild(); if (!emLote) renderBuildAll(); }
+    if (r.desc || r.layout || r.runas || r.habilidades || r.rota) { gravarBuild(); if (!emLote) renderBuildAll(); }
     // F13-T37: o aviso do campeão chega depois (a lista do Data Dragon) e não apaga
     // o resumo: volta como dado ({ nome, campeao, semNet }) e entra no fim da mensagem
     let avisoCampeao = Promise.resolve(null);

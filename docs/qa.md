@@ -138,6 +138,12 @@ um ícone de 38 px no canto inferior direito, sem fundo escurecendo a tela, com 
 e o "Conferindo as abas" para o leitor de tela; a página continua parada (é a proteção) e volta a responder quando a
 trava decide. O "Aberto em outra aba" segue no centro (grupo "duas abas").
 
+**Rota** (F13-T69; Leo, 24/10/2026: a rota num seletor da barra da build) — o seletor não muda sem o Editar (o
+`change` forçado volta), some no ARAM e a rota escolhida fica no disco depois do F5; a rota vai e volta no texto
+(`ROTA: Top`; `ROTA: jungle` vira Selva), no link e no lote, e o texto de uma build de ARAM não a escreve; importar
+pelo botão, duplicar e "Copiar e editar" uma pública levam a rota; e publicar manda `p_rota` — com o servidor sem a
+coluna (o `fetch` simulado recusa como o PostgREST recusa), publica de novo sem ela e com as runas.
+
 **Passiva do Ornn** (F13-T60; Leo, 23/10/2026) — o "Mestre Forjador" virou "Passiva do Ornn" na tela e a placa
 "MF" do item virou "Ornn": nenhum texto do app diz mais o nome velho — o HTML inteiro (inclusive o que está
 escondido, menos script e style), os `title` e os `placeholder`, com o item forjado na forja, o balão aberto e a

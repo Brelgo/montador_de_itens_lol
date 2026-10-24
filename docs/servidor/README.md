@@ -79,3 +79,8 @@ Cada medida tem um peso, porque uma cópia custa muito mais ao usuário do que u
 - Apagar uma build publicada: pelo botão Excluir do Montador no navegador que a publicou (usa o segredo). Se o
   segredo se perdeu (outro navegador, cache limpo), apague no painel: Table Editor → `builds` → linha → Delete.
 
+## A rota da build (F13-T69, 24/10/2026)
+- `docs/servidor/rota.sql` acrescenta a coluna `rota` (`''`, `top`, `selva`, `meio`, `atirador` ou `suporte`),
+  o parâmetro `p_rota` no `publicar_build` e a coluna na `builds_publicas` (com o grant dela). **Ainda não rodado:**
+  roda o Leo no painel do Supabase (SQL Editor), ou o Forjador com a permissão dele. Até lá o Montador publica sem
+  a rota (o resto vai igual) e as públicas aparecem sem ela.

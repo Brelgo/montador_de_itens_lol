@@ -293,6 +293,12 @@ class Sessao:
 
     # ------- atalhos do app
     def entrar(self):
+        # F13-T69: espera a trava das abas decidir antes de entrar. Enquanto confere,
+        # a página fica parada (é a proteção) e, desde a F13-T68, sem o véu escuro na
+        # frente — um clique nessa hora não faria nada, sem nada na tela dizer por quê.
+        fim = time.time() + 6
+        while time.time() < fim and self.js("typeof decidido !== 'undefined' && !decidido"):
+            time.sleep(0.1)
         self.js("document.getElementById('entrar').click(); document.documentElement.style.scrollBehavior='auto'")
         time.sleep(1.8)
 
@@ -1429,6 +1435,79 @@ def checar_conferencia(s, p):
             r["antes"] == "0" and r["depois"] == "1" and r["w"] <= 48 and r["h"] <= 48 and 10 <= r["direita"] <= 30 and 10 <= r["baixo"] <= 30
             and r["fundo"] in ("rgba(0, 0, 0, 0)", "transparent") and r["parada"] and "Conferindo" in r["titulo"]
             and r["leitor"] == "Conferindo as abas" and r["voltou"], "%s" % r)
+
+
+def checar_rota(s, p):
+    """F13-T69 (Leo, 24/10/2026: a rota num seletor da barra da build): o seletor
+    (só fora do ARAM, só com o Editar), e a rota em todo caminho — disco, texto,
+    link, lote, cópias e publicação (com a volta sem ela enquanto o servidor não
+    tiver a coluna: docs/servidor/rota.sql)."""
+    print("\n%sROTA%s" % (AMARELO, FIM))
+    garantir_build_editavel(s)
+    s.js("""(() => { if (rascunho.sujo) descartarAlteracoes(); ligarEdicao(false); build.mode = ''; renderBuildAll(); return 'ok'; })()""")
+    muda = """(() => { const sel = document.getElementById('build-rota'); sel.value = %s; sel.dispatchEvent(new Event('change', { bubbles: true })); return build.rota; })()"""
+    sem_editar = s.js(muda % json.dumps("top"))
+    tranca = s.js("document.getElementById('build-rota').disabled")
+    s.js("ligarEdicao(true); 'ok'")
+    com_editar = s.js(muda % json.dumps("top"))
+    s.js("salvarAgora(); 'ok'")
+    aram = s.js("(() => { build.mode = 'ARAM'; renderBuildAll(); const h = document.getElementById('rota-pick').hidden; build.mode = ''; renderBuildAll(); return h; })()")
+    alvo = s.js("build.id")
+    s.abrir(); time.sleep(0.8); s.entrar()
+    disco = s.js("(library.builds.find(b => b.id === %s) || {}).rota" % json.dumps(alvo))
+    p.conta("rota", "o seletor: só com o Editar, some no ARAM, e a rota fica gravada",
+            sem_editar == "" and tranca and com_editar == "top" and aram and disco == "top",
+            "sem Editar %r (trancado %s) · com Editar %r · some no ARAM %s · depois do F5 %r" % (sem_editar, tranca, com_editar, aram, disco))
+
+    # texto, link e lote: a rota vai e volta; no ARAM o texto não a escreve
+    ida = s.js("""(() => { activateBuild(%s); const b = library.builds.find(x => x.id === build.id), N = String.fromCharCode(10);
+      const texto = textoDaBuild(buildResumo(b));
+      const volta = textToBuild(texto).rota;
+      const apelido = textToBuild(['BUILD: x', 'ROTA: jungle', '[COMUM] Core', '- Espada Longa'].join(N)).rota;
+      const lk = linkParaBuild('#' + buildParaLink(b).split('#')[1]).rota;
+      const lote = dividirBuilds(loteParaTexto([b.id])).map(textToBuild)[0].rota;
+      const aram = textoDaBuild(Object.assign(buildResumo(b), { mode: 'ARAM' })).includes('ROTA:');
+      return { linha: texto.split(N).find(l => l.startsWith('ROTA:')) || '', volta, apelido, lk, lote, aram }; })()""" % json.dumps(alvo))
+    p.conta("rota", "a rota vai e volta no texto, no link e no lote (e o ARAM não a escreve)",
+            ida["linha"] == "ROTA: Top" and ida["volta"] == ida["lk"] == ida["lote"] == "top" and ida["apelido"] == "selva" and not ida["aram"], "%s" % ida)
+
+    # importar pelo botão, duplicar e copiar uma pública levam a rota
+    s.js("""(() => { switchTab('build'); showBuildScreen('forja'); document.getElementById('io-panel').classList.add('show');
+      document.getElementById('import-text').value = ['BUILD: Importada com rota', 'ROTA: Suporte', '[COMUM] Core', '- Espada Longa'].join(String.fromCharCode(10)); return 'ok'; })()""")
+    time.sleep(1.0)   # a forja acabou de abrir e ainda se arruma: medido antes disso, o clique cai ao lado do botão
+    s.clicar("#import-btn", 1.0)
+    copias = s.js("""(() => { const imp = build.rota; duplicateBuild(build.id); const dup = build.rota;
+      publicas.lista = [{ id: 'qr0001', nome: 'Pública com rota', descricao: 'x', campeao: null, modo: '', marcadores: [], versao: 1,
+        atualizado_em: new Date().toISOString(), patch: CATALOG.meta.patch, autor: '', engajamentos: 0, pop_dia: 0, popular_semana: false, dias_no_top: 0,
+        layout: null, runas: null, habilidades: null, rota: 'meio', caixas: [{ name: 'Core', kind: 'comum', items: [{ itemId: 'long-sword' }] }] }];
+      publicas.favs = []; publicas.erro = null; publicas.carregadoEm = Date.now();
+      const d = publicaResumo(publicas.lista[0]); copiarPublica(d); const copia = build.rota;
+      publicas.lista = []; publicas.carregadoEm = 0;
+      return { imp, dup, resumo: d.rota, copia }; })()""")
+    p.conta("rota", "importar, duplicar e copiar uma pública levam a rota",
+            copias == {"imp": "suporte", "dup": "suporte", "resumo": "meio", "copia": "meio"}, "%s" % copias)
+
+    # publicar manda p_rota; servidor sem a coluna recusa — publica de novo sem ela, com as runas
+    pub = s.js("""(async () => { const pedidos = []; window.__fetchOrigR = window.fetch;
+      window.fetch = function (u, o) { const t = String(u);
+        if (t.includes('publicar_build')) { const corpo = JSON.parse(o.body); pedidos.push(Object.keys(corpo).sort().join(','));
+          // como o PostgREST: a mensagem lista os parâmetros que chegaram
+          if ('p_rota' in corpo) return Promise.resolve(new Response(JSON.stringify({ message: 'Could not find the function public.publicar_build(' + Object.keys(corpo).sort().join(', ') + ') in the schema cache' }), { status: 404, headers: { 'Content-Type': 'application/json' } }));
+          return Promise.resolve(new Response(JSON.stringify({ id: 'qr9999', versao: 1 }), { status: 200, headers: { 'Content-Type': 'application/json' } })); }
+        if (t.includes('/rpc/') || t.includes('/rest/')) return Promise.resolve(new Response('[]', { status: 200, headers: { 'Content-Type': 'application/json' } }));
+        return window.__fetchOrigR.call(this, u, o); };
+      const N = String.fromCharCode(10);
+      build.desc = 'para publicar'; build.markers = MARCADORES.slice(0, 3).map(m => ({ t: 'tag', id: m.id })); salvarAgora();
+      await publicarBuild(build.id); await new Promise(r => setTimeout(r, 400)); fecharPub();
+      window.fetch = window.__fetchOrigR;
+      const b = library.builds.find(x => x.id === build.id);
+      const r = { pedidos, pubId: b && b.pubId };
+      if (b) { b.pubId = null; b.pubVersao = 0; b.pubEm = 0; b.pubAssinatura = ''; if (build.id === b.id) { build.pubId = null; } gravarBiblioteca(); }
+      return r; })()""")
+    p.conta("rota", "publicar manda a rota; sem a coluna no servidor, publica sem ela (com as runas)",
+            len(pub["pedidos"]) == 2 and "p_rota" in pub["pedidos"][0] and "p_rota" not in pub["pedidos"][1] and "p_runas" in pub["pedidos"][1] and pub["pubId"] == "qr9999",
+            "%s" % pub)
+    s.js("descartarAlteracoes && rascunho.sujo && descartarAlteracoes(); 'ok'")
 
 
 def checar_passiva_do_ornn(s, p):
@@ -4131,6 +4210,7 @@ GRUPOS = [
     ("importação", checar_importacao),
     ("lote e ornn", checar_lote_e_ornn),
     ("conferência", checar_conferencia),
+    ("rota", checar_rota),
     ("runas", checar_runas),
     ("habilidades", checar_habilidades),
     ("texto", checar_texto),
