@@ -125,6 +125,13 @@ baixo ficam na caixa certa), e `[ESCOLHA]` sem o 1 vale; um Arsenal.json com um 
 (6 colunas, como a caixa do texto importado sem grade) antes e depois do F5; e a régua abaixo do título com o cabeçalho depois dela é enfeite (o `BUILD:` repetido
 só renomeia), enquanto a régua do lote exportado (cercada de linhas em branco) ainda separa as builds.
 
+**Lote e a Passiva do Ornn** (F13-T67; nºs 51 e 58 da caçada) — excluir pelo lote (cliques de verdade, o `confirm`
+lido na página) só a visualização de uma pública pergunta "Fechar 1 visualização de pública? (a pública continua no
+site)", sem "saem do site", e diz "1 visualização fechada."; com uma build sua não publicada junto, pergunta "Excluir 1
+build(s)? / E fechar 1 visualização…", com "Isso não dá pra desfazer." e sem "saem do site", e diz "1 build(s)
+excluída(s) e 1 visualização fechada.". E a Passiva do Ornn na alternativa de baixo de uma Escolha 1 aparece na nota
+da soma como "fora da soma"; no padrão, não.
+
 **Passiva do Ornn** (F13-T60; Leo, 23/10/2026) — o "Mestre Forjador" virou "Passiva do Ornn" na tela e a placa
 "MF" do item virou "Ornn": nenhum texto do app diz mais o nome velho — o HTML inteiro (inclusive o que está
 escondido, menos script e style), os `title` e os `placeholder`, com o item forjado na forja, o balão aberto e a

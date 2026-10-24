@@ -461,6 +461,8 @@ A janela mostra só o que falta, e redesenha a cada tecla: o nome deixa de "falt
 
 ### 51. Excluir visualizações pelo lote pergunta como se fossem builds publicadas
 
+**CONSERTADO na F13-T67 (24/10/2026).** A pergunta conta as builds e as visualizações à parte ("Fechar 1 visualização de pública? (a pública continua no site)"), o "saem do site" só aparece quando alguma marcada está publicada, e a mensagem diz quantas foram excluídas e quantas fechadas.
+
 `index.html` (`#bl-excluir`) · **baixa** (texto) · achado na revisão da F13-T32 · passou pela revisão, não reproduzido à parte
 
 Marcar a visualização de uma pública no Selecionar e Excluir pergunta "Excluir 1 build(s)? … As publicadas também saem do site. Isso não dá pra desfazer." e depois diz "1 build(s) excluída(s)" — a visualização só fecha, e a pública de outra pessoa não sai de lugar nenhum.
@@ -510,6 +512,8 @@ O `itemSetToBuild` cria cada caixa sem `cols` e sem `rows`. Na sessão, o `catCo
 Com o Catálogo ordenado por "Eficiência de ouro", o selo do tier (ÉPICO, LENDÁRIO…) cobre a linha "Eficiência de ouro: …" em 145 dos 225 cards a 1440, 132 a 1920 e 116 a 900 — medido pelo retângulo dos dois elementos no Chrome do roteiro, com o Reembolso ligado. A captura `fase13-t43-eficiencia-e-grupo.png` mostra a Joia da Ruína com o "ÉPICO" em cima do "100,0%". É o número que a ordenação acabou de prometer, escondido.
 
 ### 58. Mestre Forjador na alternativa de baixo de uma Escolha 1: o painel diz que está aplicado, e nada soma
+
+**CONSERTADO na F13-T67 (24/10/2026).** Forjar a alternativa continua valendo (quem compra a alternativa forja ela); a nota da soma diz "Passiva do Ornn em X — fora da soma: é alternativa de uma Escolha 1 ou está numa caixa Opcional".
 
 `index.html` (`setForged`, `forgedEntry`, `renderBuildTotals`) · **baixa** · achado na revisão da F13-T42 (17/10/2026) · reproduzido em node · **já era assim antes**, não consertado
 

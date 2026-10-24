@@ -5963,7 +5963,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.66";
+const ATUALIZACAO = "13.67";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -8127,7 +8127,11 @@ function renderBuildTotals() {
   const totals = sumAttributes(all);
   const eff = goldEfficiency(all);
   const forjado = forgedEntry();
-  const flags = [state.applyCashback ? "Reembolso" : "", build.masterwork ? ("Passiva do Ornn" + (forjado && byId[forjado.itemId] ? ` em ${byId[forjado.itemId].namePt}` : " (nenhum item forjado — na edição, clique no ícone de um Lendário elegível)")) : "", state.applyApex ? "Ápice" : ""].filter(Boolean);
+  // F13-T67 (nº 58): forjar a alternativa de baixo de uma Escolha 1 (ou um item de
+  // caixa Opcional) vale — quem compra a alternativa forja ela —, mas a soma é do
+  // padrão; a nota dizia "com a Passiva do Ornn em X" e nada somava
+  const foraDaSoma = forjado && !all.includes(forjado) ? " — fora da soma: é alternativa de uma Escolha 1 ou está numa caixa Opcional" : "";
+  const flags = [state.applyCashback ? "Reembolso" : "", build.masterwork ? ("Passiva do Ornn" + (forjado && byId[forjado.itemId] ? ` em ${byId[forjado.itemId].namePt}${foraDaSoma}` : " (nenhum item forjado — na edição, clique no ícone de um Lendário elegível)")) : "", state.applyApex ? "Ápice" : ""].filter(Boolean);
   box.className = "build-totals show";
   box.innerHTML = `
     <div class="bt-head"><span class="bt-title">Atributos da build · ${all.length} ${all.length === 1 ? "item" : "itens"}</span>${effHtml(eff, "bt-eff")}</div>
@@ -10851,13 +10855,21 @@ function initBuildIndex() {
     const noAr = ids.filter(id => noServidor.has(id)).map(id => (resumoPorId(id) || {}).name);
     if (noAr.length) { loteMsg(`Espere terminar a publicação de ${noAr.join(", ")} antes de excluir.`); return; }   // F13-T34
     const nomes = ids.map(id => (resumoPorId(id) || {}).name).filter(Boolean);
-    if (!window.confirm(`Excluir ${ids.length} build(s)?\n\n${nomes.join("\n")}\n\nAs publicadas também saem do site. Isso não dá pra desfazer.`)) return;
+    // F13-T67 (nº 51): a visualização de uma pública só fecha — a pública, de outra
+    // pessoa, não sai de lugar nenhum. A pergunta conta as duas coisas à parte, e o
+    // "saem do site" só aparece quando alguma marcada está publicada
+    const fechar = ids.filter(id => String(id).startsWith("tmp:")).length, excluir = ids.length - fechar;
+    const vis = (n) => `${n} ${n === 1 ? "visualização" : "visualizações"} de pública`;
+    const pergunta = [excluir ? `Excluir ${excluir} build(s)?` : "", fechar ? `${excluir ? "E fechar" : "Fechar"} ${vis(fechar)}${excluir ? "" : "?"} (a pública continua no site).` : ""].filter(Boolean).join("\n");
+    const publicada = ids.some(id => !String(id).startsWith("tmp:") && (resumoPorId(id) || {}).pubId);
+    const aviso = excluir ? (publicada ? "As publicadas também saem do site. Isso não dá pra desfazer." : "Isso não dá pra desfazer.") : "";
+    if (!window.confirm(`${pergunta}\n\n${nomes.join("\n")}${aviso ? "\n\n" + aviso : ""}`)) return;
     (async () => {
       if (!(await aindaSouDona())) return;   // F13-T35: depois do confirm, ainda é a dona?
       // uma de cada vez: a publicada só sai daqui depois que o site confirmar;
       // a que não sair fica na biblioteca, e o aviso diz qual e por quê
       const ficaram = [];
-      let saiu = 0;
+      let saiu = 0, fechadas = 0;
       for (const id of ids) {
         const d = resumoPorId(id);
         // F13-T34: a trava vale a cada build, não só na partida — uma pode ter
@@ -10871,12 +10883,13 @@ function initBuildIndex() {
           if (!r.ok) { ficaram.push({ nome: d.name, pubId: d.pubId, motivo: motivoCurto(r) }); continue; }
         }
         if (!library.builds.some(b => b.id === id)) continue;   // já saiu por outro caminho durante a espera
-        deleteBuild(id); saiu++;
+        deleteBuild(id);
+        if (String(id).startsWith("tmp:")) fechadas++; else saiu++;
       }
       if (biLote) biLote.clear();   // F13-T32: sair do Selecionar durante a espera deixava biLote null e o fim do lote quebrava
       biSelected = null;
       renderBuildIndex();
-      loteMsg(`${saiu} build(s) excluída(s).` + (ficaram.length ? ` ${ficaram.length} ${ficaram.length === 1 ? "ficou" : "ficaram"} na biblioteca porque não ${ficaram.length === 1 ? "saiu" : "saíram"} do site.` : ""));
+      loteMsg([saiu || !fechadas ? `${saiu} build(s) excluída(s)` : "", fechadas ? `${fechadas} ${fechadas === 1 ? "visualização fechada" : "visualizações fechadas"}` : ""].filter(Boolean).join(" e ") + "." + (ficaram.length ? ` ${ficaram.length} ${ficaram.length === 1 ? "ficou" : "ficaram"} na biblioteca porque não ${ficaram.length === 1 ? "saiu" : "saíram"} do site.` : ""));
       if (ficaram.length) mostrarPub(ficaram.length === 1 ? "Uma não saiu do site" : "Algumas não saíram do site",
         `${ficaram.length === 1 ? "Esta continua" : "Estas continuam"} na sua biblioteca, com o ID guardado para tentar de novo:
          <ul class="pub-lista">${ficaram.map(f => `<li><b>${esc(f.nome)}</b> <span class="pub-id">${esc(f.pubId)}</span><br><span class="pl-motivo">${esc(f.motivo)}</span></li>`).join("")}</ul>`, "erro");

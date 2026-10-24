@@ -1354,6 +1354,60 @@ def checar_importacao(s, p):
             partes["mao"] == [["Jinx (ARAM)", "ARAM", 1]] and partes["lote"] == [["Sem caixa", 0], ["Com caixa", 1]], "%s" % partes)
 
 
+def checar_lote_e_ornn(s, p):
+    """F13-T67. nº 51: excluir a visualização de uma pública pelo lote perguntava
+    "As publicadas também saem do site" e dizia "1 build(s) excluída(s)" — a
+    visualização só fecha. nº 58: a Passiva do Ornn na alternativa de baixo de uma
+    Escolha 1 aparecia na nota da soma, e nada somava."""
+    print("\n%sLOTE E A PASSIVA DO ORNN%s" % (AMARELO, FIM))
+    garantir_build_editavel(s)
+    s.js("""(() => { if (rascunho.sujo) descartarAlteracoes(); ligarEdicao(false);
+      window.__perguntas = []; window.__confirmOrig = window.__confirmOrig || window.confirm;
+      window.confirm = (t) => { window.__perguntas.push(String(t)); return true; };
+      createNewBuild('Para excluir no lote'); gravarBuild();
+      publicas.lista = [{ id: 'ql0001', nome: 'Pública só para ver', descricao: 'x', campeao: null, modo: '', marcadores: [], versao: 1,
+        atualizado_em: new Date().toISOString(), patch: CATALOG.meta.patch, autor: '', engajamentos: 0, pop_dia: 0, popular_semana: false, dias_no_top: 0,
+        layout: null, runas: null, habilidades: null, caixas: [{ name: 'Core', kind: 'comum', items: [{ itemId: 'long-sword' }] }] }];
+      publicas.favs = []; publicas.erro = null; publicas.carregadoEm = Date.now();
+      return 'ok'; })()""")
+    lote = lambda ids: (s.js("showBuildScreen('lista'); document.querySelector('.bi-tab[data-view=\"minhas\"]').click(); 'ok'"), time.sleep(0.5),
+                        s.clicar("#bi-lote", 0.4), [s.clicar('.bi-row[data-id="%s"]' % i, 0.3) for i in ids],
+                        s.clicar("#bl-excluir", 1.0), time.sleep(0.6))
+    # só a visualização
+    s.js("abrirPublicaTemporaria(publicaResumo(publicas.lista[0])); 'ok'"); time.sleep(0.8)
+    lote(["tmp:ql0001"])
+    so = s.js("({ pergunta: window.__perguntas.pop() || '', msg: document.getElementById('bl-msg').textContent, existe: library.builds.some(b => b.id === 'tmp:ql0001') })")
+    s.clicar("#bl-sair", 0.3)
+    # a visualização e uma build sua, não publicada
+    s.js("abrirPublicaTemporaria(publicaResumo(publicas.lista[0])); 'ok'"); time.sleep(0.8)
+    propria = s.js("(library.builds.find(b => b.name === 'Para excluir no lote') || {}).id")
+    lote(["tmp:ql0001", propria])
+    mista = s.js("({ pergunta: window.__perguntas.pop() || '', msg: document.getElementById('bl-msg').textContent })")
+    s.clicar("#bl-sair", 0.3)
+    s.js("window.confirm = window.__confirmOrig; publicas.lista = []; publicas.carregadoEm = 0; 'ok'")
+    p.conta("lote e ornn", "excluir uma visualização pelo lote diz que fecha (e só fala do site quando há publicada)",
+            so["pergunta"].startswith("Fechar 1 visualização de pública?") and "a pública continua no site" in so["pergunta"] and "saem do site" not in so["pergunta"]
+            and so["msg"] == "1 visualização fechada." and not so["existe"]
+            and mista["pergunta"].startswith("Excluir 1 build(s)?") and "E fechar 1 visualização" in mista["pergunta"]
+            and "saem do site" not in mista["pergunta"] and "Isso não dá pra desfazer." in mista["pergunta"]
+            and mista["msg"] == "1 build(s) excluída(s) e 1 visualização fechada.",
+            "só a visualização: %r → %r · com uma build sua: %r" % (so["pergunta"][:60], so["msg"], mista["msg"]))
+
+    # nº 58: a forja na alternativa de baixo de uma Escolha 1 é avisada fora da soma
+    garantir_build_editavel(s)
+    r = s.js("""(() => { const por = (n) => CATALOG.items.find(i => i.namePt === n).slug;
+      build.masterwork = true;
+      build.cats[2].kind = 'escolha'; build.cats[2].items = [{ itemId: por('Presságio de Randuin'), note: '' }, { itemId: por('Armadura de Espinhos'), note: '' }];
+      renderBuildAll();
+      setForged(build.cats[2].id, 1); const embaixo = document.getElementById('build-totals').textContent;
+      setForged(build.cats[2].id, 0); const padrao = document.getElementById('build-totals').textContent;
+      return { embaixo, padrao }; })()""")
+    s.js("descartarAlteracoes(); 'ok'")
+    p.conta("lote e ornn", "a Passiva do Ornn na alternativa de baixo é avisada fora da soma",
+            "Armadura de Espinhos — fora da soma" in r["embaixo"] and "Presságio de Randuin" in r["padrao"] and "fora da soma" not in r["padrao"],
+            "embaixo: …%s… · no padrão: …%s…" % (r["embaixo"][r["embaixo"].find("Passiva"):][:80], r["padrao"][r["padrao"].find("Passiva"):][:50]))
+
+
 def checar_passiva_do_ornn(s, p):
     """F13-T60 (Leo, 23/10/2026): o "Mestre Forjador" virou "Passiva do Ornn" na
     tela, e a placa MF virou "Ornn". O formato de texto continua escrevendo
@@ -4052,6 +4106,7 @@ GRUPOS = [
     ("teclado", checar_teclado),
     ("redesenho", checar_redesenho),
     ("importação", checar_importacao),
+    ("lote e ornn", checar_lote_e_ornn),
     ("runas", checar_runas),
     ("habilidades", checar_habilidades),
     ("texto", checar_texto),
