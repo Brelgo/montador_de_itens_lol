@@ -4854,6 +4854,18 @@ body.editando .save-wrap { display: inline-flex; }
 #pub-dialog { z-index: 96; }
 #aba-dona { z-index: 250; }   /* F13-T35: a aba parada — por cima de tudo, inclusive da entrada da loja (200) */
 #aba-dona.conferindo:not(.demorou) { opacity: 0; }   /* a trava responde em milissegundos: sem piscar (o JS mostra se demorar) */
+/* F13-T68 (Leo, 20/10/2026: "acho bem mais prático ser um ícone no canto inferior da
+   tela ao invés de um pop up imenso… tem vezes que demora e tem vezes que leva
+   frames"): enquanto confere a trava, nada de véu nem painel — um ícone discreto no
+   canto inferior, e só se passar de meio segundo. A página continua parada até a
+   resposta (é a proteção); o "Aberto em outra aba" segue no centro. */
+#aba-dona.conferindo { inset: auto 18px 18px auto; padding: 0; background: none; display: block; }
+#aba-dona.conferindo .md-panel { width: 38px; height: 38px; padding: 0; border-radius: 50%; border-top-width: 1px; animation: none; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; cursor: help; }
+#aba-dona.conferindo .md-panel:focus { outline: none; }
+#aba-dona.conferindo .md-panel > * { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }   /* fica para o leitor de tela */
+#aba-dona.conferindo .md-panel::before { content: ""; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--forja-placa-borda); border-top-color: var(--forja-brasa); animation: aba-girando .9s linear infinite; }
+@keyframes aba-girando { to { transform: rotate(360deg); } }
 #pub-dialog .md-panel:focus { outline: none; }
 #pub-dialog .pub-demora { display: block; margin-top: 10px; font-size: .92em; opacity: .85; }
 #pub-dialog.aguardando .md-title::after { content: "…"; animation: pub-pontos 1.2s steps(4) infinite; display: inline-block; width: 1.2em; text-align: left; }
@@ -5963,7 +5975,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.67";
+const ATUALIZACAO = "13.68";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -6496,6 +6508,8 @@ function virarEspectadora(motivo) {
   // o resto da página fica visível mas parado: nem mouse nem foco chegam nele
   [...document.body.children].forEach(e => { if (e !== v && !e.inert) { e.inert = true; veuInertes.add(e); } });
   v.classList.toggle("conferindo", motivo === "conferindo");
+  // F13-T68: o ícone do canto diz o que é quando o mouse passa
+  v.querySelector(".md-panel").title = motivo === "conferindo" ? "Conferindo se o Montador já está aberto em outra aba deste navegador…" : "";
   // sem depender de animação (o "Menos movimento" as desliga); conta do primeiro quadro depois do init
   if (motivo === "conferindo") requestAnimationFrame(() => setTimeout(() => { if (veuMotivo === "conferindo" && v.isConnected) v.classList.add("demorou"); }, 500));
   atualizarVeu(motivo || "");

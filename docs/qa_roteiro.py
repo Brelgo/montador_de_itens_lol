@@ -1408,6 +1408,29 @@ def checar_lote_e_ornn(s, p):
             "embaixo: …%s… · no padrão: …%s…" % (r["embaixo"][r["embaixo"].find("Passiva"):][:80], r["padrao"][r["padrao"].find("Passiva"):][:50]))
 
 
+def checar_conferencia(s, p):
+    """F13-T68 (Leo, 20/10/2026: "acho bem mais prático ser um ícone no canto inferior
+    da tela ao invés de um pop up imenso"): enquanto confere a trava, a aba fica
+    parada, mas o aviso é um ícone discreto no canto inferior — e só se passar de
+    meio segundo. O "Aberto em outra aba" segue no centro (grupo "duas abas")."""
+    print("\n%sCONFERÊNCIA DAS ABAS%s" % (AMARELO, FIM))
+    r = s.js("""(async () => { virarEspectadora('conferindo');
+      const v = document.getElementById('aba-dona'); const antes = getComputedStyle(v).opacity;
+      await new Promise(r => setTimeout(r, 900));
+      const rc = v.getBoundingClientRect();
+      const out = { antes, depois: getComputedStyle(v).opacity, w: Math.round(rc.width), h: Math.round(rc.height),
+        direita: Math.round(innerWidth - rc.right), baixo: Math.round(innerHeight - rc.bottom), fundo: getComputedStyle(v).backgroundColor,
+        parada: [...document.body.children].some(e => e !== v && e.inert), titulo: v.querySelector('.md-panel').title,
+        leitor: (document.getElementById('aba-dona-titulo') || {}).textContent };
+      assumirVez();
+      out.voltou = ![...document.body.children].some(e => e.inert) && !document.getElementById('aba-dona');
+      return out; })()""")
+    p.conta("conferência", "a conferência das abas é um ícone no canto inferior, só se demorar",
+            r["antes"] == "0" and r["depois"] == "1" and r["w"] <= 48 and r["h"] <= 48 and 10 <= r["direita"] <= 30 and 10 <= r["baixo"] <= 30
+            and r["fundo"] in ("rgba(0, 0, 0, 0)", "transparent") and r["parada"] and "Conferindo" in r["titulo"]
+            and r["leitor"] == "Conferindo as abas" and r["voltou"], "%s" % r)
+
+
 def checar_passiva_do_ornn(s, p):
     """F13-T60 (Leo, 23/10/2026): o "Mestre Forjador" virou "Passiva do Ornn" na
     tela, e a placa MF virou "Ornn". O formato de texto continua escrevendo
@@ -4107,6 +4130,7 @@ GRUPOS = [
     ("redesenho", checar_redesenho),
     ("importação", checar_importacao),
     ("lote e ornn", checar_lote_e_ornn),
+    ("conferência", checar_conferencia),
     ("runas", checar_runas),
     ("habilidades", checar_habilidades),
     ("texto", checar_texto),

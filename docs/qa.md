@@ -132,6 +132,12 @@ build(s)? / E fechar 1 visualização…", com "Isso não dá pra desfazer." e s
 excluída(s) e 1 visualização fechada.". E a Passiva do Ornn na alternativa de baixo de uma Escolha 1 aparece na nota
 da soma como "fora da soma"; no padrão, não.
 
+**Conferência das abas** (F13-T68; Leo, 20/10/2026: "acho bem mais prático ser um ícone no canto inferior da tela ao
+invés de um pop up imenso") — com a aba conferindo a trava: invisível no começo (sem piscar), depois de meio segundo
+um ícone de 38 px no canto inferior direito, sem fundo escurecendo a tela, com o título explicando ao passar o mouse
+e o "Conferindo as abas" para o leitor de tela; a página continua parada (é a proteção) e volta a responder quando a
+trava decide. O "Aberto em outra aba" segue no centro (grupo "duas abas").
+
 **Passiva do Ornn** (F13-T60; Leo, 23/10/2026) — o "Mestre Forjador" virou "Passiva do Ornn" na tela e a placa
 "MF" do item virou "Ornn": nenhum texto do app diz mais o nome velho — o HTML inteiro (inclusive o que está
 escondido, menos script e style), os `title` e os `placeholder`, com o item forjado na forja, o balão aberto e a
