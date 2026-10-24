@@ -1470,6 +1470,17 @@ def checar_rota(s, p):
       return { linha: texto.split(N).find(l => l.startsWith('ROTA:')) || '', volta, apelido, lk, lote, aram }; })()""" % json.dumps(alvo))
     p.conta("rota", "a rota vai e volta no texto, no link e no lote (e o ARAM não a escreve)",
             ida["linha"] == "ROTA: Top" and ida["volta"] == ida["lk"] == ida["lote"] == "top" and ida["apelido"] == "selva" and not ida["aram"], "%s" % ida)
+    # F13-T71: a chave "r" do link é das runas — com as duas na build, a página
+    # apagava a rota (a ida e volta acima é de uma build sem runas e passava)
+    ambas = s.js("""(() => { const b = library.builds.find(x => x.id === build.id), t = RUNAS.trilhas[0];
+      const runas = normRunas({ primaria: t.id, assinatura: t.slots[0].runas[0].id, slots: ['', '', ''] });
+      const l = buildParaLink(Object.assign({}, b, { id: 'qa-link-71', rota: 'selva', runas }));
+      const volta = linkParaBuild(l.slice(l.indexOf('#')));
+      // o link que a T69 gerou: sem runas, a rota ia como texto na "r"
+      const velho = '#b=' + b64urlEncode(JSON.stringify({ v: 1, n: 'Link da T69', m: '', d: '', r: 'meio', c: null, k: [], cats: [{ n: 'Core', k: 'comum', i: ['long-sword'] }] }));
+      return { rota: volta.rota, runa: volta.runas.assinatura === runas.assinatura, velho: (linkParaBuild(velho) || {}).rota }; })()""")
+    p.conta("rota", "o link leva a rota junto com as runas (e o link da T69 ainda abre com a rota)",
+            ambas == {"rota": "selva", "runa": True, "velho": "meio"}, "%s" % ambas)
 
     # importar pelo botão, duplicar e copiar uma pública levam a rota
     s.js("""(() => { switchTab('build'); showBuildScreen('forja'); document.getElementById('io-panel').classList.add('show');
@@ -1597,6 +1608,128 @@ def checar_cadeado(s, p):
             trancado and not loja["entrou"] and "só na rota Selva" in loja["aviso"], "card trancado %s · %s" % (trancado, loja))
     s.js("""(() => { document.getElementById('search-input').value = ''; document.getElementById('search-input').dispatchEvent(new Event('input', { bubbles: true }));
       descartarAlteracoes(); return 1; })()""")
+
+
+def checar_reembolso_e_topo(s, p):
+    """F13-T71: a runa Reembolso na página da build liga o Reembolso dos preços
+    (e abrir uma build sem ela, ou tirá-la, desliga) — só na troca de build ou
+    da runa: mexer à mão, para comparar, vale até a próxima. E os níveis 19 e 20
+    do Udyr (a missão do Topo, pela ficha do Capítulo 1.1) só com a rota Top."""
+    print("\n%sREEMBOLSO E TOPO%s" % (AMARELO, FIM))
+    garantir_build_editavel(s)
+    s.js("""(() => { if (rascunho.sujo) descartarAlteracoes(); ligarEdicao(true);
+      const id = 'reembolso'; let tr, si;
+      RUNAS.trilhas.forEach(t => t.slots.forEach((sl, i) => { if (sl.runas.some(r => r.id === id)) { tr = t.id; si = i; } }));
+      const slots = ['', '', '']; slots[si - 1] = id;
+      window.__comReembolso = () => normRunas({ primaria: tr, assinatura: '', slots });
+      build.runas = normRunas(null); gravarPagina(); salvarAgora();
+      const cb = document.querySelector('input[data-rune="cashback"]'); if (cb.checked) cb.click();
+      switchTab('build'); showBuildScreen('forja'); return 'ok'; })()""")
+    time.sleep(0.8)
+    ESTADO = """(() => ({ on: !!state.applyCashback, loja: document.querySelector('input[data-rune="cashback"]').checked,
+      faixa: document.getElementById('cashback-banner').classList.contains('show'), forja: document.getElementById('cb-toggle').checked,
+      icone: !!document.querySelector('#cb-switch img.sw-runa:not([hidden])') }))()"""
+    LIGADO = {"on": True, "loja": True, "faixa": True, "forja": True}
+    DESLIGADO = {"on": False, "loja": False, "faixa": False, "forja": False}
+    def estado():
+        e = s.js(ESTADO)
+        return e, {k: e[k] for k in LIGADO}
+    def pagina(com):
+        s.js("(() => { build.runas = %s; gravarPagina(); return 1; })()" % ("__comReembolso()" if com else "normRunas(null)"))
+        time.sleep(0.3)
+
+    pagina(True)
+    liga, liga4 = estado()
+    s.clicar("#cb-switch", 0.4)                     # à mão: desliga para comparar
+    s.js("renderBuildAll(); 1"); time.sleep(0.2)    # qualquer outro redesenho (item, caixa, campeão)
+    _, mao4 = estado()
+    p.conta("reembolso", "a runa liga o Reembolso (loja, faixa e forja, com o ícone); desligar à mão vale até a próxima troca",
+            liga4 == LIGADO and liga["icone"] and mao4 == DESLIGADO, "com a runa %s · à mão, depois de redesenhar %s" % (liga, mao4))
+
+    s.clicar("#cb-switch", 0.4)
+    pagina(False)
+    tira, tira4 = estado()
+    s.clicar("#cb-switch", 0.4)                     # o caminho de sempre: sem a runa, ligar à mão
+    s.js("renderBuildAll(); 1"); time.sleep(0.2)
+    _, velho4 = estado()
+    s.clicar("#cb-switch", 0.4)
+    p.conta("reembolso", "tirar a runa desliga; sem a runa, ligar à mão continua valendo",
+            tira4 == DESLIGADO and not tira["icone"] and velho4 == LIGADO, "sem a runa %s · à mão %s" % (tira, velho4))
+
+    # trocar de build: a outra com a runa liga (mesmo desligado à mão aqui); voltar a uma sem, desliga
+    pagina(True); s.js("salvarAgora(); 1")
+    a = s.js("build.id")
+    s.clicar("#cb-switch", 0.4)
+    s.js("""(() => { build.desc = 'a original'; build.mode = "Summoner's Rift"; build.rota = 'meio'; salvarAgora(); return 1; })()""")
+    s.clicar("#dup-build", 1.0)                     # o Duplicar da forja, como na mão
+    _, dup4 = estado()
+    b = s.js("build.id")
+    # a forja redesenhada com a cópia: antes ela ficava com a descrição e a rota em branco
+    tela = s.js("({ outra: build.id !== %s, desc: document.getElementById('build-desc').value, rota: document.getElementById('build-rota').value })" % json.dumps(a))
+    p.conta("reembolso", "duplicar na forja mostra a cópia inteira (descrição e rota na tela)",
+            tela == {"outra": True, "desc": "a original", "rota": "meio"}, "%s" % tela)
+    # desligado à mão na cópia, a troca direta para a original (as duas com a runa) liga de novo
+    s.clicar("#cb-switch", 0.4)
+    s.js("activateBuild(%s); 1" % json.dumps(a)); time.sleep(0.4)
+    _, volta4 = estado()
+    s.js("activateBuild(%s); 1" % json.dumps(b)); time.sleep(0.4)
+    s.js("(() => { ligarEdicao(true); build.runas = normRunas(null); gravarPagina(); salvarAgora(); return 1; })()"); time.sleep(0.3)
+    s.js("activateBuild(%s); 1" % json.dumps(a)); time.sleep(0.4)
+    s.js("activateBuild(%s); 1" % json.dumps(b)); time.sleep(0.4)
+    _, outra4 = estado()
+    p.conta("reembolso", "trocar de build sincroniza: a cópia com a runa liga; desligada à mão, a original com a runa liga de novo; a sem desliga",
+            dup4 == LIGADO and volta4 == LIGADO and outra4 == DESLIGADO, "cópia %s · a original %s · a sem %s" % (dup4, volta4, outra4))
+    s.js("""(() => { activateBuild(%s); ligarEdicao(true); build.runas = normRunas(null); gravarPagina(); salvarAgora();
+      const cb = document.querySelector('input[data-rune="cashback"]'); if (cb.checked) cb.click(); return 1; })()""" % json.dumps(a))
+    time.sleep(0.4)
+
+    # Udyr: 18 pontos em Q/W/E (6 cada) e o R nos níveis 19 e 20 — só com a rota Top
+    seq = ["Q" if n in (1, 3, 5, 7, 9, 11) else "W" if n in (2, 4, 6, 8, 10, 12) else "E" for n in range(1, 19)]
+    s.js("""(() => { build.mode = "Summoner's Rift"; build.rota = ''; build.champion = { key: '77', id: 'Udyr', name: 'Udyr' };
+      build.habilidades = normHabilidades(%s); renderBuildAll(); return 1; })()""" % json.dumps(seq))
+    time.sleep(0.4)
+    COLUNAS = "document.querySelectorAll('#build-habs .bh-niv').length"
+    sem_rota = s.js(COLUNAS)
+    s.js("""(() => { const sel = document.getElementById('build-rota'); sel.value = 'top'; sel.dispatchEvent(new Event('change', { bubbles: true })); return 1; })()""")
+    time.sleep(0.4)
+    top = s.js(COLUNAS)
+    tem19 = s.js("!!document.querySelector(\".bh-cel[data-hab='R'][data-nivel='19']\")")
+    if tem19:
+        s.clicar(".bh-cel[data-hab='R'][data-nivel='19']", 0.3)
+        s.clicar(".bh-cel[data-hab='R'][data-nivel='20']", 0.3)
+    u = s.js("""(() => { const g = document.querySelector('#build-habs .bh-grade').getBoundingClientRect();
+      const n = [...document.querySelectorAll('#build-habs .bh-niv')], c20 = document.querySelector(".bh-cel[data-hab='R'][data-nivel='20']");
+      return { h: (build.habilidades || []).slice(18).join(''), aviso: document.querySelector('#build-habs .bh-aviso').textContent,
+               linha: n.length === 20 && Math.round(n[0].getBoundingClientRect().top) === Math.round(n[19].getBoundingClientRect().top),
+               cabe: !!c20 && c20.getBoundingClientRect().right <= g.right + 1,
+               nota: [...document.querySelectorAll('#build-habs .bh-nota')].some(x => x.textContent.includes('até o nível 20')) }; })()""")
+    p.conta("topo", "o Udyr da rota Top: a grade vai ao 20 e o R entra no 19 e no 20 (sem rota, 18 colunas)",
+            sem_rota == 18 and top == 20 and u["h"] == "RR" and "20/20 níveis" in u["aviso"] and u["linha"] and u["cabe"] and u["nota"],
+            "colunas sem rota %s · na Top %s · %s" % (sem_rota, top, u))
+
+    s.js("""(() => { const sel = document.getElementById('build-rota'); sel.value = 'meio'; sel.dispatchEvent(new Event('change', { bubbles: true })); return 1; })()""")
+    time.sleep(0.4)
+    meio = s.js("""(() => { const c = document.querySelector(".bh-cel[data-hab='R'][data-nivel='19']");
+      return { colunas: document.querySelectorAll('#build-habs .bh-niv').length, h: build.habilidades.slice(18).join(''),
+               vermelho: !!c && c.classList.contains('invalida'), motivo: c ? c.title : '' }; })()""")
+    s.js("""(() => { build.champion = { key: '86', id: 'Garen', name: 'Garen' }; build.rota = 'top'; build.habilidades = normHabilidades(%s); renderBuildAll(); return 1; })()""" % json.dumps(seq))
+    time.sleep(0.3)
+    garen = s.js(COLUNAS)
+    p.conta("topo", "fora da Top o ponto do 19 e do 20 fica, em vermelho e com o motivo; o Garen na Top segue com 18",
+            meio["colunas"] == 20 and meio["h"] == "RR" and meio["vermelho"] and "rota Top" in meio["motivo"] and garen == 18,
+            "na Meio %s · Garen na Top %s colunas" % (meio, garen))
+
+    # o formato: 18 casas quando o 19 e o 20 estão vazios (a build de sempre grava igual); texto e link levam os 20
+    f = s.js("""(() => { const h20 = normHabilidades(%s.concat(['R', 'R']));
+      build.champion = { key: '77', id: 'Udyr', name: 'Udyr' }; build.habilidades = h20; salvarAgora();
+      const b = library.builds.find(x => x.id === build.id);
+      const texto = textoDaBuild(buildResumo(b)), volta = normHabilidades(textToBuild(texto).habilidades);
+      const l = buildParaLink(b), lk = linkParaBuild(l.slice(l.indexOf('#'))).habilidades;
+      return { vazio: normHabilidades(null).length, dezoito: normHabilidades(%s).length, vinte: h20.length,
+               texto: volta.join('') === h20.join(''), link: lk.join('') === h20.join('') }; })()""" % (json.dumps(seq), json.dumps(seq)))
+    p.conta("topo", "18 casas sem ponto no 19 e no 20; com eles, texto e link levam os 20",
+            f == {"vazio": 18, "dezoito": 18, "vinte": 20, "texto": True, "link": True}, "%s" % f)
+    s.js("(() => { build.habilidades = normHabilidades(null); build.champion = null; build.rota = ''; salvarAgora(); return 1; })()")
 
 
 def checar_passiva_do_ornn(s, p):
@@ -4301,6 +4434,7 @@ GRUPOS = [
     ("conferência", checar_conferencia),
     ("rota", checar_rota),
     ("cadeado", checar_cadeado),
+    ("reembolso e topo", checar_reembolso_e_topo),
     ("runas", checar_runas),
     ("habilidades", checar_habilidades),
     ("texto", checar_texto),

@@ -142,7 +142,20 @@ trava decide. O "Aberto em outra aba" segue no centro (grupo "duas abas").
 `change` forçado volta), some no ARAM e a rota escolhida fica no disco depois do F5; a rota vai e volta no texto
 (`ROTA: Top`; `ROTA: jungle` vira Selva), no link e no lote, e o texto de uma build de ARAM não a escreve; importar
 pelo botão, duplicar e "Copiar e editar" uma pública levam a rota; e publicar manda `p_rota` — com o servidor sem a
-coluna (o `fetch` simulado recusa como o PostgREST recusa), publica de novo sem ela e com as runas.
+coluna (o `fetch` simulado recusa como o PostgREST recusa), publica de novo sem ela e com as runas. F13-T71: o link
+de uma build com rota **e** runas leva as duas (a rota foi para a chave `ro`; na `r`, a das runas, a página a
+apagava), e o link que a T69 gerou — sem runas, a rota como texto na `r` — ainda abre com a rota.
+
+**Reembolso e topo** (F13-T71) — a runa Reembolso posta na página (pelo `gravarPagina`, o caminho da tela de runas)
+liga o Reembolso na loja, na faixa e na forja, e o interruptor da forja ganha o ícone da runa; desligar à mão (clique
+de verdade no interruptor) vale até a próxima troca — outro redesenho não religa; tirar a runa desliga; sem a runa,
+ligar à mão continua valendo (o caminho de sempre); o "Duplicar" da forja mostra a cópia inteira (a descrição e a
+rota na tela — antes ficavam em branco) e, com a runa, liga mesmo desligado à mão na original; trocar para uma build
+sem a runa desliga, e voltar liga. O Udyr (a ficha do Capítulo 1.1 fala da missão do Topo): sem rota a grade tem 18
+colunas; na rota Top, 20 numa linha só, dentro da caixa, e o R entra no 19 e no 20 com cliques de verdade ("20/20
+níveis"); passando para a Meio, os dois pontos ficam, em vermelho, com o motivo; o Garen na Top segue com 18; e o
+formato guarda 18 casas quando o 19 e o 20 estão vazios (a build de sempre grava e assina igual), com texto e link
+levando os 20 quando têm ponto.
 
 **Cadeado** (F13-T70; Leo, 15/10 e 24/10/2026: o cadeado impede nas caixas que contam — Comum, Prioridade e o
 padrão da Escolha 1; a Opcional e as alternativas aceitam) — o que o cadeado lê do catálogo bate (3 itens de Selva, 7

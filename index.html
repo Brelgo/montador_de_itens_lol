@@ -2927,7 +2927,7 @@ body.editando .modo-leitura { display: none; }
 /* A coluna do rótulo precisa caber ícone + letra + contador (ex.: "Q 0/5"). Com
    42 px ela transbordava e cobria a casa do nível 1 — nenhuma habilidade podia
    ser marcada lá. */
-.bh-grade { display: grid; grid-template-columns: 96px repeat(18, minmax(0, 1fr)); gap: 4px; align-items: center; }
+.bh-grade { display: grid; grid-template-columns: 96px repeat(var(--bh-niveis, 18), minmax(0, 1fr)); gap: 4px; align-items: center; }
 .bh-niv, .bh-letra {
   font-family: var(--loja-gravado); font-size: 10.5px; letter-spacing: .06em;
   color: var(--forja-texto-suave, #9a8778); text-align: center;
@@ -4166,6 +4166,9 @@ header.top { transition: background .5s ease, border-color .5s ease; }
 .sw input:checked + i { background: #5a2a10; box-shadow: inset 0 1px 3px #000, 0 0 0 1px #8a4a1c, 0 0 10px var(--forja-brasa-glow); }
 .sw input:checked + i::after { left: 19px; background: radial-gradient(circle at 40% 40%, #ffd08a, #ff7a1e); box-shadow: 0 0 8px #ff8a2a; }
 .sw input:checked ~ span { color: var(--forja-brasa-clara); }
+/* F13-T71: o Reembolso que a runa da página ligou leva o ícone dela */
+.sw .sw-runa { width: 18px; height: 18px; margin-left: -2px; border-radius: 50%; background: #120d0a; box-shadow: 0 0 0 1px #4a3d33; }
+.sw .sw-runa[hidden] { display: none; }
 /* F10-T9: bandeja da forja só com ícones. A grade se ajusta sozinha à largura
    (auto-fill), então em tela maior cabem mais colunas sem mexer em nada. */
 .picker-view { margin: 0 6px; border-color: var(--loja-tinta-suave); background: transparent; }
@@ -6100,7 +6103,7 @@ const SPAN_LABEL = { 4: "¼", 3: "⅓", 2: "½", 1: "1/1" };
 // F13-T57 (Leo, 19/10/2026: "[N da atualização do projeto]" na placa de entrada):
 // fase.tarefa da última tarefa no ar — sobe a cada tarefa aprovada (o roteiro
 // confere que não ficou para trás do último commit "F13-T…").
-const ATUALIZACAO = "13.70";
+const ATUALIZACAO = "13.71";
 const STORAGE_KEY = "lol-builds-v3";
 const LEGACY_KEY = "lol-build-v2";
 
@@ -6296,29 +6299,37 @@ function normRunas(r) {
 // ponto, o supremo inclusive (Leo, 22/10/2026: "como o jogo").
 const HAB_LETRAS = ["Q", "W", "E", "R"];
 const HAB_NIVEIS = 18;
+// F13-T71: a missão do Topo leva ao nível 20, e os níveis 19 e 20 só dão ponto
+// a quem ainda tem rank sobrando — a ficha do Capítulo 1.1 diz quem (o Udyr).
+const HAB_NIVEIS_TOPO = 20;
 const HAB_GERAL = (window.HABILIDADES && window.HABILIDADES.regraGeral) || null;
-// Só o formato: 18 níveis, uma letra ou nada em cada. A regra fica na grade,
-// que sabe o campeão — antes este passo apagava o que fugia da regra comum (o
-// 6º rank do Udyr, o R fora do 6/11/16) em toda importação, cópia e publicação.
+// Só o formato: 18 níveis (20 quando o 19 ou o 20 têm ponto), uma letra ou nada
+// em cada. A regra fica na grade, que sabe o campeão — antes este passo apagava
+// o que fugia da regra comum (o 6º rank do Udyr, o R fora do 6/11/16) em toda
+// importação, cópia e publicação. Sem ponto no 19 e no 20 ficam as 18 casas de
+// sempre: a build que já existia grava e assina igual.
 function normHabilidades(h) {
-  const out = Array(HAB_NIVEIS).fill(null);
-  if (!Array.isArray(h)) return out;
-  h.slice(0, HAB_NIVEIS).forEach((L, i) => { if (HAB_LETRAS.includes(L)) out[i] = L; });
-  return out;
+  const out = Array(HAB_NIVEIS_TOPO).fill(null);
+  if (Array.isArray(h)) h.slice(0, HAB_NIVEIS_TOPO).forEach((L, i) => { if (HAB_LETRAS.includes(L)) out[i] = L; });
+  return out.slice(HAB_NIVEIS).some(Boolean) ? out : out.slice(0, HAB_NIVEIS);
 }
 // A regra de um campeão: a ficha dele, quando foge da geral; senão a geral.
-function habRegra(champ) {
+// `onde` (a build: rota e modo) diz até que nível a grade vai — sem ele, 18.
+function habRegra(champ, onde) {
   const H = window.HABILIDADES || {};
   const f = champ && champ.key && H.campeoes ? H.campeoes[String(champ.key)] : null;
   const r = Object.assign({ temSupremo: true, requer: {}, automatico: {}, observacao: "", trava: "" }, HAB_GERAL || {}, f || {});
   r.ficha = !!f;
   r.pendente = !!(champ && champ.key && ((H.meta && H.meta.pendentes) || []).some(x => String(x.key) === String(champ.key)));
+  r.vaiAo20 = /missão do Topo, os níveis 19 e 20/i.test(r.observacao || "");
+  r.ate = r.vaiAo20 && onde && rotaPossivel(onde.mode) && rotaValida(onde.rota) === "top" ? HAB_NIVEIS_TOPO : (r.niveis || HAB_NIVEIS);
   return r;
 }
 // Por que a letra L não entra no nível n ("" = entra), pelo esquema do Capítulo
 // 1.1: conta os pontos de L nos níveis antes de n e confere o teto, o nível
 // mínimo do próximo ponto e, no 1º ponto, a habilidade exigida antes (Azir, Zilean…).
 function habMotivo(h, L, n, regra) {
+  if (n > (regra.ate || HAB_NIVEIS)) return regra.vaiAo20 ? "os níveis 19 e 20 só com a rota Top (a missão do Topo)" : `a grade vai até o nível ${regra.ate || HAB_NIVEIS}`;
   let k = 0;
   for (let i = 0; i < n - 1; i++) if (h[i] === L) k++;
   const max = (regra.maxPorHabilidade || {})[L] || 0;
@@ -7638,7 +7649,9 @@ function buildParaLink(b) {
   const d = buildResumo(b);
   const compacto = {
     v: 1, n: d.name, m: d.mode || "", d: d.desc || "",
-    ...(rotaValida(d.rota) ? { r: d.rota } : {}),   // F13-T69: só quando tem — o link continua curto
+    // F13-T69: só quando tem — o link continua curto. F13-T71: na chave "ro"; a
+    // "r" é a das runas, e com as duas na build a página apagava a rota do link
+    ...(rotaValida(d.rota) ? { ro: d.rota } : {}),
     c: d.champ ? { k: d.champ.key, i: d.champ.id, n: d.champ.name } : null,
     k: d.markers,
     cats: d.cats.map(c => ({ n: c.name, d: c.desc || "", m: c.marco || "", k: c.kind, s: c.span, w: catCols(c), h: catRows(c), i: c.items.map(e => e.frag ? [e.itemId, e.note || "", e.mf ? 1 : 0, e.frag] : (e.note ? [e.itemId, e.note, e.mf ? 1 : 0] : (e.mf ? [e.itemId, "", 1] : [e.itemId]))) })),
@@ -7650,7 +7663,7 @@ function buildParaLink(b) {
   // F13-T38: a trilha escolhida vai mesmo sem runa — o texto e o link levam a mesma página
   if (runasEscolhidas(p) || p.primaria) compacto.r = [p.primaria, p.assinatura, p.slots, p.secundaria, p.secundarios, p.fragmentos];
   const h = normHabilidades(d.habilidades);
-  if (h.some(Boolean)) compacto.h = h.map(x => x || "-").join("");        // 18 letras, "-" = nível em branco
+  if (h.some(Boolean)) compacto.h = h.map(x => x || "-").join("");        // 18 letras (20 com ponto no 19 ou no 20), "-" = nível em branco
   if (layoutValido(d.layout) !== "tabuleiro") compacto.l = layoutValido(d.layout);
   if (d.isActive ? build.masterwork : b.masterwork) compacto.x = 1;
   const base = location.href.split("#")[0];
@@ -7669,7 +7682,8 @@ function linkParaBuild(hash) {
     items: (Array.isArray(c.i) ? c.i : []).map(x => Array.isArray(x) ? { itemId: x[0], note: String(x[1] || ""), ...(x[2] ? { mf: true } : {}), ...(x[3] ? { frag: String(x[3]) } : {}) } : { itemId: x, note: "" }),
   }));
   return {
-    id, name: String(o.n || "Build recebida"), mode: ALL_MODES.includes(o.m) ? o.m : "", rota: rotaValida(o.r), desc: String(o.d || ""),
+    // a rota: "ro"; o link da T69 sem runas a levava como texto em "r"
+    id, name: String(o.n || "Build recebida"), mode: ALL_MODES.includes(o.m) ? o.m : "", rota: rotaValida(typeof o.ro === "string" ? o.ro : (typeof o.r === "string" ? o.r : "")), desc: String(o.d || ""),
     champion: o.c && o.c.k ? { key: String(o.c.k), id: String(o.c.i || ""), name: String(o.c.n || o.c.i || "") } : null,
     markers: normMarkers(o.k), cats: normalizeCats(cats),
     // F13-T13: os campos novos, todos opcionais e todos normalizados — link
@@ -8018,7 +8032,7 @@ function textToBuild(text) {
     if (mHab) {
       // Um símbolo por nível, separados por espaço. O que não for Q/W/E/R conta
       // como nível em branco; a normalização depois aplica as regras do jogo.
-      result.habilidades = mHab[1].trim().split(/[\s,|]+/).slice(0, HAB_NIVEIS)
+      result.habilidades = mHab[1].trim().split(/[\s,|]+/).slice(0, HAB_NIVEIS_TOPO)
         .map(x => HAB_LETRAS.includes(x.toUpperCase()) ? x.toUpperCase() : null);
       return;
     }
@@ -8321,8 +8335,33 @@ function renderBuild() {
 // também precisa ser atualizado.
 function renderBuildAll() {
   if (importandoLote) return;   // F13-T37: o fim do lote redesenha
+  sincronizarReembolso();
   renderBuild();
   renderPicker();
+}
+
+// F13-T71: a runa Reembolso na página da build liga o Reembolso dos preços;
+// abrir uma build sem ela (ou tirá-la da página) desliga. Só na troca — de build
+// ou da runa: mexer no interruptor à mão, para comparar, vale até a próxima.
+let reembolsoVisto = null;
+function buildTemReembolso() {
+  const id = runaIdPorNome("Reembolso");
+  return !!id && contextoDoCadeado().runas.has(id);
+}
+function definirReembolso(on) {
+  state.applyCashback = !!on;
+  const cb = document.querySelector('input[data-rune="cashback"]');
+  if (cb) cb.checked = !!on;
+  document.getElementById("cashback-banner").classList.toggle("show", !!on);
+  updateClearButton();
+  render();
+}
+function sincronizarReembolso() {
+  const tem = buildTemReembolso();
+  const chave = (build.id || "") + ":" + tem;
+  if (chave === reembolsoVisto) return;
+  reembolsoVisto = chave;
+  if (!!state.applyCashback !== tem) definirReembolso(tem);
 }
 
 function renderSpanOptions() {
@@ -8560,6 +8599,23 @@ function renderBuildSummary() {
   const mfToggle = document.getElementById("mf-toggle");
   if (mfToggle) mfToggle.checked = !!build.masterwork;
   const cbT = document.getElementById("cb-toggle"); if (cbT) cbT.checked = !!state.applyCashback;
+  // F13-T71: o interruptor diz quando foi a runa da página que o ligou
+  const cbS = document.getElementById("cb-switch");
+  if (cbS) {
+    const daRuna = buildTemReembolso();
+    cbS.classList.toggle("da-runa", daRuna);
+    let ic = cbS.querySelector("img.sw-runa");
+    const a = daRuna && !ic ? runaPorId(runaIdPorNome("Reembolso")) : null;
+    if (a && a.runa.iconUrl) {
+      ic = document.createElement("img");
+      ic.className = "sw-runa"; ic.alt = ""; ic.src = a.runa.iconUrl;
+      cbS.appendChild(ic);
+    }
+    if (ic) ic.hidden = !daRuna;
+    cbS.title = daRuna
+      ? "A página de runas desta build tem Reembolso: os preços já vêm com o desconto (cashback.netGold). Dá para desligar à mão para comparar."
+      : "Preços com o desconto da runa Reembolso (cashback.netGold), como no Catálogo";
+  }
   const apT = document.getElementById("apex-toggle"); if (apT) apT.checked = !!state.applyApex;
   const nameInput = document.getElementById("build-name-input");
   if (document.activeElement !== nameInput) nameInput.value = build.name;
@@ -9874,7 +9930,7 @@ function initEscolherFragmento() {
 // importada ou de outro campeão) não some: fica em vermelho, com o motivo.
 function habPodeMarcar(h, letra, nivel, regra) {
   if (h[nivel - 1] === letra) return true;                    // desmarcar sempre pode
-  return !habMotivo(h, letra, nivel, regra || habRegra(build.champion));
+  return !habMotivo(h, letra, nivel, regra || habRegra(build.champion, build));
 }
 
 function renderHabilidades() {
@@ -9888,15 +9944,18 @@ function renderHabilidades() {
   if (!usados && !build.editing) { caixa.hidden = true; return; }
   caixa.hidden = false;
 
-  const regra = habRegra(build.champion);
+  const regra = habRegra(build.champion, build);
+  // F13-T71: 20 colunas no Udyr da rota Top; o ponto no 19 ou no 20 que sobrou de
+  // outra rota (ou de outro campeão) não some — a coluna fica, com ele em vermelho
+  const niveis = Math.max(regra.ate, h.length);
   const supremo = regra.niveisDoSupremo || [];
   const errados = h.map((L, i) => L ? habMotivo(h, L, i + 1, regra) : "");
   const pontos = habPontos(h);
-  const cabecalho = `<span></span>` + Array.from({ length: HAB_NIVEIS }, (_, i) => `<span class="bh-niv">${i + 1}</span>`).join("");
+  const cabecalho = `<span></span>` + Array.from({ length: niveis }, (_, i) => `<span class="bh-niv">${i + 1}</span>`).join("");
   const linhas = HAB_LETRAS.map(L => {
     const arte = habArte[L] ? `<img src="${habArte[L].url}" alt="" title="${esc(habArte[L].nome)}">` : "";
     const auto = (regra.automatico || {})[L] || [];
-    const celulas = Array.from({ length: HAB_NIVEIS }, (_, i) => {
+    const celulas = Array.from({ length: niveis }, (_, i) => {
       const nivel = i + 1;
       const marcada = h[i] === L;
       const errado = marcada ? errados[i] : "";
@@ -9918,15 +9977,16 @@ function renderHabilidades() {
   const notas = [
     nErrados ? `<p class="bh-nota erro">${nErrados} ${nErrados === 1 ? "ponto fora da regra do jogo" : "pontos fora da regra do jogo"} (em vermelho; passe o mouse para ver o motivo).</p>` : "",
     regra.ficha && regra.observacao ? `<p class="bh-nota">${esc(regra.observacao)}</p>` : "",
+    regra.vaiAo20 ? `<p class="bh-nota">${regra.ate === HAB_NIVEIS_TOPO ? "Rota Top: a grade vai até o nível 20 (a missão do Topo)." : "Com a rota Top, a grade ganha os níveis 19 e 20 (a missão do Topo)."}</p>` : "",
     regra.trava ? `<p class="bh-nota">Trava: ${esc(regra.trava)}.</p>` : "",
     regra.pendente ? `<p class="bh-nota">A regra deste campeão ainda não foi conferida: a grade usa a regra comum e pode errar.</p>` : "",
   ].join("");
   caixa.innerHTML = `<div class="bh-topo">
       <span class="bh-rotulo">Ordem de habilidades</span>
-      <span class="bh-aviso">${usados}/${HAB_NIVEIS} níveis${build.champion ? "" : " · escolha um campeão para ver os ícones e a regra dele"}</span>
+      <span class="bh-aviso">${usados}/${regra.ate} níveis${build.champion ? "" : " · escolha um campeão para ver os ícones e a regra dele"}</span>
       <button type="button" class="bh-limpar" id="bh-limpar">Limpar</button>
     </div>
-    <div class="bh-grade">${cabecalho}${linhas}</div>${notas}`;
+    <div class="bh-grade" style="--bh-niveis: ${niveis}">${cabecalho}${linhas}</div>${notas}`;
 }
 
 // Arte das habilidades do campeão da build, do Data Dragon — a mesma fonte que
@@ -10917,6 +10977,9 @@ function duplicateBuild(id) {
   build.habilidades = normHabilidades(JSON.parse(JSON.stringify(d.habilidades || null)));
   build.masterwork = mestre;
   gravarBuild();
+  // F13-T71: a forja foi desenhada pelo createNewBuild, antes de tudo isto —
+  // a cópia aparecia sem descrição e sem rota (e o Reembolso da runa não ligava)
+  renderBuildAll();
   if (d.temp && d.pubOrigem) registrarEvento(d.pubOrigem, "copia");
 }
 
@@ -12274,10 +12337,7 @@ function buildFilterPanel() {
     <span>Aplicar Reembolso aos preços</span>
     <span class="count">${cbCount}</span>`;
   cbRow.querySelector("input").addEventListener("change", (e) => {
-    state.applyCashback = e.target.checked;
-    document.getElementById("cashback-banner").classList.toggle("show", e.target.checked);
-    updateClearButton();
-    render();
+    definirReembolso(e.target.checked);
     // Os totais das caixas usam o preço efetivo: precisam refletir a troca.
     if (typeof renderBuildAll === "function") renderBuildAll();
   });
